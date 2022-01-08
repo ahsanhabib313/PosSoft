@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Product;
 use App\Models\Customer;
-use App\Models\SellType;
+use App\Models\DraftOrder;
+use App\Models\DraftOrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use PDF;
 
-class OrderController extends Controller
+class DraftOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -90,18 +87,18 @@ class OrderController extends Controller
         } 
 
          //store the order table
-         $order_id = Order::create([
+         $order_id = DraftOrder::create([
              'customerName' => $customerName,
              'mobileNumber' => $mobileNumber,
              'totalPrice'   => $totalPrice
          ])->id;
          
-         $order = Order::find($order_id);
+         $order = DraftOrder::find($order_id);
 
          //store the product item
          foreach($product_id as $item => $value){
              
-            OrderItem::create([
+            DraftOrderItem::create([
                  
                 'order_id' => $order_id,
                 'product_id' => $product_id[$item],
@@ -132,134 +129,30 @@ class OrderController extends Controller
                          'quantity' => $restQuantity
                     ]);
 
-         }   
- 
-        /*  //convert invoice html into pdf
-         $pdf = App::make('dompdf.wrapper');
-
-         //insert the html in a variable 
-         $html = '';
-         $html .= '<!DOCTYPE html>
-         <html >
-         <head>
-           <meta >
-           <meta http-equiv="X-UA-Compatible" content="IE=edge">
-           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         
-           <style>
-           @font-face {
-             font-family: SutonnyMJ;
-             src: url(storage_path(fonts/SutonnyMJ-Bold.ttf);
-           }
-         </style>
-         </head>
-         <body>
-           <div>
-                <div style="text-align: center;">
-                  <h3 style="font-family: SutonnyMJ;">Tarak Vandar</h3>
-                  <h4>Woner: Madob Lal Bonik</h4>
-                  <h4>Kapriya Potri, Hajigonj Banzar, Hajigonj, Chandpur ।</h4>
-                  <h4>Mobile: 01712-175016 </h4>
-                </div> 
-                <hr>  
-                <div>
-                  <h4>Order No: ';
-        $html .= $order_id;
-        $html .= '</h4><h4>Date: ';
-        $html .= $order->created_at;
-        $html .= '</h4> <h4>Customer Name: ';
-        $html .= $customerName;
-        $html .= ' </h4><h4>Mobile No: ';
-        $html .= $mobileNumber;
-        $html .= '</h4>
-                        </div>
-                        <hr>
-                        <div style="margin:0 auto;">
-                        <table  style="width:80%; border-collapse: collapse; text-align:center; ">
-                            <thead>
-                                <tr>
-                                        <td>Product Name</td>
-                                        <td>Quantity</td>
-                                        <td>Price</td>
-                                        <td>Unit Price</td>
-                                        <td>Unit</td>
-                                </tr>
-                            </thead>
-                            <tbody>';
-        foreach($product_id as $item=> $value){ 
-        
-        $html .='<tr><td>';
-        $html .=$productName[$item];
-        $html .='</td><td>';
-        $html .= $quantity[$item];
-        $html .= '</td><td>';
-        $html .= $productPrice[$item];
-        $html .= '</td> <td>';
-        $html .= $productUnitPrice[$item];
-        $html .= '</td><td>';
-        $html .= $productUnit[$item];
-        $html .= '</td></tr>';
-
-        }
-
-        $html .= '<tr>
-                    <td ></td>
-                    <td colspan="2">Toal price</td>
-                    <td colspan-"2>';
-        $html .= $totalPrice;
-        $html .= '</td>
-                    </tr>
-                     </tbody>
-                    </table>
-                    </divs>
-
-                    </div>
-                    </body>
-                    </html>';
-
-                    $pdf->loadHTML($html); */
-                    //return $pdf->stream();
-
+         } 
          return response()->json(true); 
 
           
-    }
-
-  
-
+        }
+    
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\DraftOrder  $draftOrder
      * @return \Illuminate\Http\Response
      */
-    public function searchDebit(Request $request)
+    public function show(DraftOrder $draftOrder)
     {
-        $mobileNumber = $request->mobileNumber;
-
-        $customer = Customer::where('mobile', $mobileNumber)->first();
-        if($customer){
-
-            $pastDebit = $customer->debit;
-            return response()->json($pastDebit);
-        }else{
-            return response()->json(0);
-        }
-
-       
-
+        //
     }
-
-
-   
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\DraftOrder  $draftOrder
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit(DraftOrder $draftOrder)
     {
         //
     }
@@ -268,10 +161,10 @@ class OrderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\DraftOrder  $draftOrder
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, DraftOrder $draftOrder)
     {
         //
     }
@@ -279,10 +172,10 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\DraftOrder  $draftOrder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(DraftOrder $draftOrder)
     {
         //
     }

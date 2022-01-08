@@ -1,135 +1,99 @@
 //nav pills activation
 
-$('#pills-tab a').on('click', function(e){
+/* $('#pills-tab  li.nav-item  a.nav-link').on('click', function(e){
       
   $('#pills-tab .nav-link').each(function(){
-        $(this).removeClass('active');
+        $(this).removeClass('active')
   })
-
   $(this).addClass('active')
-})
+  $(this).addClass('show')
+}) */
 
 
 /************** Home page **************/
 
 
-function productInfo(id){
-
-  // get the product information   
-
-  var manufacture = $('#manufacture_'+id).val();
-  var productName = $('#productName_'+id).val();
-  var retailPrice = $('#retailPrice_'+id).val();
-  var productWeightUnit = $('#productWeightUnit_'+id).val();
-  var wholesalePrice= $('#wholesalePrice_'+id).val();
-  var productQuantityUnit= $('#productQuantityUnit_'+id).val();
-  var productSellType = $('#productSellType_'+id).val();
-
- 
-
-  // making product row for order section
-  var product = '';
-  product += '<tr style="text-align: center" id="product_'+id+'">';
-  product += '<input type="hidden" class="product_id" value="'+id+'">';
-  product += '<td>'+productName+'</td>';
-  product += '<input type="hidden" class="productName" value="'+productName+'">';
-  product += '<td><input type="number" name="quantity[]" value="1" class="quantity border-1 productQuantity_'+id+'" min="1" oninput="editQuantity('+id+')"></td>';
-
-  
-  if(productSellType == 1){
-
-    if(manufacture == 1){
-
-      product += '<input type="hidden" name="sell_type_id[]" class="sell_type_id"  value="'+productSellType+'">';
-      product += '<input type="hidden" name="manufacture[]" class="manufacture" value="'+manufacture+'">';
-      product += '<td class="productPrice_'+id+'">'+retailPrice+'</td>';
-      product += '<input type="hidden" name="productPrice[]" class="productPrice" value="'+retailPrice+'">';
-      product += '<td  class="productUnitPrice_'+id+'">'+retailPrice+'</td>';
-      product += '<input type="hidden" name="productUnitPrice[]" class="productUnitPrice productUnitPrice_'+id+'"  value="'+retailPrice+'">';
-      product += '<td>'+productQuantityUnit+'</td>';
-      product += '<input type="hidden" name="productUnit[]" class="productUnit" value="'+productQuantityUnit+'">';
-     
-
-    }else{
-
-      product += '<input type="hidden" name="sell_type_id[]" class="sell_type_id" value="'+productSellType+'">';
-      product += '<input type="hidden" name="manufacture[]"  class="manufacture" value="'+manufacture+'">';
-      product += '<td class="productPrice_'+id+'">'+retailPrice+'</td>';
-      product += '<input type="hidden" name="productPrice[]" class="productPrice" value="'+retailPrice+'">';
-      product += '<td class="productUnitPrice_'+id+'">'+retailPrice+'</td>';
-      product += '<input type="hidden" name="productUnitPrice[]" class="productUnitPrice productUnitPrice_'+id+'"  value="'+retailPrice+'">';
-      product += '<td>'+productWeightUnit+'</td>';
-      product += '<input type="hidden" name="productUnit[]" class="productUnit" value="'+productWeightUnit+'">';
-     
-      
-    }
-  }
-  if(productSellType == 2){
-
-    product += '<input type="hidden" name="sell_type_id[]" class="sell_type_id" value="'+productSellType+'">';
-    product += '<input type="hidden" name="manufacture[]"  class="manufacture" value="'+manufacture+'">';
-    product += '<td class="productPrice_'+id+'">'+wholesalePrice+'</td>';
-    product += '<input type="hidden" name="productPrice[]"  class="productPrice" value="'+wholesalePrice+'">';
-    product += '<td class="productUnitPrice_'+id+'">'+wholesalePrice+'</td>';
-    product += '<input type="hidden" name="productUnitPrice[]" class="productUnitPrice productUnitPrice_'+id+'"  value="'+wholesalePrice+'">';
-    product += '<td>'+productQuantityUnit+'</td>';
-    product += '<input type="hidden" name="productUnit[]" class="productUnit" value="'+productQuantityUnit+'">';
-  
-   
-
-  }
-
-  if(productSellType == null){
-    $('.order-table tbody').append('<tr style="text-align: center" id="product_'+id+'"><td colspan="5"><span class="text-light "> বিক্রয়ের ধরণ নির্ধারন করুন...</span></td><td><a id="delete-product_'+id+'" class="btn btn-danger " onclick="deleteProduct('+id+')" ><i class="fa fa-trash-alt text-white"></i></a></td></tr> ');
-  }else{
-
-    product += '<td><a id="delete-product_'+id+'"  class="btn btn-danger " onclick="deleteProduct('+id+')" ><i class="fa fa-trash-alt text-white"></i></a></td>';
-    product += '</tr>';
-    $('.order-table tbody').append(product);
-  }
-
-  //get the total price
-  totalPrice();
- 
-}
-
-//total price function executon
+/*total price function executon*/
  function totalPrice(){
 
-  var total = 0;
-  $('.order-table tbody tr').find('input.productUnitPrice').each(function(){
-      
-    total +=  parseInt($(this).val());
-     
-  })
+      var total = 0;
+      $('.order-table tbody tr').find('input.productUnitPrice').each(function(){
+          
+        total +=  parseFloat($(this).val());
+        
+      })
 
-  //set the total price 
-  $('.totalPrice').text(total);
-  $('input[name="totalPrice"]').val(total);
+      //set the total price 
+      $('.totalPrice').text(total);
+      $('input[name="totalPrice"]').val(total);
 
+      // after discount total price 
+      var discount = $('input[name="discount"]').val();
+      discountFunction(discount);
 
-
- //get debit 
-  var debit = $('input[name="pastDebit"]').val();
-
-  //set total price with debit
-  var totalWithDebit = parseInt(total) + parseInt(debit);
-
-  
-  $('.totalWithDebit').text(totalWithDebit);
-  $('input[name="totalWithDebit"]').val(totalWithDebit); 
+   
 
  }
+
+
+ //total amount after discount
+ function discountFunction(discount){
+  
+      var totalPrice = $('input[name="totalPrice"]').val();
+      var afterDiscountTotalPrice  = parseFloat(totalPrice)  - parseFloat(totalPrice*(discount/100)) ;
+
+      //set the total price after discount
+      $('.toBePaid').text(afterDiscountTotalPrice);
+      $('input[name="toBePaid"]').val(afterDiscountTotalPrice);
+
+      //get the received money
+      var receivedMoney = $('input[name="receivedMoney"]').val();
+
+      receivedMoneyFunction(receivedMoney);
+
+ }
+
+
+ // calcuation the debit 
+
+function receivedMoneyFunction(value){
+  
+  let toBePaid  = $('input[name=toBePaid]').val();
+
+  let presentDebit = parseFloat(toBePaid) - value;
+
+  $('.presentDebit').text(presentDebit);
+  $('input[name=presentDebit]').val(presentDebit);
+
+  let pastDebit = $('input[name=pastDebit]').val();
+
+  let totalDebit =parseFloat(presentDebit) + parseFloat(pastDebit) ;
+
+  $('.totalDebit').text(totalDebit);
+  $('input[name=totalDebit]').val(totalDebit);
+}
+
+
+// change total debit 
+function changeTotalDebit(pastDebit){
+
+ let presentDebit = $('input[name=presentDebit]').val();
+ let totalDebit = presentDebit + pastDebit;
+
+ $('.totalDebit').text(totalDebit);
+ $('input[name=totalDebit]').val(totalDebit);
+
+} 
+
 
 //change the quantity in the order section
 
 function editQuantity(id){
 
   var quantity= $('.order-table tbody tr').find('.productQuantity_'+id).val();
-  var productPrice =$('.order-table tbody tr').find('.productPrice_'+id).text();
+  var productPrice =$('.order-table tbody tr').find('input.productPrice_'+id).val();
  
   productPrice = parseInt(productPrice);
-
 
   var productUnitPrice = quantity * productPrice;
   
@@ -192,6 +156,130 @@ function searchDebitFunction(){
 
   
 }
+
+// retireave data according to barcode
+
+function barCodeFunction(value){
+ 
+  var barCode = parseInt(value) ;
+
+  var data = new FormData();
+
+  data.append('barCode', barCode);
+
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+   // store data using ajax
+   $.ajax({
+     url: '/search/orderItem/barcode',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+     success: function(data){
+       if(data ==  false){
+
+      }else{
+
+        let product = '';
+        product += '<tr>';
+        product += '<td><select class ="form-control sell_type_id"  onchange="sellTypeFunction(this.value,'+data[0].id+')">';
+        product += '<option seleced value="'+data[1][0].id+'">'+data[1][0].name+'</option>';
+        product += '<option  value="'+data[1][1].id+'">'+data[1][1].name+'</option>';
+        product +=  '</select></td>';
+        product += '<td>'+data[0].productName+'</td>';
+
+        product += '<input type="hidden"  class="product_id" value="'+data[0].id+'">';
+        product += '<input type="hidden" class="productName" value="'+data[0].productName+'">';
+        product += '<input type="hidden" class="manufacture" value="'+data[0].manufacture+'">';
+
+        product += '<td><input type="number" value="1" class="quantity border-1 productQuantity_'+data[0].id+'" min="1" oninput="editQuantity('+data[0].id+')"></td>';
+        if(data[0].manufacture == 1){
+
+          product += '<td class="productUnit_'+data[0].id+'">'+data[0].productQuantityUnit+'</td>';
+          product += '<input type="hidden" class="productUnit" value="'+data[0].productQuantityUnit+'">';
+
+        }else{
+
+          product += '<td class="productUnit_'+data[0].id+'">'+data[0].productWeightUnit+'</td>';
+          product += '<input type="hidden" class="productUnit" value="'+data[0].productWeightUnit+'">';
+
+        }
+       
+        product += '<td class="productPrice_'+data[0].id+'">'+data[0].retailPrice+'</td>';
+        product += '<input type="hidden"  class="productPrice productPrice_'+data[0].id+'" value="'+data[0].retailPrice+'">';
+        product += '<td  class="productUnitPrice_'+data[0].id+'">'+data[0].retailPrice+'</td>';
+        product += '<input type="hidden" class="productUnitPrice productUnitPrice_'+data[0].id+'"  value="'+data[0].retailPrice+'">';
+       
+        product += '<td><a id="delete-product_'+data[0].id+'"  class="btn btn-danger " onclick="deleteProduct('+data[0].id+')" ><i class="fa fa-trash-alt text-white"></i></a></td>';
+        product += '</tr>';
+          
+        $('.order-table tbody').append(product);
+        totalPrice()
+        $('input[name=barCodeScanner]').val(null); 
+         
+      }
+     },
+     error: function(data){
+          console.log(data);
+     }
+
+   })
+
+}
+
+// decide the product price according to selltype
+function sellTypeFunction(sell_type_id, product_id){
+
+   var sell_type_id = sell_type_id;
+   var product_id = product_id;
+
+   var data = new FormData();
+
+   data.append('sell_type_id', sell_type_id);
+   data.append('product_id', product_id);
+
+    $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+   // store data using ajax
+   $.ajax({
+     url: '/sellType/product/wholesaleprice',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+     success: function(data){
+     
+      var id = data.id;
+      var price = data.price;
+      var unit = data.unit;
+
+      $('.order-table tbody').find('.productPrice_'+id).text(price);
+      $('.order-table tbody').find('.productPrice').val(price);
+      $('.order-table tbody').find('.productUnit_'+id).text(unit);
+      $('.order-table tbody').find('.productUnit').val(unit);
+      
+      //call the edit quantity function
+      editQuantity(id)
+      //call the total price function
+      totalPrice()
+     },
+     error: function(data){
+       console.log(data)
+     }
+
+
+  
+});
+}
+
+
 
 
 

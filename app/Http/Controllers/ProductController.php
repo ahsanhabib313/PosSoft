@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Unit;
 use App\Models\ProductPlace;
+use App\Models\SellType;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -139,4 +140,72 @@ class ProductController extends Controller
    }
 
 }
+
+ // search order items acording to bar code
+ public function searchOrderItem(Request $request){
+         
+    //get the input value 
+     $barCode = $request->barCode;
+     //search the product with barcode
+     $product = Product::where('barCode', $barCode)->first();
+     //get the sell type
+     $sellType = SellType::all();
+     if($product && $sellType){
+        return response()->json([$product, $sellType]);
+     }else{
+         return response()->json(false);
+     }
+   
+}
+
+//get the product whole sale price using product id 
+public function productWholesalePrice(Request $request){
+
+      $sell_type_id = $request->sell_type_id;
+      $product_id = $request->product_id;
+
+      //get the product 
+      $product = Product::findOrFail($product_id);
+
+      if($sell_type_id == 1){
+          if($product->manufacture == 1){
+
+                $data = [
+                    'id'=>$product->id,
+                    'price' => $product->retailPrice,
+                    'unit' =>$product->productQuantityUnit
+                ];
+                
+                return response()->json($data);
+
+          }else{
+
+                $data = [
+                    'id'=>$product->id,
+                    'price' => $product->retailPrice,
+                    'unit' =>$product->productWeightUnit
+                ];
+                
+                return response()->json($data);
+                
+          }
+          
+      }
+      if($sell_type_id == 2){
+
+        $data = [
+            'id'=>$product->id,
+            'price' => $product->wholesalePrice,
+            'unit' =>$product->productQuantityUnit
+        ];
+
+        return response()->json($data);
+
+      }
+}
+
+
+
+
+
 }

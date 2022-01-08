@@ -81,6 +81,11 @@
                         <span class="text-light display-6">Product</span>
                     </a>
                 </li> 
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.registration') }}"> <i class="fas fa-folder"></i>
+                        <span class="text-light display-6">Admin Reg..</span>
+                    </a>
+                </li> 
                
              
               
@@ -285,7 +290,7 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="">
+                                <a class="dropdown-item" href="{{ route('logout') }}">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>

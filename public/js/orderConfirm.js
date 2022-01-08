@@ -1,6 +1,3 @@
-//csrf token
-
-
 //get all informations about order
 $('#order-btn').click(function(){
    
@@ -30,7 +27,7 @@ $('#order-btn').click(function(){
 
       sell_type_id[index]=$(this).val();
    })
-
+  
    var manufacture = [];
    $('.order  .order-table .manufacture').each(function(index){
 
@@ -41,22 +38,22 @@ $('#order-btn').click(function(){
    $('.order  .order-table .productPrice').each(function(index){
 
        productPrice[index]=$(this).val();
-   })
+   }); 
 
    var productUnitPrice = [];
    $('.order  .order-table .productUnitPrice').each(function(index){
 
       productUnitPrice[index]=$(this).val();
-   })
-
+   }); 
    var productUnit = [];
    $('.order  .order-table .productUnit').each(function(index){
 
        productUnit[index]=$(this).val();
-   })
+   }); 
+
   
    var totalPrice =  $('input[name="totalPrice"]').val();
-   var presentDebit =  $('input[name="presentDebit"]').val();
+   var totalDebit =  $('input[name="totalDebit"]').val();
 
  // create a formData instance for sending data as form data
   var data = new FormData();
@@ -72,7 +69,7 @@ $('#order-btn').click(function(){
   data.append('productUnitPrice', productUnitPrice);
   data.append('productUnit', productUnit);
   data.append('totalPrice', totalPrice);
-  data.append('debit', presentDebit);
+  data.append('debit', totalDebit);
 
 
 $.ajaxSetup({
@@ -94,13 +91,17 @@ $.ajaxSetup({
                $('input[name=mobileNumber]').val(null);
                $('.order .order-table tbody').html('');
                $('input[name="totalPrice"]').val(null);
-               $('.totalPrice').text(0)
+               $('.totalPrice').text(0);
+               $('input[name=discount]').val(0);
+               $('.toBePaid').text(0);
+               $('input[name=toBePaid]').val(0);
+               $('input[name=receivedMoney]').val(0);
                $('input[name="pastDebit"]').val(0);
                $('.pastDebit').text(0);
                $('input[name="presentDebit"]').val(0);
                $('.presentDebit').text(0);
-               $('input[name="totalWithDebit"]').val(0);
-               $('.totalWithDebit').text(0);
+               $('input[name="totalDebit"]').val(0);
+               $('.totalDebit').text(0);
 
 
           }
