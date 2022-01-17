@@ -33,7 +33,7 @@
                                     @isset($categories)
                                       @foreach ($categories as $category)
                                           <li class="nav-item">
-                                            <a href="#category_{{$category->id }}" class="nav-link  text-dark font-weight-bold {{ $loop->index == 0 ? 'active':'' }} " data-toggle="pill">{{ $category->name }}</a>
+                                            <a href="#category_{{$category->id }}" class="nav-link  text-dark font-weight-bold {{ $loop->index == 0 ? 'active': '' }} " data-toggle="pill">{{ $category->name }}</a>
                                           </li>
                                       @endforeach
                                     @endisset
@@ -45,9 +45,9 @@
                         <div class="row">
                           <div class="col-12">
                             <div class=" tab-content products">
-                              @isset($categories)
+                             
                                     @foreach ($categories as $category)
-                                    <div class="tab-pane fade in  {{ $loop->index == 0 ? 'active show': '' }}  d-flex flex-wrap justify-content-start"  role="tabpanel" id="category_{{$category->id }}">
+                                    <div class="tab-pane fade  {{  $loop->index == 0 ? 'active show': '' }}  d-flex flex-wrap justify-content-start"  role="tabpanel" id="category_{{$category->id }}">
                                              @foreach (App\Models\Product::where('category_id', $category->id)->get() as $product) 
                                               {{--start products--}}
                                                    <div class="card product-card" >
@@ -76,7 +76,7 @@
                                               @endforeach
                                             </div>
                                     @endforeach
-                              @endisset
+                     
                           </div>   
                         </div> 
                       </div> 

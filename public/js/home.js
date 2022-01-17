@@ -1,14 +1,14 @@
 //nav pills activation
 
-/* $('#pills-tab  li.nav-item  a.nav-link').on('click', function(e){
+/*    $('#pills-tab a').on('click', function(e){
       
-  $('#pills-tab .nav-link').each(function(){
-        $(this).removeClass('active')
-  })
-  $(this).addClass('active')
-  $(this).addClass('show')
-}) */
-
+      $('#pills-tab .nav-link').each(function(){
+            $(this).removeClass('active')
+      })
+      $(this).addClass('active')
+  
+})  */
+ 
 
 /************** Home page **************/
 
