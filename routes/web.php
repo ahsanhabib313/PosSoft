@@ -54,6 +54,10 @@ Route::middleware(['auth'])->group(function () {
   Route::post('/search/orderItem/barcode', [ProductController::class, 'searchOrderItem']);
   /** get the product wholesale price */
   Route::post('/sellType/product/wholesaleprice', [ProductController::class, 'productWholesalePrice']);
+
+
+  //get the product according to category
+  Route::post('get/product',[HomeController::class, 'getproduct'])->name('get.product');
   
   
 });

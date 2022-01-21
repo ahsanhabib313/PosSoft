@@ -66,6 +66,8 @@ nav.navbar {
 
 .category> .nav-pills> .nav-item> .nav-link{
     color: #fff !important;
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
     font-weight: bold !important;
 }
 

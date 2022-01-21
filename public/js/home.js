@@ -1,15 +1,66 @@
-//nav pills activation
+//get the product from the dataabse according to category 
+function getProduct(category_id){
 
-/*    $('#pills-tab a').on('click', function(e){
-      
-      $('#pills-tab .nav-link').each(function(){
-            $(this).removeClass('active')
-      })
-      $(this).addClass('active')
+    //formdata
+    var formData = new FormData();
+    formData.append('category_id', category_id);
+
+    $.ajaxSetup({
+      headers:{
+          'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $.ajax({
+      url:'get/product',
+      type:'post',
+      data:formData,
+      dataType:'json',
+      processData:false,
+      contentType:false,
+      success: function(data){
+        
+        //initially empty the product box
+        $('#products_box').html('');
+        var html
+        for(let i=0; i<data.products.length; i++){
+            html = '';
+            html +='<div class="card product-card" >';
+            html +=' <input type="hidden" id="productQuantityUnit_'+data.products[i].id+'" value="'+data.products[i].productQuantityUnit+'">';
+            html +=' <input type="hidden" id="manufacture_'+data.products[i].id+'" value="'+data.products[i].manufacture+'">';
+            html +=' <input type="hidden" id="productName_'+data.products[i].id+'" value="'+data.products[i].productName+'">';
+            html +=' <input type="hidden" id="retailPrice_'+data.products[i].id+'" value="'+data.products[i].retailPrice+'">';
+            html +=' <input type="hidden" id="productWeightUnit_'+data.products[i].id+'" value="'+data.products[i].productWeightUnit+'">';
+            html +=' <input type="hidden" id="wholesalePrice_'+data.products[i].id+'" value="'+data.products[i].wholesalePrice+'">';
+            html +='<img class="card-img-top" src="img/products/'+data.products[i].photo+'">';
+            html +='<div class="card-body d-flex flex-column"><div>';
+            html +='<h6 class="productName text-center  pt-1 font-weight-bold">';
+            html +=data.products[i].productName+'</h6></div>';
+            if(data.products[i].manufacture == 0){
+                html +='<div class=" text-left pl-2 ">';
+                html += '<span class="productWeight">ওজন:'+ data.products[i].productWeight+' '+data.products[i].productWeightUnit+'</span></div>';
+              }
+            html +='<div><button type="submit" class="btn btn-block btn-sm btn-info" onclick="barCodeFunction('+ data.products[i].barCode+')" >যোগ করুন</button></div></div>';
+
+            $('#products_box').append(html);
+                                                            
+        }
+
+        //select the product box and set the products
+       // $('#products_box').html('');
+       
+
+      },
+      error: function(data){
+
+      }
+
+    });
+
+
   
-})  */
- 
 
+}
 /************** Home page **************/
 
 

@@ -29,27 +29,29 @@
                             <div class="col-12"> 
                                 {{--start product part--}} 
                               <div class="category mt-2 p-2 rounded bg-white " >
-                                  <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                              
+                                   <ul class="nav nav-pills" id="pills-tab" role="tablist">
                                     @isset($categories)
                                       @foreach ($categories as $category)
                                           <li class="nav-item">
-                                            <a href="#category_{{$category->id }}" class="nav-link  text-dark font-weight-bold {{ $loop->index == 0 ? 'active': '' }} " data-toggle="pill">{{ $category->name }}</a>
+                                            <a href="#" class="nav-link  text-dark font-weight-bold active" onclick="getProduct('{{$category->id}}')">{{ $category->name }}</a>
                                           </li>
                                       @endforeach
                                     @endisset
-                                  </ul>
+                                  </ul> 
                               </div>
                             </div>
                         </div>
 
                         <div class="row">
                           <div class="col-12">
-                            <div class=" tab-content products">
-                             
-                                    @foreach ($categories as $category)
+                            <div class=" products">
+                              <div class=" d-flex flex-wrap justify-content-start"   id="products_box">
+                              </div>
+                                    {{-- @foreach ($categories as $category)
                                     <div class="tab-pane fade  {{  $loop->index == 0 ? 'active show': '' }}  d-flex flex-wrap justify-content-start"  role="tabpanel" id="category_{{$category->id }}">
                                              @foreach (App\Models\Product::where('category_id', $category->id)->get() as $product) 
-                                              {{--start products--}}
+                                            
                                                    <div class="card product-card" >
                                                     <input type="hidden" id="manufacture_{{ $product->id }}" value="{{ $product->manufacture }}">
                                                     <input type="hidden" id="productName_{{ $product->id }}" value="{{ $product->productName }}">
@@ -72,10 +74,11 @@
                                                         </div>
                                                     </div>
                                                   </div> 
-                                              {{--end products--}}
+                                             
                                               @endforeach
+                                               
                                             </div>
-                                    @endforeach
+                                    @endforeach--}}
                      
                           </div>   
                         </div> 

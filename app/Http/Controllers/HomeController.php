@@ -26,6 +26,21 @@ class HomeController extends Controller
         return view('home', compact('categories', 'selling_types'));
     }
 
+
+
+    //get the product according to category
+    public function getProduct(Request $request){
+
+        //get the request data
+        $category_id = $request->category_id;
+        //get the products according to category
+        $products = Product::where('category_id', $category_id)->get();
+        
+        return response()->json([
+            'products' => $products,
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
