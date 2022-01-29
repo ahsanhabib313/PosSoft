@@ -45,35 +45,23 @@ function getProduct(category_id){
             $('#products_box').append(html);
                                                             
         }
-
-        //select the product box and set the products
-       // $('#products_box').html('');
-       
-
       },
       error: function(data){
 
       }
 
     });
-
-
-  
-
 }
+
 /************** Home page **************/
-
-
 /*total price function executon*/
  function totalPrice(){
 
       var total = 0;
       $('.order-table tbody tr').find('input.productUnitPrice').each(function(){
-          
-        total +=  parseFloat($(this).val());
+        total +=  parseInt($(this).val());
         
       })
-
       //set the total price 
       $('.totalPrice').text(total);
       $('input[name="totalPrice"]').val(total);
@@ -81,17 +69,13 @@ function getProduct(category_id){
       // after discount total price 
       var discount = $('input[name="discount"]').val();
       discountFunction(discount);
-
-   
-
  }
-
 
  //total amount after discount
  function discountFunction(discount){
   
       var totalPrice = $('input[name="totalPrice"]').val();
-      var afterDiscountTotalPrice  = parseFloat(totalPrice)  - parseFloat(totalPrice*(discount/100)) ;
+      var afterDiscountTotalPrice  = parseInt(totalPrice)  - parseInt(totalPrice*(discount/100)) ;
 
       //set the total price after discount
       $('.toBePaid').text(afterDiscountTotalPrice);
@@ -111,14 +95,14 @@ function receivedMoneyFunction(value){
   
   let toBePaid  = $('input[name=toBePaid]').val();
 
-  let presentDebit = parseFloat(toBePaid) - value;
+  let presentDebit = parseInt(toBePaid) - value;
 
   $('.presentDebit').text(presentDebit);
   $('input[name=presentDebit]').val(presentDebit);
 
   let pastDebit = $('input[name=pastDebit]').val();
 
-  let totalDebit =parseFloat(presentDebit) + parseFloat(pastDebit) ;
+  let totalDebit =parseInt(presentDebit) + parseInt(pastDebit) ;
 
   $('.totalDebit').text(totalDebit);
   $('input[name=totalDebit]').val(totalDebit);
@@ -135,10 +119,7 @@ function changeTotalDebit(pastDebit){
  $('input[name=totalDebit]').val(totalDebit);
 
 } 
-
-
 //change the quantity in the order section
-
 function editQuantity(id){
 
   var quantity= $('.order-table tbody tr').find('.productQuantity_'+id).val();
@@ -157,26 +138,18 @@ function editQuantity(id){
 }
 
 //delete the product in the order table
-
 function deleteProduct(id){
-  
     $('#delete-product_'+id).parent().parent().remove();
-
     //get the total price
     totalPrice();
 
-
 }
 
-
 // get the debit , search by mobile number
-
 function searchDebitFunction(){
-
   var mobileNumber = $('input[name=mobileNumber]').val();
 
   var data = new FormData();
-
   data.append('mobileNumber', mobileNumber);
 
   $.ajaxSetup({
@@ -202,10 +175,7 @@ function searchDebitFunction(){
           console.log(data);
      }
 
-   })
-
-
-  
+   });
 }
 
 // retireave data according to barcode
@@ -215,7 +185,6 @@ function barCodeFunction(value){
   var barCode = parseInt(value) ;
 
   var data = new FormData();
-
   data.append('barCode', barCode);
 
     $.ajaxSetup({

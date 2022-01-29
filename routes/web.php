@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
 
   //get the product according to category
   Route::post('get/product',[HomeController::class, 'getproduct'])->name('get.product');
+  Route::get('get/invoice/pdf',[OrderController::class, 'getInvoice'])->name('get.invoice.pdf');
   
   
 });

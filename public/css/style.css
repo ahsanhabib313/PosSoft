@@ -43,7 +43,7 @@
 /***********header part */
 
 nav.navbar {
-    background-color: #ca07f1!important;
+    background-color: #5d0c14!important;
 }
 .navbar-brand, .navbar-brand:hover{
     color: white;
@@ -60,7 +60,7 @@ nav.navbar {
 /****** category section ***/
 .category{
 
-    background-color: #ca069d !important;
+    background-color: #2b1025 !important;
    
 }
 
@@ -125,18 +125,22 @@ nav.navbar {
 
 /******** order ***********/
 
-.order  .table{
+.order{
+    background-color: #262d33a8  !important;
+}
+.order> .card {
+    background-color: #262d33a8  !important;
+}
+.order> .card> .card-body h3{
+    color: #fff;
+    padding: 10px 0;
+}
+
+.order .table{
     background-color: #ffffff !important;
     color:#000 !important;
     
 }
-.order>h3{
-    color: rgb(2, 2, 2);
-    padding: 10px 0;
-    
-  
-}
-
 
 
 .order .order-table tbody input.quantity{
