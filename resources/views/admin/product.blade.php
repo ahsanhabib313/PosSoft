@@ -2,6 +2,48 @@
 @section('title', 'Products')
 @section('content')
   <div class="container">
+   <div class="row d-flex justify-content-center">
+          <div class="col-md-10">
+                <div class="card mb-5 mt-1" style="border-color:#b1b3b9 !important">
+                      <div class="card-body">
+                          <form action="{{route('admin.search.product')}}" method="get" id="searchProduct">
+                             <div class="row">
+                                <div class=" col-6 form-group">
+                                    <label for="">পণ্যের নাম </label>
+                                    <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId" onkeyup="searchProduct(this.value)">
+                                   
+                                  </div>
+                                  <div class="col-6 form-group">
+                                    <label for="">কোম্পানির নাম</label>
+                                    <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId" onkeyup="searchProduct(this.value)">
+                                  
+                                  </div>
+                             </div>
+                                 
+                             <div class="row">
+                              <div class="col-6 form-group">
+                                    <label for="">ক্যাটাগরি</label>
+                                    <select name="category_id" id="category_id" class="form-control" onchange="searchProduct(this.value)">
+                                          <option value="" disabled></option>
+                                          @isset($categories)
+                                                      @foreach ($categories as $category)
+                                                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                      @endforeach
+                                           @endisset
+                                    </select>
+                                    
+                                  </div>
+                                  <div class="col-6 form-group">
+                                    <label for="">বার কোড</label>
+                                    <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId" onkeyup="searchProduct(this.value)">
+                                   
+                                  </div>
+                             </div>
+                          </form>
+                      </div>
+                </div>
+          </div>
+   </div>
     <div class="row d-flex justify-content-between">
       <div>
         <h3 class="text-dark">All Product List</h3> 
@@ -418,12 +460,11 @@
               </div>
             </div>
           </div>
-        </div>
-     
+        </div>     
     </div>
     <div class="row my-5">
       <div class="col-md-12">
-        <table class="table text-center table-dark table-hover">
+        <table class="table text-center table-dark table-hover shadow-lg">
              <thead class="">
                <tr>
                  <td>সিরিয়াল নাম্বার</td>

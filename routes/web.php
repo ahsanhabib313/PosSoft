@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/product', [ProductController::class, 'index'])->name('product.index');
   Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
   Route::post('/product/update', [ProductController::class, 'update'])->name('product.update');
+  Route::get('/admin/search/product',[ProductController::class, 'search'])->name('admin.search.product');
   
   
   /** order route */

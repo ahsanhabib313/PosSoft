@@ -126,3 +126,8 @@ function deleteProduct(id){
 
 
 }
+
+//search product
+function searchProduct(value){
+  console.log(value);
+}
