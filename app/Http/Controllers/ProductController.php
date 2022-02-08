@@ -11,8 +11,22 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+        
+        $value = $request->value;
 
+        if($request->ajax()){
+            if($value !=''){
+                $products =Product::where('productName','like', '%'.$value.'%')
+                ->orWhere('companyName','like', '%'.$value.'%')
+                ->orWhere('barCode','like', '%'.$value.'%')
+                ->orWhere('category_id','like', '%'.$value.'%')
+                ->get();
+            }
+
+          
+           
+        }
         //get the products
         $products = Product::simplePaginate(10);
         //get the category

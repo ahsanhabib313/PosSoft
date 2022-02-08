@@ -6,25 +6,15 @@
           <div class="col-md-10">
                 <div class="card mb-5 mt-1" style="border-color:#b1b3b9 !important">
                       <div class="card-body">
-                          <form action="{{route('admin.search.product')}}" method="get" id="searchProduct">
+                          <form action="{{url('admin/search/product')}}" method="post" id="searchProduct">
                              <div class="row">
                                 <div class=" col-6 form-group">
-                                    <label for="">পণ্যের নাম </label>
-                                    <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId" onkeyup="searchProduct(this.value)">
-                                   
+                                    <input type="text" name="" id="" class="form-control form-control-sm text-black" placeholder="" aria-describedby="helpId" onkeyup="searchProduct(this.value)" placeholder="পণ্য খুজুন">
                                   </div>
                                   <div class="col-6 form-group">
-                                    <label for="">কোম্পানির নাম</label>
-                                    <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId" onkeyup="searchProduct(this.value)">
-                                  
-                                  </div>
-                             </div>
-                                 
-                             <div class="row">
-                              <div class="col-6 form-group">
-                                    <label for="">ক্যাটাগরি</label>
-                                    <select name="category_id" id="category_id" class="form-control" onchange="searchProduct(this.value)">
-                                          <option value="" disabled></option>
+                                    
+                                    <select name="category_id" id="category_id" class="form-control form-control-sm text-black" onchange="searchProduct(this.value)">
+                                          <option value="" selected> ক্যাটাগরি সিলেক্ট করুন</option>
                                           @isset($categories)
                                                       @foreach ($categories as $category)
                                                       <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -33,11 +23,8 @@
                                     </select>
                                     
                                   </div>
-                                  <div class="col-6 form-group">
-                                    <label for="">বার কোড</label>
-                                    <input type="text" name="" id="" class="form-control" placeholder="" aria-describedby="helpId" onkeyup="searchProduct(this.value)">
-                                   
-                                  </div>
+                                
+                           
                              </div>
                           </form>
                       </div>
@@ -784,6 +771,6 @@
     
   </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script  src="{{ asset('js/product.js') }}"></script>
 @endsection       

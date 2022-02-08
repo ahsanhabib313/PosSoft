@@ -129,5 +129,34 @@ function deleteProduct(id){
 
 //search product
 function searchProduct(value){
-  console.log(value);
+  
+    var searchUrl =$('#searchProduct').attr('action');
+    var searchMethod =$('#searchProduct').attr('method');
+    
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+  });
+
+
+  var formData = new FormData();
+   formData.append('value', value);
+    
+
+    $.ajax({
+      url: searchUrl,
+      type:searchMethod,
+      data: formData,
+      dataType: 'json',
+      processData: false,
+      contentType:false,
+      success: function(data){
+        cosnole.log(data)
+
+      },
+      error: function(){
+
+      }
+    });
 }
