@@ -7,12 +7,25 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\SellType;
+use App\Notifications\CustomNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class OrderController extends Controller
 {
+
+    //show all orders 
+    public function index(){
+        //get all data
+        $orders = Order::orderBy('id','desc')->simplePaginate(10);
+          //get unread notification 
+          $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
+        return view('admin.order', ['orders'=>$orders, 'totalAlert' => $totalAlert]);
+
+    }
    
     /**
      * Store a newly created resource in storage.
@@ -74,7 +87,8 @@ class OrderController extends Controller
          $order_id = Order::create([
              'customerName' => $customerName,
              'mobileNumber' => $mobileNumber,
-             'totalPrice'   => $totalPrice
+             'totalPrice'   => $totalPrice,
+            
          ])->id;
          
          $order = Order::find($order_id);
@@ -108,12 +122,19 @@ class OrderController extends Controller
                 (float)$restQuantity = (float)$product->quantity - (float)$quantity[$item];
             }
 
+            //update item quantity
+
             Product::where('id', $product_id[$item])
                     ->update([
                          'quantity' => $restQuantity
                     ]);
 
-         }   
+         }
+         
+         
+         
+       
+
          return response()->json(true); 
 
           
@@ -156,6 +177,96 @@ class OrderController extends Controller
             'order' => $order,
             'order_items' => $order_items
         ]);
+    }
+
+    public function search(Request $request){
+        
+        $search_value = $request->value;
+
+        //dd( date('Y-m-d', strtotime($search_value)));
+        // get the value
+        if(!empty($search_value)){
+
+            $orders =Order::where('id', $search_value)
+                            ->orWhere('created_at', 'like', '%'.date('Y-m-d', strtotime($search_value)).'%')
+                            ->orWhere('mobileNumber', $search_value)
+                            ->get();  
+           
+        }
+
+        $html = ' ';
+        $loop = 0;
+        foreach($orders as $order){
+
+     
+            $html .= '<tr><td>'.$order->id.'</td><td>'.$order->customerName.'</td>';
+            $html .= '<td>'.$order->mobileNumber.'</td><td>'.$order->totalPrice.'</td> <td>'. date('Y-m-d h:i:s A', strtotime( $order->created_at)).'</td>';
+            $html .= '<td><a href="" onclick="viewProduct('.$order->id.')" ';
+            $html .= 'class="btn btn-sm btn-warning text-light  d-inline-block mb-1"';
+            $html .= 'data-toggle="modal" data-target="#viewProduct"><i class="fas fa-eye"></i></a>';
+            $html .= '<a href="" onclick="editProduct('.$order->id.')" class="btn btn-sm btn-info d-inline-block mb-1"';
+            $html .= ' data-toggle="modal" data-target="#editProduct"><i class="far fa-edit"></i></a>';
+            $html .= '<a href="" onclick="deleteProduct('.$order->id.')" class="btn btn-sm btn-danger d-inline-block mb-1"';
+            $html .= 'data-toggle="modal" data-target="#deleteProduct"><i class="far  fa-trash-alt"></i></a></td></tr>';
+
+        }
+
+        return response()->json([
+            'table_data' => $html
+        ]);
+
+    }
+
+    public function viewOrderItems(Request $request, $id){
+
+       //get the order items
+       $order_items = OrderItem::where('order_id', $id)->get();
+
+       $order_item_tr = '';
+
+       foreach($order_items as $order_item){
+
+           $order_item_tr .= '<tr>
+                              <td>'.$order_item->product->productName.'</td>
+                              <td>'.$order_item->sellType->name.'</td>
+                              <td>'.$order_item->quantity.'</td>
+                              <td>'.$order_item->productUnit.'</td>
+                              <td>'.$order_item->productPrice.'</td>
+                              <td>'.$order_item->productUnitPrice.'</td>
+                             
+                     </tr>';
+
+       }
+
+       return response()->json($order_item_tr);
+
+
+
+    }
+
+    // delete order
+    public function destroy(Request $request){
+        
+        //get the order id
+        $order_id = $request->id;
+
+        if(!empty($order_id)){
+
+            $order_items = OrderItem::where('order_id', $order_id)->get();
+
+            foreach($order_items as $order_item){
+                $order_item->delete();
+            }
+    
+            $order = Order::find($order_id);
+            $delete = $order->delete();
+
+            if($delete){
+                return response()->json(true);
+            }
+        }
+        
+
     }
 
    

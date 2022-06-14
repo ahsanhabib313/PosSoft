@@ -1,4 +1,3 @@
-
 //view the product info
 function viewProduct(id){
   
@@ -30,10 +29,6 @@ function viewProduct(id){
       product +=' <td>ক্যাটাগরি</td>';
       product +=' <td>'+category+'</td>';
       product +='</tr>';
-      /* product +='<td>Photo</td>';
-      product +='<td><img src="';
-      product += '{{ asset("img/products/"'+photo+') }}';
-      product += '" alt=""></td>'; */
       product +='<tr>';
       product +='<td>পণ্যের ওজন</td>';
       product +='<td>'+productWeight+'</td>';
@@ -80,8 +75,10 @@ function viewProduct(id){
 function editProduct(id){
   
   var productName = $('.productName_'+id).val();
+  var category_id = $('.category_'+id).val();
   var companyName = $('.companyName_'+id).val();
   var productWeight = $('.productWeight_'+id).val();
+  var productWeightUnit = $('.productWeightUnit_'+id).val();
   var buyingPrice = $('.buyingPrice_'+id).val();
   var retailPrice = $('.retailPrice_'+id).val();
   var wholesalePrice = $('.wholesalePrice_'+id).val();
@@ -102,6 +99,28 @@ function editProduct(id){
   $('#editProduct input[name=alertQuantity]').val(alertQuantity);
   $('#editProduct input[name=barCode]').val(barCode);
   $('#editProduct input[name=expireDate]').val(expireDate);
+
+  //select category
+  $('.category_option').each(function(){
+    if(category_id == $(this).val()){
+      $(this).attr('selected',true);
+    }else{
+      $(this).attr('selected',false);
+    }
+    
+  })
+
+
+  //select productWightUnit
+  $('.productWeightOption').each(function(){
+     if(productWightUnit == $(this).val()){
+      $(this).attr('selected', true)
+     }else{
+      $(this).attr('selected', false);
+     }
+  })
+
+
  
 
 }
@@ -152,7 +171,9 @@ function searchProduct(value){
       processData: false,
       contentType:false,
       success: function(data){
-        cosnole.log(data)
+       
+        $('#product_table').find('tbody').html('');
+        $('#product_table').find('tbody').append(data.table_data);
 
       },
       error: function(){
@@ -160,3 +181,4 @@ function searchProduct(value){
       }
     });
 }
+

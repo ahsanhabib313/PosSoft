@@ -17,7 +17,9 @@ class DraftOrderController extends Controller
      */
     public function index()
     {
-        //
+        $drafts = DraftOrder::all();
+
+        return view('admin.draft', compact('drafts'));
     }
 
     /**

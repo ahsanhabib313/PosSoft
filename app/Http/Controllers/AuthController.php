@@ -19,7 +19,7 @@ class AuthController extends Controller
      */
     public function loginIndex()
     {
-        return view('auth.login');
+        return view('user.login');
     }
 
     /**
@@ -45,10 +45,16 @@ class AuthController extends Controller
 
       if(Auth::attempt(['email' => $email, 'password' => $password], $remember)){
 
+        if(Auth::guard('web')->user()->active == 0){
+          Auth::logout();
+          $request->session()->invalidate();
+          $request->session()->regenerateToken();
+          return back()->with('fail','You are pending yet...!');
+        }
+
             $request->session()->regenerate();
-            if(Auth::check()){
-              return redirect()->route('home');
-            }
+              return redirect()->route('user.dashboard');
+            
            
 
       }else{
@@ -66,9 +72,7 @@ class AuthController extends Controller
      * registration page show
      * 
      */
-    public function registerIndex(){
-        return view('auth.register');
-    }
+
 
     /**
      * 
@@ -98,12 +102,12 @@ class AuthController extends Controller
 
         $request->session()->flash('success', 'ইউজার সাফল্যের সাথে যুক্ত হয়েছে');
 
-        return redirect()->route('login');
+        return redirect()->route('user.login');
        }else{
 
         $request->session()->flash('error', 'ইউজার সাফল্যের সাথে যুক্ত হয় নি');
 
-        return redirect()->route('employee.registration');
+        return redirect()->route('user.register');
        }
 
       
@@ -123,7 +127,7 @@ class AuthController extends Controller
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            return redirect('/login');
+            return redirect('user/login');
      }
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -14,9 +15,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-
-        $categories = Category::all();
-        return view('admin.category', compact('categories'));
+        //get unread notification 
+        $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
+        $categories = Category::paginate(10);
+        return view('admin.category', compact('categories','totalAlert'));
     }
 
     /**
@@ -122,4 +124,37 @@ class CategoryController extends Controller
         }
         
     }
+
+
+    /**=========================== Category Search method ====================== */
+    public function search(Request $request){
+        $search_value = $request->value;
+        // get the value
+        if($search_value !=''){
+
+            $categories =Category::where('name','like', '%'.$search_value.'%')
+            ->simplePaginate(10);  
+           
+        }
+
+        $html = ' ';
+        $loop = 0;
+        foreach($categories as $category){
+
+            $html .='<tr>
+            <td>'.++$loop.'</td>
+            <td class="category_'.$category->id.'">'.$category->name.'</td>
+           <td>
+           <button class="btn btn-sm btn-info d-inline-block mb-1" data-toggle="modal" data-target="#editCategory"  onclick="editFunction('.$category->id.')">Edit</button>
+           <button class="btn btn-sm btn-danger d-inline-block" data-toggle="modal" data-target="#deleteCategory"  onclick="deleteFunction('.$category->id.')">Delete</button>
+           </td></tr>';
+        }
+
+        return response()->json([
+           'category' => $html 
+        ]);
+    }
 }
+           
+          
+

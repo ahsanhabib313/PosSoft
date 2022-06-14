@@ -79,7 +79,7 @@ $.ajaxSetup({
 });
   // store data using ajax
   $.ajax({
-    url: 'draft/order/confirm',
+    url: '/user/draft/order/confirm',
     type: 'POST',
     data: data,
     processData: false,

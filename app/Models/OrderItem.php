@@ -26,6 +26,9 @@ class OrderItem extends Model
     public function product(){
         return $this->belongsTo(Product::class);
     }
+    public function sellType(){
+        return $this->belongsTo(SellType::class);
+    }
 
 
 }

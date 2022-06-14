@@ -23,7 +23,7 @@ class HomeController extends Controller
         $categories = Category::all();
         
 
-        return view('home', compact('categories', 'selling_types'));
+        return view('user.dashboard', compact('categories', 'selling_types'));
     }
 
 
@@ -40,6 +40,10 @@ class HomeController extends Controller
             'products' => $products,
         ]);
     }
+
+
+
+  
 
     /**
      * Show the form for creating a new resource.
