@@ -16,10 +16,11 @@ class EmployeePaymentController extends Controller
      */
     public function index()
     {
-        $employees_payment = EmployeePayment::orderBy('id','asc')->get();
+        $employees_payment = EmployeePayment::orderBy('id','desc')->paginate(5);
         $employees = Employee::orderBy('id', 'asc')->get();
-          //get unread notification 
-          $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
+        //get unread notification 
+        $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
+
         return view('admin.employee_payment', compact('employees','employees_payment', 'totalAlert'));
     }
 
@@ -62,7 +63,7 @@ class EmployeePaymentController extends Controller
 
 
         if(!is_null($paid)){
-           return back()->with('error', 'This month Payment has been taken already...');
+           return back()->with('error', 'কর্মচারীর বেতন পূর্বেই যোগ করা হয়েছে...');
         }
         
     $photo = $request->file('photo');
@@ -85,7 +86,7 @@ class EmployeePaymentController extends Controller
 
    if($store){
 
-       $request->session()->flash('success', 'Employee Payment has been added successfully...');
+       $request->session()->flash('success', 'কর্মচারীর বেতন সাফল্যের সাথে যোগ হয়েছে...');
        return back();
     }
 }
@@ -133,7 +134,7 @@ class EmployeePaymentController extends Controller
         
         if(!empty($request->photo) ){
             $request->validate([
-                'photo' => 'required|image|mimes:png,jpg',
+                'photo' => 'required|image|mimes:png,jpg,jpeg',
             ]);
         }
         
@@ -161,7 +162,7 @@ class EmployeePaymentController extends Controller
 
         if($save){
 
-            $request->session()->flash('success', 'Employee Payment has been updated successfully...');
+            $request->session()->flash('success', 'কর্মচারীর বেতন সাফল্যের সাথে হালনাগাদ করা হয়েছে...');
             return back();
             }
     }
@@ -182,7 +183,32 @@ class EmployeePaymentController extends Controller
         //delete the employee payment
         $delete = $employee_payment->delete();
         if($delete){
-            return back()->with('success','Employee Payment has been deleted successfully...');
+            return back()->with('success','কর্মচারীর বেতন সাফল্যের সাথে বাতিল হয়েছে...');
         }
+    }
+
+
+    // search employee payemts history
+    public function search(Request $request){
+
+        $request->validate([
+
+            'employee_id' => 'required'
+
+        ],[
+            'employee_id.required' => 'কর্মচারী ইনপুট পুরণ করা হয় নি ...!'
+        ]);
+
+        $employees_payment = EmployeePayment::where('employee_id', $request->employee_id)->orderBy('id', 'desc')->paginate(12);
+        
+        $employees = Employee::orderBy('id', 'asc')->get();
+
+        //get unread notification 
+        $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
+
+        return view('admin.employee_payment', compact('employees','employees_payment', 'totalAlert'));
+
+
+
     }
 }

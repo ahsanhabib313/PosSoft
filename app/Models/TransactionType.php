@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class TransactionType extends Model
 {
     use HasFactory;
-    protected $fillable =['merchant_id','bank_id','transaction_type_id','amount','image','date'];
+    protected $fillable =['name'];
 
 }

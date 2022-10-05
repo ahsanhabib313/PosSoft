@@ -40,6 +40,9 @@ class BankController extends Controller
         $request->validate([
             'name' => 'required',
             'branch' => 'required',
+        ],[
+            'name.required' => 'ব্যাংক নাম পূরণ করা হয় নি',
+            'branch.required' => 'ব্যাংক শাখা পূরণ করা হয় নি',
         ]);
 
         //store the resource
@@ -50,7 +53,7 @@ class BankController extends Controller
         ]);
 
         if($store){
-            $request->session()->flash('success', 'Bank has been added successfully...');
+            $request->session()->flash('success', 'ব্যাংক সাফল্যের সাথে যোগ হয়েছে...');
             return back();
         }
     }
@@ -71,6 +74,9 @@ class BankController extends Controller
         $request->validate([
             'name' => 'required',
             'branch' => 'required',
+        ],[
+            'name.required' => 'ব্যাংক নাম পূরণ করা হয় নি',
+            'branch.required' => 'ব্যাংক শাখা পূরণ করা হয় নি',
         ]);
 
         //store the resource
@@ -83,7 +89,7 @@ class BankController extends Controller
                                  ]);
 
         if($update){
-            $request->session()->flash('success', 'Bank has been updated successfully...');
+            $request->session()->flash('success', 'ব্যাংক সাফল্যের সাথে হালনাগাদ হয়েছে......');
             return back();
         }
     }
@@ -101,7 +107,7 @@ class BankController extends Controller
                            ->delete();
         if($delete){
 
-            $request->session()->flash('delete', 'Bank has been deleted successfully...');
+            $request->session()->flash('delete', 'ব্যাংক সাফল্যের সাথে বাতিল হয়েছে...');
             return back();
         }
         

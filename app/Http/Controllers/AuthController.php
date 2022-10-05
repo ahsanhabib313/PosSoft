@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+    //get the user home page
+    public function index(){
+        return view('user.login');
+    }
     /**
      * Display a listing of the resource.
      *

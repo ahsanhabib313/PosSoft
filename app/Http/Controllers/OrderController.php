@@ -20,7 +20,7 @@ class OrderController extends Controller
     //show all orders 
     public function index(){
         //get all data
-        $orders = Order::orderBy('id','desc')->simplePaginate(10);
+        $orders = Order::orderBy('id','desc')->paginate(10);
           //get unread notification 
           $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
         return view('admin.order', ['orders'=>$orders, 'totalAlert' => $totalAlert]);
@@ -156,9 +156,18 @@ class OrderController extends Controller
         if($customer){
 
             $pastDebit = $customer->debit;
-            return response()->json($pastDebit);
+            $debitDate = $customer->created_at;
+            $debitDate = date('d-m-Y', strtotime($debitDate));
+           
+            return response()->json([
+                'pastDebit' => $pastDebit,
+                'debitDate' => $debitDate,
+            ]);
         }else{
-            return response()->json(0);
+            return response()->json([
+                'pastDebit' => 0,
+                'debitDate' => '',
+            ]);
         }
 
        

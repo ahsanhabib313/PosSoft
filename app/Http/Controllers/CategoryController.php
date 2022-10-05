@@ -42,6 +42,9 @@ class CategoryController extends Controller
         //validate the resource
         $request->validate([
             'name' => 'required',
+        ],
+        [
+            'name.required' => 'শ্রেণী ইনপুট ফিল্ড পূরণ করা হয় নি ',
         ]);
 
         //store the resource
@@ -51,7 +54,7 @@ class CategoryController extends Controller
         ]);
 
         if($store){
-            $request->session()->flash('success', 'Category has been added successfully...');
+            $request->session()->flash('success', 'আপনার ক্যাটাগরি সাফল্যের সাথে যোগ হয়েছে...');
             return back();
         }
     }
@@ -91,6 +94,8 @@ class CategoryController extends Controller
         //validate the resource
         $request->validate([
             'name' => 'required',
+        ], [
+            'name.required' => 'শ্রেণী ইনপুট ফিল্ড পূরণ করা হয় নি ',
         ]);
 
         //store the resource
@@ -101,7 +106,7 @@ class CategoryController extends Controller
                                  ]);
 
         if($update){
-            $request->session()->flash('success', 'Category has been updated successfully...');
+            $request->session()->flash('success', 'আপনার ক্যাটাগরি সাফল্যের সাথে সংশোধন হয়েছে...');
             return back();
         }
     }
@@ -119,7 +124,7 @@ class CategoryController extends Controller
                            ->delete();
         if($delete){
 
-            $request->session()->flash('delete', 'Category has been deleted successfully...');
+            $request->session()->flash('delete', 'আপনার ক্যাটাগরি সাফল্যের সাথে বাতিল হয়েছে...');
             return back();
         }
         

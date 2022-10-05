@@ -1,6 +1,28 @@
 @extends('admin.master')
-@section('title', 'Category')
+@section('title', 'ক্যাটাগরি')
 
+@push('styles')
+
+    <style>
+      svg.w-5{
+        width:15px !important;
+      }
+
+      nav div:nth-child(1) span {
+        display:none;
+      }
+      nav div:nth-child(1) a {
+        display:none;
+      }
+
+      nav div:nth-child(2) div p{
+      
+        display:none;
+      }
+       
+    </style>
+
+@endpush
   @section('content')
   <div class="container">
      
@@ -14,16 +36,16 @@
               <div class="modal-header">
                
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                  <span aria-hidden="true"  class="engFont">&times;</span>
                 </button>
               </div>
               <div class="modal-body py-5">
                 <div class="row d-flex justify-content-center">
                   <div class="col-10">
                                     <div class="card ">
-                                      <div class="card-header bg-primary">
+                                      <div class="card-header ">
                                           <div class="card-title">
-                                            <h5 class="text-white font-weight-bold">Add Category</h5>
+                                            <h5 class="text-dark  font-weight-bold">ক্যাটাগরি তৈরি করুন</h5>
                                           </div>
                                       </div>
                                       <div class="card-body ">
@@ -32,7 +54,7 @@
                                           <div class="form-row">
                                              <div class="col-md-8 offset-1">
                                                  <div class="form-group">
-                                                   <label for="" style="font-size: 16px; color:#000">Name</label>
+                                                   <label for="" style="font-size: 16px; color:#000">নাম</label>
                                                    <input type="text" class="form-control" name="name">
                                                    @error('name')
                                                      <p class="text-danger">{{ $message }}</p>
@@ -42,7 +64,7 @@
                                           </div>
                                               <div class="form-row">
                                                 <div class="col-md-5 offset-1 ">
-                                                    <button type="submit" class="text-center text-white btn btn-primary btn-sm">Save
+                                                    <button type="submit" class="text-center text-white btn btn-primary btn-sm">জমা করুন
                                                     </button>
                                                   </div>
                                                 </div>
@@ -66,7 +88,7 @@
     <div class="row my-5 d-flex justify-content-center">
       <div class="col-md-10">
        <div class="card">
-         <div class="card-header bg-success text-white" style="box-sizing:border-box">
+         <div class="card-header  text-white" style="box-sizing:border-box">
             {{--========================== start search box  =========================--}}
            <div class="row d-flex justify-content-center my-3">
              <div class="col-md-8">
@@ -75,8 +97,8 @@
                   <form action="{{url('admin/search/category')}}" method="post" id="searchCategory">
                     
                       <div class="form-group">
-                        <label style="font-size:18px; color:#4B0082; ">Search Category</label>
-                          <input type="text" name="" id="" class="form-control text-black" placeholder="" aria-describedby="helpId" onchange="searchCategory(this.value)" style="border-color:#006400">
+                        <label style="font-size:18px; color:#4B0082; ">ক্যাটাগরি খুঁজুন</label>
+                          <input type="text" name="" id="" class="form-control text-black" placeholder="" aria-describedby="helpId" oninput="searchCategory(this.value)" style="border-color:#006400">
                         </div>
                    
                 </form>
@@ -87,16 +109,25 @@
 
            <div class="row d-flex justify-content-between">
                   <div class="card-title pl-3 pt-2">
-                    <h4>Category List </h4>
+                    <h4>ক্যাটাগরির তালিকা </h4>
                   </div>
                   <div>
-                    <button  class="btn btn-md btn-primary btn-sm mr-3" data-toggle="modal" data-target="#productaddmodal">Add Category</button>
+                    <button  class="btn btn-md btn-primary btn-sm mr-3" data-toggle="modal" data-target="#productaddmodal">ক্যাটাগরি যোগ করুন</button>
                   </div>
            </div>
           
          </div>
          <div class="card-body">
            <div class="msg-show bg-white">
+            @if($errors->any())
+              <div class="alert alert-danger ">
+                    <ul>
+                      @foreach($errors->all() as $error)
+                        <li>{{$error}}</li>
+                      @endforeach
+                    </ul>
+              </div>
+            @endif
             @if (Session::has('success'))
               <div class="alert alert-success">
                   {{ Session::get('success') }}
@@ -109,11 +140,11 @@
             @endif
            </div>
           <table class="table  table-hover text-center text-dark" id="category_table">
-            <thead class="bg-dark text-white font-weight-bold">
+            <thead class=" text-dark font-weight-bold">
               <tr>
-                <td>Seril No.</td>
-                <td>Name</td>
-                <td>Action</td>
+                <td>সিরিয়াল নং.</td>
+                <td>নাম</td>
+                <td>কার্যকলাপ</td>
               </tr>
             </thead>
             <tbody>
@@ -123,8 +154,8 @@
                            <td>{{ $loop->index + 1 }}</td>
                            <td class="category_{{ $category->id }}">{{ $category->name }}</td>
                            <td>
-                             <button class="btn btn-sm btn-info d-inline-block mb-1" data-toggle="modal" data-target="#editCategory"  onclick="editFunction({{$category->id}})">Edit</button>
-                             <button class="btn btn-sm btn-danger d-inline-block" data-toggle="modal" data-target="#deleteCategory"  onclick="deleteFunction({{$category->id}})" style="    margin-top: -4px;">Delete</button>
+                             <button class="btn btn-sm btn-info d-inline-block mb-1" data-toggle="modal" data-target="#editCategory"  onclick="editFunction({{$category->id}})">সংশোধন</button>
+                             <button class="btn btn-sm btn-danger d-inline-block" data-toggle="modal" data-target="#deleteCategory"  onclick="deleteFunction({{$category->id}})" style="    margin-top: -4px;">বাতিল</button>
                            </td>
                        </tr>
                    @endforeach
@@ -146,15 +177,15 @@
           <div class="modal-header">
            
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true"  class="engFont">&times;</span>
             </button>
           </div>
           <div class="modal-body py-3">
             <div class="row d-flex justify-content-center">
               <div class="col-md-10">
                                 <div class="card">
-                                  <div class="card-header bg-primary text-white">
-                                    <h4 class="card-title">Edit Category</h4>
+                                  <div class="card-header  text-white">
+                                    <h4 class="card-title">ক্যাটাগরি সংশোধন</h4>
                                   </div>
                                   <div class="card-body">
                                     <form action="{{ route('admin.category.update') }}" method="POST">
@@ -162,7 +193,7 @@
                                      
                                         <input type="hidden" name="category_id">
                                              <div class="form-group">
-                                               <label for=""> Name</label>
+                                               <label for=""> নাম</label>
                                                
                                                <input type="text" class="form-control" name="name">
                                                @error('name')
@@ -170,7 +201,7 @@
                                                @enderror
                                              </div>
                                      <div class="form-group">
-                                           <button type="submit" class="text-center btn btn-primary">Update</button>
+                                           <button type="submit" class="text-center btn btn-primary">সংশোধন করুন</button>
                                     </div>
                                   </form>
                                   </div>
@@ -195,24 +226,24 @@
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title " id="">Delete Category</h5> 
+            <h5 class="modal-title " id="">ক্যাটাগরি বাতিল </h5> 
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true " class="engFont">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="row">
               <div class="col-12">
-                  <h4 class="text-danger">Are You Confirm ?</h4>    
+                  <h4 class="text-danger">আপনি কি নিশ্চিত ...?</h4>    
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">না</button>
             <form action="{{ route('admin.category.delete') }}" method="POST">
               @csrf
               <input type="hidden" name="category_id">
-              <button type="submit" class="btn btn-danger">Delete</button>
+              <button type="submit" class="btn btn-danger">হ্যা</button>
             </form>
            
           </div>

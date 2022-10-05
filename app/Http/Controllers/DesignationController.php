@@ -44,6 +44,8 @@ class DesignationController extends Controller
         //validate the resource
         $request->validate([
             'name' => 'required',
+        ],[
+            'name.required' => 'পদবি ইনপুট ফিল্ড পূরণ করা হয় নি ',
         ]);
 
         //store the resource
@@ -53,7 +55,7 @@ class DesignationController extends Controller
         ]);
 
         if($store){
-            $request->session()->flash('success', 'Designation has been added successfully...');
+            $request->session()->flash('success', 'পদবি সাফল্যের সাথে যোগ করা হয়েছে...');
             return back();
         }
     }
@@ -73,6 +75,8 @@ class DesignationController extends Controller
         //validate the resource
         $request->validate([
             'name' => 'required',
+        ],[
+            'name.required' => 'পদবি ইনপুট ফিল্ড পূরণ করা হয় নি ',
         ]);
 
         //store the resource
@@ -83,7 +87,7 @@ class DesignationController extends Controller
                                  ]);
 
         if($update){
-            $request->session()->flash('success', 'Designation has been updated successfully...');
+            $request->session()->flash('success', 'পদবি সাফল্যের সাথে আপডেট হয়েছে...');
             return back();
         }
     }
@@ -96,14 +100,21 @@ class DesignationController extends Controller
      */
     public function destroy(Request $request)
     {
-        
-        $delete = Designation::where('id', $request->id)
-                           ->delete();
-        if($delete){
+        //get the specific designation
+        $designation = Designation::where('id', $request->id)->first();  
 
-            $request->session()->flash('delete', 'Designation has been deleted successfully...');
+        try{
+                
+                 $designation->delete();
+               
+        }catch(Exception  $e){
+
+            $request->session()->flash('delete', $e->getMessage());
             return back();
         }
+
+        $request->session()->flash('delete', 'পদবি সাফল্যের সাথে মুছে  ফেলা হয়েছে...');
+        return back();
         
     }
     

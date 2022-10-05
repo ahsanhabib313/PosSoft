@@ -102,7 +102,7 @@ nav.navbar {
     width: 120px !important;
     text-align: center !important;
     height: 120px !important;
-    margin-left: 8px !important;
+  
 }
 
 .main-content .products .product-card .card-body{
@@ -129,7 +129,7 @@ nav.navbar {
     background-color: #262d33a8  !important;
 }
 .order> .card {
-    background-color: #262d33a8  !important;
+    background-color: #28a745  !important;
 }
 .order> .card> .card-body h3{
     color: #fff;
@@ -143,10 +143,17 @@ nav.navbar {
 }
 
 
+
+
 .order .order-table tbody input.quantity{
 
     padding-left: 8px;
     width: 70px;
+}
+
+.order table tfoot{
+        
+    background-color: #dee2e6;
 }
 
 .order  input[name="credit"]{

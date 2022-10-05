@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index(Request $request){
        
         //get the products
-        $products = Product::simplePaginate(10);
+        $products = Product::paginate(10);
         //get the category
         $categories = Category::all();
          //get all units
@@ -48,6 +48,22 @@ class ProductController extends Controller
                 'barCode' => 'required|unique:products',
                 'expireDate' => 'required',
                 
+            ],[
+                'productName.required'=> 'পণ্যের নাম পূরণ হয় নি',
+                'photo.required'=> 'ছবি পূরণ করা হয় নি',
+                'category_id.required' => 'ক্যাটাগরি বাছাই করা হয় নি',
+                'companyName.required' =>'কোম্পানীর নাম পুরণ করা হয় নি',
+                'productWeight.required' =>'পণ্যের ওজন পূরণ করা হয় নি ',
+                'productWeightUnit.required' =>'পণ্যের ওজনের একক পূরণ করা হয় নি',
+                'buyingPrice.required' =>'ক্রয়মূল্য পূরণ করা হয় নি',
+                'retailPrice.required' =>'খুচরা মূল্য পূরণ করা হয় নি',
+                'wholesalePrice.required' =>'পাইকারি মূল্য পূরণ করা হয় নি',
+                'quantity.required' =>'পণ্যের সংখ্যা পুরণ করা হয় নি ',
+                'productQuantityUnit.required' => 'পণ্যের সংখ্যার একক পূরণ করা হয় নি',
+                'alertQuantity.required'=>'পণ্যের সতর্ককরণ সংখ্যা পুরণ করা হয় নি ',
+                'barCode.required' =>'বারকোড পূরণ করা হয় নি ',
+                'barCode.unique' => 'বারকোড অদ্বিতীয় হতে হবে',
+                'expireDate.required'=>'পণ্যের মেয়াদোত্তীর্ণ তারিখ পূরণ করা হয় নি',
             ]);     
 
        
@@ -103,14 +119,27 @@ class ProductController extends Controller
             'quantity' => 'required',
             'productQuantityUnit' => 'required',
             'alertQuantity' => 'required',
-            'barCode' => 'required|unique:products',
             'expireDate' => 'required',
             
+        ],[
+            'productName.required'=> 'পণ্যের নাম পূরণ হয় নি',
+            'photo.required'=> 'ছবি পূরণ করা হয় নি',
+            'category_id.required' => 'ক্যাটাগরি বাছাই করা হয় নি',
+            'companyName.required' =>'কোম্পানীর নাম পুরণ করা হয় নি',
+            'productWeight.required' =>'পণ্যের ওজন পূরণ করা হয় নি ',
+            'productWeightUnit.required' =>'পণ্যের ওজনের একক পূরণ করা হয় নি',
+            'buyingPrice.required' =>'ক্রয়মূল্য পূরণ করা হয় নি',
+            'retailPrice.required' =>'খুচরা মূল্য পূরণ করা হয় নি',
+            'wholesalePrice.required' =>'পাইকারি মূল্য পূরণ করা হয় নি',
+            'quantity.required' =>'পণ্যের সংখ্যা পুরণ করা হয় নি ',
+            'productQuantityUnit.required' => 'পণ্যের সংখ্যার একক পূরণ করা হয় নি',
+            'alertQuantity.required'=>'পণ্যের সতর্ককরণ সংখ্যা পুরণ করা হয় নি ',
+            'expireDate.required'=>'পণ্যের মেয়াদোত্তীর্ণ তারিখ পূরণ করা হয় নি',
         ]);  
         
         
          //store the resource in database table
-         $product = new Product();
+        $product = Product::find($request->product_id);
 
         $product->manufacture = $request->manufacture;
         $product->productName = $request->productName;
@@ -124,7 +153,6 @@ class ProductController extends Controller
         $product->quantity = $request->quantity;
         $product->productQuantityUnit = $request->productQuantityUnit;
         $product->alertQuantity = $request->alertQuantity;
-        $product->barCode = $request->barCode;
         $product->expireDate = $request->expireDate;
         
 
@@ -150,6 +178,19 @@ class ProductController extends Controller
 
 }
 
+//product delete function 
+public function destroy(Request $request){
+    
+     $product = Product::find($request->product_id);
+     $delete = $product->delete();
+
+     if($delete){
+       $request->session()->flash('success', 'আপনার পণ্য সফলভাবে বাতিল হয়েছে...');
+       return back();
+     }
+
+}
+
  // search order items acording to bar code
  public function searchOrderItem(Request $request){
          
@@ -159,6 +200,7 @@ class ProductController extends Controller
      $product = Product::where('barCode', $barCode)->first();
      //get the sell type
      $sellType = SellType::all();
+     
      if($product && $sellType){
         return response()->json([$product, $sellType]);
      }else{

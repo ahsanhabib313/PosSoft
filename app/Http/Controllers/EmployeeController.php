@@ -22,8 +22,8 @@ class EmployeeController extends Controller
         //get all employees 
         $employees = Employee::orderBy('id', 'asc')->get();
 
-          //get unread notification 
-          $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
+        //get unread notification 
+        $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
 
         return view('admin.employee', ['designations' => $designations, 'employees'=> $employees, 'totalAlert' => $totalAlert]);
     }
@@ -52,15 +52,26 @@ class EmployeeController extends Controller
             'name' => 'required',
             'designation_id' => 'required',
             'photo' => 'required|image|mimes:png,jpg',
-            'phone' => 'required|numeric',
-            'nid' => 'required|numeric',
-            'salary' => 'required|numeric',
+            'phone' => 'required',
+            'nid' => 'required',
+            'salary' => 'required',
             'gender' => 'required',
             'address' => 'required',
             'joining_date' => 'required|date',
             'is_leave' => 'required',
            
             
+        ],[
+            'name.required' => 'নাম পূরণ করা হয় নি',
+            'designation_id.required' => 'পদবি পূরণ করা হয় নি',
+            'photo.required' => 'ছবি পূরণ করা হয় নি',
+            'phone.required' => 'মোবাইল নাম্বার পূরণ করা হয় নি',
+            'nid.required' => 'জাতীয় পরিচয় নাম্বার পূরণ করা হয় নি',
+            'salary.required' => 'বেতন পূরণ করা হয় নি',
+            'gender.required' => 'লিঙ্গ পূরণ করা হয় নি',
+            'address.required' => 'ঠিকানা পূরণ করা হয় নি',
+            'joining_date.required' => 'যোগদানের তারিখ পূরণ করা হয় নি',
+            'is_leave.required' => 'অবসর পূরণ করা হয় নি',
         ]);     
 
    
@@ -90,7 +101,7 @@ class EmployeeController extends Controller
 
    if($store){
 
-       $request->session()->flash('success', 'Employee has been added successfully...');
+       $request->session()->flash('success', 'কর্মচারী সাফল্যের সাথে যোগ হয়েছে...');
        return back();
    }
 
@@ -127,25 +138,42 @@ class EmployeeController extends Controller
      */
     public function update(Request $request)
     {
+
          //validate the resource
          $request->validate([
 
             'name' => 'required',
             'designation_id' => 'required',
-            'phone' => 'required|numeric',
-            'nid' => 'required|numeric',
-            'salary' => 'required|numeric',
+            'phone' => 'required',
+            'nid' => 'required',
+            'salary' => 'required',
             'gender' => 'required',
             'address' => 'required',
             'joining_date' => 'required|date',
             'is_leave' => 'required',
            
             
+        ],[
+            [
+                'name.required' => 'নাম পূরণ করা হয় নি',
+                'designation_id.required' => 'পদবি পূরণ করা হয় নি',
+                'phone.required' => 'মোবাইল নাম্বার পূরণ করা হয় নি',
+                'nid.required' => 'জাতীয় পরিচয় নাম্বার পূরণ করা হয় নি',
+                'salary.required' => 'বেতন পূরণ করা হয় নি',
+                'gender.required' => 'লিঙ্গ পূরণ করা হয় নি',
+                'address.required' => 'ঠিকানা পূরণ করা হয় নি',
+                'joining_date.required' => 'যোগদানের তারিখ পূরণ করা হয় নি',
+                'is_leave.required' => 'অবসর পূরণ করা হয় নি',
+            ]
         ]); 
         
         if(!empty($request->photo)){
             $request->validate([
             'photo' => 'required|image|mimes:png,jpg',
+            ],[
+                
+                'photo.required' => 'ছবি পূরণ করা হয় নি',
+              
             ]);  
         } 
       
@@ -168,9 +196,8 @@ class EmployeeController extends Controller
    $employee->salary = $request->salary;
    $employee->address = $request->address;
    $employee->joining_date = $request->joining_date;
-   $employee->leaving_date = $request->leaving_date;
    $employee->is_leave = $request->is_leave;
-   $employee->leaving_date = $request->leaving_date;
+   $employee->leaving_date = $request->is_leave ==  'না' ? null : $request->leaving_date;
 
    if(!empty($request->photo)){
     $employee->photo = $photoName;
@@ -178,13 +205,10 @@ class EmployeeController extends Controller
 
    $store = $employee->save();
    
-
    //store the resource in database table
-   
-
     if($store){
 
-        $request->session()->flash('success', 'Employee has been Updated successfully...');
+        $request->session()->flash('success', 'কর্মচারী সাফল্যের সাথে হালনাগাদ হয়েছে...');
         return back();
     }
 
@@ -205,7 +229,7 @@ class EmployeeController extends Controller
         //delete the employee profile
         $delete = $employee->delete();
         if($delete){
-            return back()->with('success','Employee profile has been deleted successfully ...');
+            return back()->with('success','কর্মচারী সাফল্যের সাথে বাতিল হয়েছে...');
         }
     }
 }

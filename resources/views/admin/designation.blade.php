@@ -1,5 +1,5 @@
 @extends('admin.master')
-@section('title', 'Designation')
+@section('title', 'পদবি')
 
   @section('content')
   <div class="container">
@@ -11,9 +11,18 @@
                       
                         
                           <div style="margin-left: 15px">
-                            <h3 class="text-white">All Designation List</h3> 
+                            <h3 class="text-white">পদবির তালিকা</h3> 
                           </div>
                           <div>
+                            @if($errors->any())
+                            <div class="alert alert-danger ">
+                                  <ul>
+                                     @foreach($errors->all() as $error)
+                                       <li>{{$error}}</li>
+                                     @endforeach
+                                  </ul>
+                            </div>
+                          @endif
                             @if (Session::has('success'))
                                 <div class="alert alert-success">
                                     {{ Session::get('success') }}
@@ -27,7 +36,7 @@
                           </div>
                         
                           <div>
-                            <button class="btn btn-md btn-success " data-toggle="modal" data-target="#addModal">Add Designation</button>
+                            <button class="btn btn-md btn-success " data-toggle="modal" data-target="#addModal">পদবি যোগ করুন</button>
                     
                           </div>
                   </div>
@@ -41,11 +50,11 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                  <span aria-hidden="true" class="engFont">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-               <h3 class="text-center py-2" id="exampleModalLabel">Add Designation</h3>
+               <h3 class="text-center py-2" id="exampleModalLabel">পদবি যোগ</h3>
                 <div class="row">
                   <div class="col-12">
                                     <div class="jumbotron">
@@ -54,7 +63,7 @@
                                         <div class="form-row">
                                            <div class="col-md-8 offset-1">
                                                <div class="form-group">
-                                                 <label for="">Name</label>
+                                                 <label for="">নাম</label>
                                                  <input type="text" class="form-control" name="name">
                                                  @error('name')
                                                    <p class="text-danger">{{ $message }}</p>
@@ -64,7 +73,7 @@
                                         </div>
                                             <div class="form-row">
                                               <div class="col-md-5 offset-1 ">
-                                                  <button type="submit" class="text-center btn btn-success">Save 
+                                                  <button type="submit" class="text-center btn btn-success">জমা করুন 
                                                   </button>
                                                 </div>
                                               </div>
@@ -75,7 +84,7 @@
                       </div>
                 
               <div class="modal-footer ">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">বন্ধ করুন</button>
                 
               </div>
             </div>
@@ -88,9 +97,9 @@
         <table class="table bg-white text-dark  table-hover text-center" id="designation_table">
              <thead>
                <tr>
-                 <td>Seril No.</td>
-                 <td>Name</td>
-                 <td>Action</td>
+                 <td>সিরিয়াল নং.</td>
+                 <td>নাম</td>
+                 <td>কার্যক্রম</td>
                </tr>
              </thead>
              <tbody>
@@ -100,8 +109,8 @@
                             <td>{{ $loop->index + 1 }}</td>
                             <td class="designation_{{ $designation->id }}">{{ $designation->name }}</td>
                             <td>
-                              <button class="btn btn-sm btn-info d-inline-block mb-1" data-toggle="modal" data-target="#editModal"  onclick="editFunction({{$designation->id}})">Edit</button>
-                              <button class="btn btn-sm btn-danger d-inline-block" data-toggle="modal" data-target="#deleteModal"  onclick="deleteFunction({{$designation->id}})">Delete</button>
+                              <button class="btn btn-sm btn-info d-inline-block mb-1" data-toggle="modal" data-target="#editModal"  onclick="editFunction({{$designation->id}})">সংশোধন করুন</button>
+                              <button class="btn btn-sm btn-danger d-inline-block" data-toggle="modal" data-target="#deleteModal"  onclick="deleteFunction({{$designation->id}})">মুছে ফেলুন</button>
                             </td>
                         </tr>
                     @endforeach
@@ -118,7 +127,7 @@
           <div class="modal-header">
             <h5 class="modal-title">Edit Designation</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class="engFont">&times;</span>
             </button>
           </div>
           <div class="modal-body">
@@ -131,7 +140,7 @@
                                       <input type="hidden" name="id">
                                        <div class="col-md-8 offset-1">
                                            <div class="form-group">
-                                             <label for=""> Name</label>
+                                             <label for="">নাম</label>
                                              <input type="text" class="form-control" name="name">
                                              @error('name')
                                                <p class="text-danger">{{ $message }}</p>
@@ -141,7 +150,7 @@
                                     </div>
                                    <div class="form-row">
                                     <div class="col-md-5 offset-1 ">
-                                         <button type="submit" class="text-center btn btn-success">Update </button>
+                                         <button type="submit" class="text-center btn btn-success">আপডেট করুন</button>
                                      </div>
                                   </div>
                                 </form>
@@ -150,7 +159,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">বন্ধ করুন</button>
             
           </div>
         </div>
@@ -165,24 +174,24 @@
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title " id="">Delete Designation</h5> 
+            <h5 class="modal-title " id="">পদবি মুছে ফেলুন</h5> 
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class="engFont">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="row">
               <div class="col-12">
-                  <h4 class="text-danger">Are you want to delete the designation permanently..?</h4>    
+                  <h4 class="text-danger">আপনি কি নিশ্চিত ?</h4>    
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">না</button>
             <form action="{{ route('admin.designation.delete') }}" method="POST">
               @csrf
               <input type="hidden" name="id">
-              <button type="submit" class="btn btn-danger">Delete</button>
+              <button type="submit" class="btn btn-danger">হ্যা</button>
             </form>
            
           </div>

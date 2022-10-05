@@ -46,9 +46,13 @@ class MerchantController extends Controller
          $request->validate([
 
             'name' => 'required',
-            'phone' => 'required|numeric',
+            'phone' => 'required',
             'address' => 'required',
             
+        ],[
+           'name.required' => 'আড়ৎদারের নাম পূরণ করা হয় নি ',
+           'phone.required' => 'মোবাইল নাম্বার পূরণ করা হয় নি ',
+           'address.required' => 'ঠিকানা পূরণ করা হয় নি ',
         ]);     
 
    
@@ -64,7 +68,7 @@ class MerchantController extends Controller
 
    if($store){
 
-       $request->session()->flash('success', 'Merchant has been added successfully...');
+       $request->session()->flash('success', 'আড়ৎদার সফলতার সাথে যোগ করা হয়েছে..');
        return back();
    }
 
@@ -106,9 +110,13 @@ class MerchantController extends Controller
             $request->validate([
 
                 'name' => 'required',
-                'phone' => 'required|numeric',
+                'phone' => 'required',
                 'address' => 'required',
 
+            ],[
+                'name.required' => 'আড়ৎদারের নাম পূরণ করা হয় নি ',
+                'phone.required' => 'মোবাইল নাম্বার পূরণ করা হয় নি ',
+                'address.required' => 'ঠিকানা পূরণ করা হয় নি ',
             ]); 
             //get the employee instance
             $merchant = Merchant::find($request->merchant_id);
@@ -121,7 +129,7 @@ class MerchantController extends Controller
 
             if($store){
 
-            $request->session()->flash('success', 'Merchant has been Updated successfully...');
+            $request->session()->flash('success', 'আড়ৎদার সফলতার সাথে হালনাগাদ করা হয়েছে...');
             return back();
             }
 
@@ -144,7 +152,7 @@ class MerchantController extends Controller
         $delete = $merchant->delete();
 
         if($delete){
-            return back()->with('success','Merchant profile has been deleted successfully ...');
+            return back()->with('success',' আড়ৎদার সফলতার সাথে বাতিল করা হয়েছে...');
         }
     }
 }

@@ -14,6 +14,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeePaymentController;
 use App\Http\Controllers\MerchantController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransactionTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ use App\Http\Controllers\TransactionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', [AuthController::class, 'index']);
 Route::prefix('user/')->name('user.')->group(function(){
 
     Route::middleware(['guest:web','preventBackHistory'])->group(function(){
@@ -91,6 +92,7 @@ Route::prefix('admin/')->name('admin.')->group(function(){
             Route::get('/product', [ProductController::class, 'index'])->name('product.index');
             Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
             Route::post('/product/update', [ProductController::class, 'update'])->name('product.update');
+            Route::post('/product/delete', [ProductController::class, 'destroy'])->name('product.delete');
             Route::post('/search/product/',[ProductController::class, 'search'])->name('search.product');
             
             
@@ -145,6 +147,15 @@ Route::prefix('admin/')->name('admin.')->group(function(){
             Route::post('/employee/payment/store', [EmployeePaymentController::class, 'store'])->name('employee.payment.store');
             Route::post('/employee/payment/update', [EmployeePaymentController::class, 'update'])->name('employee.payment.update');
             Route::post('/employee/payment/delete', [EmployeePaymentController::class, 'destroy'])->name('employee.payment.delete');
+            Route::post('/employee/payment/search/', [EmployeePaymentController::class, 'search'])->name('employee.payment.search');
+
+            /** transaction type Route **/
+            Route::get('/transactionType', [TransactionTypeController::class, 'index'])->name('transactionType.index');
+            Route::post('/transactionType/store', [TransactionTypeController::class, 'store'])->name('transactionType.store');
+            Route::post('/transactionType/update', [TransactionTypeController::class, 'update'])->name('transactionType.update');
+            Route::post('/transactionType/delete', [TransactionTypeController::class, 'destroy'])->name('transactionType.delete');
+            Route::post('/search/transactionType/',[TransactionTypeController::class, 'search'])->name('search.transactionType');
+            
 
             /********** transaction route **************/
             Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction');

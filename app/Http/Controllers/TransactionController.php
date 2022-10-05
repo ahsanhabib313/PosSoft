@@ -18,13 +18,12 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $merchants = Merchant::select('name')->get();
-        $banks = Bank::select('name', 'branch')->get();
-        $transactionTypes = TransactionType::select('name')->get();
-        $transactions = Transaction::orderBy('id','asc')->get();
-
-          //get unread notification 
-          $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
+        $merchants = Merchant::select('id','name')->get();
+        $banks = Bank::select('id','name', 'branch')->get();
+        $transactionTypes = TransactionType::select('id','name')->get();
+        $transactions = Transaction::orderBy('id','desc')->get();
+        //get unread notification 
+        $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
 
         return view('admin.transaction', compact('merchants','banks','transactionTypes','transactions','totalAlert'));
     }
@@ -48,22 +47,29 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
 
-       // dd($request->all());
-
         //validate the forms input
         $request->validate([
-            'merchant' => 'required',
-            'transactionType' => 'required',
-            'amount' => 'required|numeric',
+            'merchant_id' => 'required',
+            'transaction_type_id' => 'required',
+            'amount' => 'required',
             'photo' => 'required|image|mimes:png,jpg,jpeg',
             'date' => 'required',
+        ],[
+            'merchant_id.required' => 'আড়ৎদার পূরণ হয় নি ',
+            'transaction_type_id.required' => 'লেনদের প্রকার পূরণ হয় নি ',
+            'bank_id.required' => 'লেনদের প্রকার পূরণ হয় নি ',
+            'amount.required' => 'টাকার পরিমান পূরণ হয় নি ',
+            'photo.required' => 'রশিদ পূরণ হয় নি ',
+            'photo.image' => 'রশিদ ছবি ফরমেটের হবে',
+            'photo.mimes' => 'রশিদের ছবি পিএনজি, জেপিজি, জেপিএজি ফরমেটের হবে ',
+            'date.required' => 'তারিখ পূরণ হয় নি ',
         ]);
 
-        if(strtolower( $request->bank) =='bank'){
+        if( $request->transaction_type_id == 1 ){
             $request->validate([
                
-                'bank' => 'required',
-                'branch' => 'required',
+                'bank_id' => 'required',
+              
                 
             ]);
         }
@@ -75,10 +81,9 @@ class TransactionController extends Controller
         $photo->move($path, $photoName);
 
         $store = Transaction::insert([
-            'merchant' => $request->merchant,
-            'transactionType' => $request->transactionType,
-            'bank' => $request->bank,
-            'branch' => $request->branch,
+            'merchant_id' => $request->merchant_id,
+            'transaction_type_id' => $request->transaction_type_id,
+            'bank_id' => $request->bank_id,
             'amount' => $request->amount,
             'photo' => $photoName,
             'date' => $request->date,
@@ -86,9 +91,7 @@ class TransactionController extends Controller
         ]);
 
         if($store){
-            return back()->with(['success' => 'Transaction has been added successfully']);
-        }else{
-            return back()->with(['error' => 'Transaction has been added Fail']);
+            return back()->with(['success' => 'লেনদেন সফলভাবে যোগ হয়েছে ']);
         }
     }
 
@@ -127,18 +130,26 @@ class TransactionController extends Controller
         //validate the resource
         $request->validate([
 
-            'merchant' => 'required',
-            'transactionType' => 'required',
-            'amount' => 'required|numeric',
+            'merchant_id' => 'required',
+            'transaction_type_id' => 'required',
+            'amount' => 'required',
+            'photo' => 'required|image|mimes:png,jpg,jpeg',
             'date' => 'required',
-            
-           
-            
-        ]); 
-        if(strtolower($request->transactionType) == 'bank'){
+            ],
+            [
+                'merchant_id.required' => 'আড়ৎদার পূরণ হয় নি ',
+                'transaction_type_id.required' => 'লেনদের প্রকার পূরণ হয় নি ',
+                'bank_id.required' => 'লেনদের প্রকার পূরণ হয় নি ',
+                'amount.required' => 'টাকার পরিমান পূরণ হয় নি ',
+                'photo.required' => 'রশিদ পূরণ হয় নি ',
+                'photo.image' => 'রশিদ ছবি ফরমেটের হবে',
+                'photo.mimes' => 'রশিদের ছবি পিএনজি, জেপিজি, জেপিএজি ফরমেটের হবে ',
+                'date.required' => 'তারিখ পূরণ হয় নি ',
+            ]);
+        if($request->transaction_type_id == 1){
             $request->validate([
-                'bank' => 'required|numeric',
-                'branch' => 'required|numeric',
+                'bank_id' => 'required',
+                
             ]);
         }
         
@@ -160,10 +171,9 @@ class TransactionController extends Controller
    //get the employee instance
    $transaction = Transaction::find($request->id);
 
-   $transaction->merchant = $request->merchant;
-   $transaction->transactionType = $request->transactionType;
-   $transaction->bank = $request->bank;
-   $transaction->branch = $request->branch;
+   $transaction->merchant_id = $request->merchant_id;
+   $transaction->transaction_type_id = $request->transaction_type_id;
+   $transaction->bank_id = $request->bank_id;
    $transaction->amount = $request->amount;
    $transaction->date = $request->date;
   
@@ -177,7 +187,7 @@ class TransactionController extends Controller
    //store the resource in database table
    if($store){
 
-       $request->session()->flash('success', 'Transaction has been Updated successfully...');
+       $request->session()->flash('success', 'লেনদেন সফলভাবে হালনাগাদ হয়েছে...');
        return back();
    }
 }
@@ -198,7 +208,7 @@ class TransactionController extends Controller
         //delete the employee profile
         $delete = $transaction->delete();
         if($delete){
-            return back()->with('success','Transaction has been deleted successfully ...');
+            return back()->with('success','লেনদেন সফলভাবে বাতিল হয়েছে...');
         }
     }
 }

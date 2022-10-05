@@ -1,5 +1,21 @@
 @extends('admin.master')
-@section('title', 'Employee Payment')
+@section('title', 'কর্মচারীর বেতন')
+@push('styles')
+  <style>
+     svg.h-5{
+            height:20px !important;
+        }
+        nav > span {
+            display:none !important;
+        }
+        nav  p{
+          display: none;
+        }
+        nav > div.flex{
+            display:none;
+        }
+  </style>
+@endpush
 
   @section('content')
   <div class="container-fluid">
@@ -8,9 +24,18 @@
 {{--========================== stop search box  =========================--}}
     <div class="row d-flex justify-content-between p-1 mt-3">
       <div>
-        <h3 class="text-white">Employee Payment List</h3> 
+        <a href="{{route('admin.employee.payment')}}"><h4 class="text-dark font-weight-bold ml-3">কর্মচারীর বেতনের তালিকা</h4></a> 
       </div>
       <div>
+        @if($errors->any())
+        <div class="alert alert-danger">
+              <ul>
+                  @foreach ($errors->all() as $error)
+                      <li>{{$error}}</li>
+                  @endforeach
+              </ul>
+        </div>
+     @endif
         @if (Session::has('success'))
             <div class="alert alert-success">
                 {{ Session::get('success') }}
@@ -24,7 +49,7 @@
        
       </div>
       <div>
-         <button class="btn btn-md btn-success " data-toggle="modal" data-target="#addModal">Add Employee Payment</button>
+         <button class="btn btn-md btn-success " data-toggle="modal" data-target="#addModal">কর্মচারীর বেতন যোগ করুন</button>
 
       </div>
      
@@ -34,11 +59,11 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                  <span aria-hidden="true" class="engFont">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-               <h3 class="text-center py-2" id="exampleModalLabel">Craete Employee Payment</h3>
+               <h3 class="text-center py-2" id="exampleModalLabel">কর্মচারীর বেতন তৈরি করুন</h3>
                 <div class="row">
                   <div class="col-12">
                                     <div class="jumbotron">
@@ -47,9 +72,9 @@
                                         <div class="form-row">
                                            <div class="col-md-8 offset-1">
                                                <div class="form-group">
-                                                      <label for="">Employee</label>
+                                                      <label for="">কর্মচারী</label>
                                                         <select name="employee_id" class="form-control">
-                                                              <option value="" selected>Select Employee</option>
+                                                              <option value="" selected>বাছাই করুন</option>
                                                               @isset($employees)
                                                                     @foreach ($employees as $employee)
                                                                           <option value="{{ $employee->id }}">{{ $employee->name}}</option>
@@ -63,58 +88,58 @@
                                                </div>
                                                
                                                <div class="form-group">
-                                                    <label for="">Payment Month</label>
+                                                    <label for=""> মাসের নাম</label>
                                                     <select name="payment_month" class="form-control">
-                                                            <option value="" selected>Select Payment Month</option>
-                                                            <option value="January">January</option>
-                                                            <option value="February">February</option>
-                                                            <option value="March">March</option>
-                                                            <option value="April">April</option>
-                                                            <option value="May">May</option>
-                                                            <option value="June">June</option>
-                                                            <option value="July">July</option>
-                                                            <option value="August">August</option>
-                                                            <option value="September">September</option>
-                                                            <option value="October">October</option>
-                                                            <option value="November">November</option>
-                                                            <option value="December">December</option>
+                                                            <option value="" selected>বাছাই করুন</option>
+                                                            <option value="বৈশাখ">বৈশাখ</option>
+                                                            <option value="জৈষ্ঠ্য">জৈষ্ঠ্য</option>
+                                                            <option value="আষাঢ়">আষাঢ়</option>
+                                                            <option value="শ্রাবণ">শ্রাবণ</option>
+                                                            <option value="ভাদ্র">ভাদ্র</option>
+                                                            <option value="আশ্বিন">আশ্বিন</option>
+                                                            <option value="কার্তিক">কার্তিক</option>
+                                                            <option value="অগ্রহায়ণ">অগ্রহায়ণ</option>
+                                                            <option value="পৌষ">পৌষ</option>
+                                                            <option value="মাঘ">মাঘ</option>
+                                                            <option value="ফাল্গুণ">ফাল্গুণ</option>
+                                                            <option value="চৈত্র">চৈত্র</option>
                                                     </select>
                                                     @error('payment_month')
                                                       <p class="text-danger">{{ $message }}</p>
                                                     @enderror
                                            </div>
                                                <div class="form-group">
-                                                    <label for="">Payment Year</label>
+                                                    <label for="">সাল</label>
                                                     <select name="payment_year" class="form-control">
-                                                            <option value="" selected>Select Payment Year</option>
-                                                            <option value="2020">2020</option>
-                                                            <option value="2021">2021</option>
-                                                            <option value="2022">2022</option>
-                                                            <option value="2023">2023</option>
-                                                            <option value="2024">2024</option>
-                                                            <option value="2025">2025</option>
-                                                            <option value="2026">2026</option>
-                                                            <option value="2027">2027</option>
-                                                            <option value="2028">2028</option>
-                                                            <option value="2029">2029</option>
-                                                            <option value="2030">2030</option>
-                                                          
-                                                           
+                                                            <option value="" selected>বাছাই করুন</option>
+                                                            <option value="১৪২৮">১৪২৮</option>
+                                                            <option value="১৪২৯">১৪২৯</option>
+                                                            <option value="১৪৩০">১৪৩০</option>
+                                                            <option value="১৪৩১">১৪৩১</option>
+                                                            <option value="১৪৩২">১৪৩২</option>
+                                                            <option value="১৪৩৩">১৪৩৩</option>
+                                                            <option value="১৪৩৪">১৪৩৪</option>
+                                                            <option value="১৪৩৫">১৪৩৫</option>
+                                                            <option value="১৪৩৬">১৪৩৬</option>
+                                                            <option value="১৪৩৭">১৪৩৭</option>
+                                                            <option value="১৪৩৮">১৪৩৮</option>
+                                                            <option value="১৪৩৯">১৪৩৯</option>
+                                                            <option value="১৪৪০">১৪৪০</option>
                                                     </select>
                                                     @error('payment_year')
                                                       <p class="text-danger">{{ $message }}</p>
                                                     @enderror
                                            </div>
                                                <div class="form-group">
-                                                    <label for="">Payment Evidence</label>
-                                                    <input type="file" class="form-control" name="photo" accept="image/*">
+                                                    <label for="">লেনদেনের রশিদ</label>
+                                                    <input type="file" class="form-control engFont" name="photo" accept="image/*">
                                                     @error('photo')
                                                       <p class="text-danger">{{ $message }}</p>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group">
-                                                  <label for="">Payment Date</label>
-                                                  <input type="date" class="form-control" name="payment_date">
+                                                  <label for="">বেতনের তারিখ</label>
+                                                  <input type="date" class="form-control engFont" name="payment_date">
                                                   @error('payment_date')
                                                     <p class="text-danger">{{ $message }}</p>
                                                   @enderror
@@ -123,7 +148,7 @@
                                         </div>
                                             <div class="form-row">
                                               <div class="col-md-5 offset-1 ">
-                                                  <button type="submit" class="text-center btn btn-success">Save
+                                                  <button type="submit" class="text-center btn btn-success"> সংরক্ষন করুন
                                                   </button>
                                                 </div>
                                               </div>
@@ -137,33 +162,56 @@
         </div>
      
     </div>
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                    <h4 class="card-title font-weight-bold">কর্মচারীর বেতন দেখুন</h4>
+            </div>
+            <div class="card-body">
+                 <form action="{{route('admin.employee.payment.search')}}" id="searchForm" method="POST">
+                  @csrf    
+                  <div class="form-group">
+                             <label for="name">কর্মচারীর নাম</label>
+                             <select id="name" class="form-control" name="employee_id">
+                                    <option value="">বাছাই করুন</option>
+                                    @isset($employees)
+                                    @foreach ($employees as $employee)
+                                          <option value="{{ $employee->id }}">{{ $employee->name}}</option>
+                                    @endforeach
+                              @endisset
+                             </select>
+                       </div>
+                       <div class="form-group">
+                          <button type="submit" class="btn btn-info" >খোঁজ করুন</button>
+                       </div>
+                 </form>
+            </div>
+        </div>
+  </div>
+    </div>
     <div class="row my-5">
       <div class="col-md-12">
         <table class="table table-light text-dark font-weight-bold table-hover text-center" id="employee_payment_table">
              <thead>
                <tr>
-                 <td>Seril No.</td>
-                 <td>Employee</td>
-                 <td>Payment Month</td>
-                 <td>Payment Year</td>
-                 <td>Payment Evidence</td>
-                 <td>Payment Date</td>
-                 <td>Action</td>
+                 <td>সিরিয়াল নং.</td>
+                 <td>কর্মচারী</td>
+                 <td>মাস</td>
+                 <td>সাল</td>
+                 <td>বেতনের রশিদ</td>
+                 <td> তারিখ</td>
+                 <td>কার্যক্রম</td>
                </tr>
              </thead>
              <tbody>
                @isset($employees_payment)
                         @foreach ($employees_payment as $employee_payment)
                         <tr>
-                        {{--   <input type="hidden" class="employee_payment_id_{{ $employee_payment->id }}" value="{{ $employee_payment->id }}"> --}}
-
                             <td>{{ $loop->index + 1 }}</td>
-
-                            <td>{{ ucfirst         ($employee_payment->employee->name) }}
+                            <td>{{($employee_payment->employee->name) }}
                               <input type='hidden' class='employee_id_{{ $employee_payment->id }}' value="{{ $employee_payment->employee_id }}">
-                            
                             </td>
-                          
                             <td class="payment_month_{{ $employee_payment->id }}">{{ $employee_payment->payment_month }}</td>
 
                             <td class="payment_year_{{ $employee_payment->id }}">{{ $employee_payment->payment_year }}</td>
@@ -173,27 +221,48 @@
                             <td class="payment_date_{{ $employee_payment->id }}">{{  $employee_payment->payment_date   }}</td>
 
                             <td>
-                              <button class="btn btn-sm btn-info d-inline-block mb-1" data-toggle="modal" data-target="#editModal"  onclick="editFunction({{$employee_payment->id}})">Edit</button>
-                              <button class="btn btn-sm btn-danger d-inline-block" data-toggle="modal" data-target="#deleteModal"  onclick="deleteFunction({{$employee_payment->id}})">Delete</button>
+                              <button class="btn btn-sm btn-success d-inline-block mb-1" data-toggle="modal" data-target="#viewInvoiceModal"  onclick="viewInvoiceFunction('{{$employee_payment->photo}}')">রশিদ দেখুন</button>
+                              <button class="btn btn-sm btn-info d-inline-block mb-1" data-toggle="modal" data-target="#editModal"  onclick="editFunction({{$employee_payment->id}})">সংস্করণ</button>
+                              <button class="btn btn-sm btn-danger d-inline-block" data-toggle="modal" data-target="#deleteModal"  onclick="deleteFunction({{$employee_payment->id}})">বাতিল</button>
                             </td>
                         </tr>
                     @endforeach
                @endisset
              </tbody>
         </table>
+        <p style=" font-family: SutonnyMJ;">{{$employees_payment->links()}}</p>
       </div>
     </div>
  
+      <!--view invoice  Modal -->
+      <div class="modal fade" id="viewInvoiceModal" tabindex="-1" aria-labelledby="viewInvoiceModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header bg-success">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" class="engFont">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+               <div>
+                    <img class="invoiceImg"  style="width: 100vw; height:100vh" >
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+
      <!--Edit Modal -->
      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header bg-success">
             <h4 class="header-title text-light">
-              Edit Employee Payment
+              কর্মচারীর বেতন সংস্করণ
             </h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class="engFont">&times;</span>
             </button>
           </div>
           <div class="modal-body">
@@ -207,9 +276,9 @@
                             <div class="form-row">
                               <div class="col-md-8 offset-1">
                                   <div class="form-group">
-                                         <label for="">Employee</label>
+                                         <label for="">কর্মচারী</label>
                                            <select name="employee_id" class="form-control">
-                                                 <option value="" selected>Select Employee</option>
+                                                 <option value="" selected>বাছাই করুন</option>
                                                  @isset($employees)
                                                        @foreach ($employees as $employee)
                                                              <option value="{{ $employee->id }}">{{ $employee->name}}</option>
@@ -223,58 +292,58 @@
                                   </div>
                                   
                                   <div class="form-group">
-                                       <label for="">Payment Month</label>
+                                       <label for="">মাস</label>
                                        <select name="payment_month" class="form-control">
-                                              
-                                               <option value="January">January</option>
-                                               <option value="February">February</option>
-                                               <option value="March">March</option>
-                                               <option value="April">April</option>
-                                               <option value="May">May</option>
-                                               <option value="June">June</option>
-                                               <option value="July">July</option>
-                                               <option value="August">August</option>
-                                               <option value="September">September</option>
-                                               <option value="October">October</option>
-                                               <option value="November">November</option>
-                                               <option value="December">December</option>
+                                              <option value="" selected>বাছাই করুন</option>
+                                              <option value="বৈশাখ">বৈশাখ</option>
+                                              <option value="জৈষ্ঠ্য">জৈষ্ঠ্য</option>
+                                              <option value="আষাঢ়">আষাঢ়</option>
+                                              <option value="শ্রাবণ">শ্রাবণ</option>
+                                              <option value="ভাদ্র">ভাদ্র</option>
+                                              <option value="আশ্বিন">আশ্বিন</option>
+                                              <option value="কার্তিক">কার্তিক</option>
+                                              <option value="অগ্রহায়ণ">অগ্রহায়ণ</option>
+                                              <option value="পৌষ">পৌষ</option>
+                                              <option value="মাঘ">মাঘ</option>
+                                              <option value="ফাল্গুণ">ফাল্গুণ</option>
+                                              <option value="চৈত্র">চৈত্র</option>
                                        </select>
                                        @error('payment_month')
                                          <p class="text-danger">{{ $message }}</p>
                                        @enderror
                               </div>
                                   <div class="form-group">
-                                       <label for="">Payment Year</label>
+                                       <label for="">সাল</label>
                                        <select name="payment_year" class="form-control">
-                                             
-                                                             <option value="2020">2020</option>
-                                                            <option value="2021">2021</option>
-                                                            <option value="2022">2022</option>
-                                                            <option value="2023">2023</option>
-                                                            <option value="2024">2024</option>
-                                                            <option value="2025">2025</option>
-                                                            <option value="2026">2026</option>
-                                                            <option value="2027">2027</option>
-                                                            <option value="2028">2028</option>
-                                                            <option value="2029">2029</option>
-                                                            <option value="2030">2030</option>
-                                             
-                                              
+                                              <option value="" selected>বাছাই করুন</option>
+                                              <option value="১৪২৮">১৪২৮</option>
+                                              <option value="১৪২৯">১৪২৯</option>
+                                              <option value="১৪৩০">১৪৩০</option>
+                                              <option value="১৪৩১">১৪৩১</option>
+                                              <option value="১৪৩২">১৪৩২</option>
+                                              <option value="১৪৩৩">১৪৩৩</option>
+                                              <option value="১৪৩৪">১৪৩৪</option>
+                                              <option value="১৪৩৫">১৪৩৫</option>
+                                              <option value="১৪৩৬">১৪৩৬</option>
+                                              <option value="১৪৩৭">১৪৩৭</option>
+                                              <option value="১৪৩৮">১৪৩৮</option>
+                                              <option value="১৪৩৯">১৪৩৯</option>
+                                              <option value="১৪৪০">১৪৪০</option>
                                        </select>
                                        @error('payment_year')
                                          <p class="text-danger">{{ $message }}</p>
                                        @enderror
                               </div>
                                   <div class="form-group">
-                                       <label for="">Payment Evidence</label>
-                                       <input type="file" class="form-control" name="photo" accept="image/*">
+                                       <label for="">বেতনের রশিদ</label>
+                                       <input type="file" class="form-control engFont" name="photo" accept="image/*">
                                        @error('photo')
                                          <p class="text-danger">{{ $message }}</p>
                                        @enderror
                                    </div>
                                    <div class="form-group">
-                                     <label for="">Payment Date</label>
-                                     <input type="date" class="form-control" name="payment_date">
+                                     <label for="">তারিখ</label>
+                                     <input type="date" class="form-control engFont" name="payment_date">
                                      @error('payment_date')
                                        <p class="text-danger">{{ $message }}</p>
                                      @enderror
@@ -283,7 +352,7 @@
                            </div>
                                 <div class="form-row">
                                   <div class="col-md-5 offset-1 ">
-                                      <button type="submit" class="text-center btn btn-success">Update
+                                      <button type="submit" class="text-center btn btn-success">হালনাগাদ করুন
                                       </button>
                                     </div>
                                   </div>
@@ -306,15 +375,15 @@
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title " id="">Delete Employee Payment</h5> 
+            <h5 class="modal-title " id="">বেতন বাতিল করুন</h5> 
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class="engFont">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="row">
               <div class="col-12">
-                  <h5 class="text-danger">Are you want to permanently delete the Employee Payment...? </h5>    
+                  <h5 class="text-danger">আপনি কি নিশ্চিত...? </h5>    
               </div>
               <form id="deleteForm" action="{{ route('admin.employee.payment.delete') }}" method="POST">
                 @csrf
@@ -322,8 +391,8 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">না</button>
+                    <button type="submit" class="btn btn-danger">হ্যা</button>
                </form>
            
           </div>
@@ -343,7 +412,7 @@
         let employee_id = $('#employee_payment_table').find('.employee_id_'+id).val();
         let payment_month = $('#employee_payment_table').find('.payment_month_'+id).text();
         let payment_year = $('#employee_payment_table').find('.payment_year_'+id).text();
-        payment_year = parseInt(payment_year);
+        payment_year = (payment_year);
 
         let payment_date = $('#employee_payment_table').find('.payment_date_'+id).text();
          
@@ -409,6 +478,12 @@
         //set the id value in delete form
         $('#deleteForm').find('input[name="id"]').val(id);
 
+      }
+
+
+      /***** view invoice modal ******/
+      function viewInvoiceFunction(photo){
+        $('#viewInvoiceModal').find('.invoiceImg').attr('src','http://127.0.0.1:8000/img/employeePayment/'+photo);
       }
 
   </script>

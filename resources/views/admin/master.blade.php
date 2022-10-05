@@ -13,13 +13,13 @@
 
     <link rel="icon" href="{{ asset('admin/assets/img/basic/favicon.ico') }}" type="image/x-icon">
     <link href="{{ asset('fontawesome/css/all.min.css') }}" type="text/css" rel="stylesheet">
-    <link href="{{ asset('fontawesome/css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('assets/css/jquery-ui.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/employee.css')}}">
+    <link rel="stylesheet" href="{{asset('css/home.css')}}">
    
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('admin/assets/css/app.css')}}">
-   {{--  <link rel="stylesheet" href="{{asset('css/home.css')}}"> --}}
     <style>.loader {
             position: fixed;
             left: 0;
@@ -37,6 +37,8 @@
             left: 50%;
         }
     </style>
+
+    @stack('styles')
     <!-- Js -->
     <!--
     --- Head Part - Use Jquery anywhere at page.
@@ -95,65 +97,72 @@
     <aside class="main-sidebar fixed offcanvas shadow" data-toggle='offcanvas'>
         <section class="sidebar">
             <ul class="sidebar-menu" style="color:#000">
-                <li class="header"><strong>MAIN NAVIGATION</strong></li>
+                <li class="header"><strong></strong></li>
                 <li class="treeview">
                 <a href="{{ route('admin.dashboard') }}">
                     <i class="fas fa-columns blue-text s-18 mr-4"></i>
-                    <span style="color:#8B0000">Dashboard</span>
+                    <span style="color:#8B0000">ডেসবোর্ড </span>
                 </a>
                 </li>
                 <li class="treeview"><a href="{{ route('admin.category.index') }}">
                     <i class="icon icon icon-package light-green-text s-18"></i>
-                    <span  style="color:#8B0000">Categories</span>
+                    <span  style="color:#8B0000">পণ্যের শ্রেণী</span>
                 </a>
                 </li>
                 <li class="treeview">
                     <a href="{{ route('admin.product.index') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
-                        <span style="color:#8B0000">Products</span>
+                        <span style="color:#8B0000">পণ্য</span>
                     </a>
                 </li>
                 <li class="treeview no-b">
                     <a href="{{ route('admin.order.show') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
-                        <span style="color:#8B0000">Orders</span>
+                        <span style="color:#8B0000">অর্ডার</span>
                     </a>
                 </li>
 
                 <li class="treeview no-b">
                     <a href="{{ route('admin.designation') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
-                        <span  style="color:#8B0000">Designations</span>
+                        <span  style="color:#8B0000">পদবি</span>
                     </a>
                 </li>
                 <li class="treeview no-b">
                     <a href="{{ route('admin.bank') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
-                        <span style="color:#8B0000">Banks</span>
+                        <span style="color:#8B0000">ব্যাংক</span>
                     </a>
                 </li>
                 <li class="treeview no-b">
                     <a href="{{ route('admin.merchant') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
-                        <span style="color:#8B0000">Merchant</span>
+                        <span style="color:#8B0000">আড়ৎদার </span>
                     </a>
                 </li>
                 <li class="treeview no-b">
                     <a href="{{ route('admin.employee') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
-                        <span style="color:#8B0000">Employees</span>
+                        <span style="color:#8B0000">কর্মচারী</span>
                     </a>
                 </li>
+               
                 <li class="treeview no-b">
                     <a href="{{ route('admin.employee.payment') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
-                        <span style="color:#8B0000">Employees Payment</span>
+                        <span style="color:#8B0000">কর্মচারীর বেতন</span>
+                    </a>
+                </li>
+                <li class="treeview no-b">
+                    <a href="{{ route('admin.transactionType.index') }}">
+                        <i class="icon icon-package light-green-text s-18"></i>
+                        <span style="color:#8B0000"> আর্থিক লেনদেনের প্রকার</span>
                     </a>
                 </li>
                 <li class="treeview no-b">
                     <a href="{{ route('admin.transaction') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
-                        <span style="color:#8B0000">Transaction</span>
+                        <span style="color:#8B0000"> আর্থিক লেনদেন</span>
                     </a>
                 </li>
             
@@ -183,7 +192,7 @@
                         </a>
                     </div>
                     <div class="d-none d-md-block">
-                        <h1 class="nav-title text-white">Dashboard</h1>
+                        <h1 class="nav-title text-white">ড্যাসবোর্ড</h1>
                     </div>
                 </div>
             </div>
@@ -199,7 +208,7 @@
                         <span class="badge badge-danger badge-mini rounded-circle" id="totalAlert"  >{{ $totalAlert }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li class="header">You have  <span class="totalAlert">{{ $totalAlert }}</span> notifications</li>
+                            <li class="header">আপনার  <span class="totalAlert">{{ $totalAlert }}</span> টি নোটিফিকেশন আছে</li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu" id="notification_menu">
@@ -212,7 +221,7 @@
                   
                     <li class="dropdown custom-dropdown user user-menu ">
                         <a href="panel-page-dashboard2.html#" class="nav-link" data-toggle="dropdown">
-                            <img src="assets/img/dummy/u8.png" class="user-image" alt="User Image">
+                            <img src="{{asset('admin\assets\img\dummy\u1.png')}}" class="user-image" alt="User Image">
                             <i class="icon-more_vert "></i>
                         </a>
                         <div class="dropdown-menu p-4 dropdown-menu-right">
@@ -220,17 +229,17 @@
                                 <div class="col">
                                     <a href="#">
                                         <i class="icon-apps purple lighten-2 avatar  r-5"></i>
-                                        <div class="pt-1">Apps</div>
+                                        <div class="pt-1">এপস</div>
                                     </a>
                                 </div>
                                 <div class="col"><a href="#">
                                     <i class="icon-beach_access pink lighten-1 avatar  r-5"></i>
-                                    <div class="pt-1">Profile</div>
+                                    <div class="pt-1">প্রোফাইল</div>
                                 </a></div>
                                 <div class="col">
                                     <a href="{{ route('admin.logout') }}">
                                         <i class="icon-perm_data_setting indigo lighten-2 avatar  r-5"></i>
-                                        <div class="pt-1 font-weight-bold ">Logout</div>
+                                        <div class="pt-1 font-weight-bold ">লগ আউট</div>
                                         
                                     </a>
                                     
@@ -252,7 +261,14 @@
 
 <script src="{{ asset('admin/assets/js/app.js')}}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" async integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+@stack('scripts')
 <script>
+
+
 
 
 //create notification and show

@@ -18,13 +18,13 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->unsignedInteger('designation_id'); 
             $table->string('photo')->default(null);
-            $table->bigInteger('phone');
-            $table->bigInteger('nid');
+            $table->string('phone');
+            $table->string('nid');
             $table->text('address');
-            $table->bigInteger('salary');
+            $table->string('salary');
             $table->string('gender'); 
             $table->date('joining_date');
-            $table->date('leaving_date')->default(null);
+            $table->date('leaving_date')->nullable();
             $table->string('is_leave'); //  is_leave = 0 means the employee is working still 
             $table->timestamps();
 

@@ -17,12 +17,12 @@ class CreateEmployeePaymentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('employee_id');
             $table->string('payment_month');
-            $table->integer('payment_year');
+            $table->string('payment_year');
             $table->string('photo');
             $table->date('payment_date');
             //$table->timestamps();
 
-            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
         });
     }
 

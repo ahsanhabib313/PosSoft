@@ -1,29 +1,53 @@
 @extends('admin.master')
 @section('title', 'Order Page')
+@push('styles')
+
+    <style>
+    nav span{
+      font-family: 'Times New Roman', Times, serif !important;
+    }
+
+    svg.w-5{
+            width:15px !important;
+          }
+
+          nav div:nth-child(1) span {
+            display:none;
+          }
+          nav div:nth-child(1) a {
+            display:none;
+          }
+
+          nav div:nth-child(2) div p{
+          
+            display:none;
+          }
+    </style>
+@endpush
 <div style="background-color: grey ">
 @section('content')
   <div class="container">
     {{--========================== start search box  =========================--}}
-    <div class="row d-flex justify-content-center">
+    <div class="row d-flex justify-content-center mt-5">
           <div class="col-md-10">
                 <div class="card mb-5 mt-1" style="border-color:#b1b3b9 !important">
                   <div class="card-header">
-                     <h3 class="card-title">Search Order</h3>
+                     <h3 class="card-title">অর্ডার খুঁজুন</h3>
                   </div>
                        <div class="card-body">
                           <form action="{{ route('admin.search.order') }}" method="post" id="searchOrder">
                              <div class="row">
                                 <div class=" col-6 form-group">
-                                  <label>Order Number</label>
+                                  <label>অর্ডার নাম্বার</label>
                                     <input type="text" name=""   class="form-control form-control-md text-black order_id" placeholder="" aria-describedby="helpId" onchange="searchOrder(this.value) " >
                                   </div>
                                   <div class=" col-6 form-group">
-                                    <label>Mobile Number</label>
+                                    <label>মোবাইলে নাম্বার</label>
                                     <input type="text"  class="form-control form-control-md text-black mobile_number" placeholder="" aria-describedby="helpId" onchange="searchOrder(this.value) " >
                                   </div>
                                   <div class="col-6 form-group">
-                                    <label>Order Date</label>
-                                    <input type="date" class="form-control order_date"  onchange="searchOrder(this.value)">
+                                    <label>তারিখ</label>
+                                    <input type="date" class="form-control order_date engFont"  onchange="searchOrder(this.value)">
                                     
                                   </div>
                                 
@@ -59,18 +83,18 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-               <h3 class="card-title">Order List</h3>
+               <h3 class="card-title">অর্ডার তালিকা</h3>
           </div>
           <div class="card-body bg-white">
             <table class="table text-center text-dark table-hover shadow-lg" id="order_table">
               <thead class="">
                 <tr>
-                  <td>Draft Number</td>
-                  <td>Customer Name</td>
-                  <td>Mobile Number</td>
-                  <td>Total Bill</td>
-                  <td>Date</td>
-                  <td>Action</td>
+                  <td>অর্ডার নাম্বার</td>
+                  <td>ক্রেতার নাম</td>
+                  <td>মোবাইল নাম্বার</td>
+                  <td>মোট বিল</td>
+                  <td>তারিখ</td>
+                  <td>কার্যক্রম</td>
                 </tr>
               </thead>
               <tbody>
@@ -113,8 +137,8 @@
       <div class="modal-dialog modal-lg modal-dialog-scrollable" style="max-width: 1100px !important">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+            <button type="button" class="close engFont" data-dismiss="modal" aria-label="Close">
+              <span class="engFont" aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
@@ -123,44 +147,35 @@
                 <div class="card">
                   <div class="card-header">
                     <div class="card-title">
-                      Order Details
+                      অর্ডারের বিস্তারিত
                     </div>
                   </div>
                   <div class="card-body">
                     <div class="order-details" style="color: #000">
-                          <h6>Order No: <span class="order_no"></span></h6>
-                          <h6>Customer Name: <span class="customer_name"></span></h6>
-                          <h6>Mobile Number: <span class="mobile_number"></span></h6>
-                          <h6>Total Price : <span class="total_price"></span></h6>
-                          <h6>Order Date: <span class="order_date"></span></h6>
+                          <h6>অর্ডার নাম্বার: <span class="order_no"></span></h6>
+                          <h6>ক্রেতার নাম: <span class="customer_name"></span></h6>
+                          <h6>মোবাইল নাম্বার: <span class="mobile_number"></span></h6>
+                          <h6>মোট বিল: <span class="total_price"></span></h6>
+                          <h6>তারিখ: <span class="order_date"></span></h6>
                     </div>
-                    <h3 class="text-success font-weight-bold">Order Items</h3>
+                    <h3 class="text-success font-weight-bold">অর্ডার তালিকা</h3>
                       <div class="table-responsive" id="">
                         <table class="table table-striped text-center text-black" style="color: #000" id="view_order">
                           <thead class="bg-info text-white">
                             <tr>
-                              <th>Product Name</th>
-                              <th>Sell Type</th>
-                              <th>Quantity</th>
-                              <th>Product Unit</th>
-                              <th>Product Price</th>
-                              <th>Per Unit Price</th>
+                              <th>পণ্যের নাম</th>
+                              <th>বিক্রির ধরণ</th>
+                              <th>পরিমান</th>
+                              <th>পণ্যের একক</th>
+                              <th>পণ্যের মূল্য</th>
+                              <th>প্রতি একক মূল্য</th>
                              
                             </tr>
                           </thead>
                           <tbody>
 
                           </tbody>
-                          <tfoot class="bg-info text-white">
-                            <tr>
-                              <th>Product Name</th>
-                              <th>Sell Type</th>
-                              <th>Quantity</th>
-                              <th>Product Unit</th>
-                              <th>Product Price</th>
-                              <th>Per Unit Price</th>
-                            </tr>
-                          </tfoot>
+                         
                         </table>
                       </div>
                   </div>
@@ -169,7 +184,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">বন্ধ করুন</button>
             
           </div>
         </div>
@@ -177,78 +192,20 @@
     </div> 
   </div>
 
- 
-
-   
-     <!--Edit Modal -->
-     <div class="modal fade" id="editOrder" tabindex="-1" aria-labelledby="editOrder" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h6 class="modal-title " id="editOrder"></h6>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body  bg-secondary">
-            <div class="row">
-              <div class="col-8 offset-2 p-3">
-
-                           <div class="card">
-                             <div class="card-header">
-                               <div class="card-title">
-                                অর্ডার সংশোধন করুন
-                               </div>
-                             </div>
-                                <div class="card-body">
-                                      <form>
-                                        <input type="hidden" class="order_id">
-                                         <div class="form-group">
-                                             <input type="text" class="form-control customer_name"> 
-                                         </div>
-                                         <div class="form-group">
-                                              <input type="text" class="form-control mobile_number"> 
-                                          </div>
-                                          <div class="form-group">
-                                              <input class="form-control total_price"> 
-                                          </div>
-                                          <div class="form-group">
-                                              <button type="button" class="btn btn-info">Update</button>
-                                          </div>
-
-                                      </form>
-                                </div>
-                           </div>    
-                        
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            
-          </div>
-        </div>
-      </div>
-    </div>
-
-   
-
-
-
      <!--Delete Modal -->
      <div class="modal fade" id="deleteOrder" tabindex="-1" aria-labelledby="deleteOrder" aria-hidden="true">
       <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
-             <h6 class="modal-title ">Delete Order</h6> 
+             <h6 class="modal-title ">অর্ডার মুছে ফেলুন</h6> 
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+              <span class="engFont" aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <div class="row">
               <div class="col-12">
-                <h4 class="text-danger">Are You Sure ?</h4> 
+                <h4 class="text-danger">আপনি কি নিশ্চিত ?</h4> 
                 <form action="{{ route('admin.delete.order') }}" method="POST" id="delete_order_form">
                   
                   <input type="hidden" id="order_id">
@@ -260,8 +217,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger" id="deleteConfirmBtn" >Delete</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">না</button>
+            <button type="button" class="btn btn-danger" id="deleteConfirmBtn" >হ্যা</button>
             
           </div>
         </div>
@@ -269,9 +226,10 @@
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <script src=" {{ asset('js/jquery-3.6.0.min.js') }}" ></script>
-  <script>
+@push('scripts')
+  <script type="text/javascript">
+
+     
 
            function searchOrder(value){
              
@@ -394,17 +352,18 @@
                         contentType: false,
                         success:function(data){
                             if(data == true){
-                              $('#deleteOrder').find('h4').removeClass('text-danger');
+                                $('#deleteOrder').find('h4').removeClass('text-danger');
                                 $('#deleteOrder').find('h4').addClass('text-success');
-                                $('#deleteOrder').find('h4').text('Delete Confirmed');
+                                $('#deleteOrder').find('h4').text('অর্ডারটি সাফল্যের  সাথে মুছে  ফেলা হয়েছে');
+                              
+                               
 
-                                setTimeout(() => {
-                                  $('#deleteOrder').find('h4').removeClass('text-success');
-                                  $('#deleteOrder').find('h4').addClass('text-danger');
-                                  $('#deleteOrder').find('h4').text('Are You Sure ?');
-                                  $('#tr_'+order_id).remove();
-                                  $('.modal').modal('hide');
-                                }, 3000);
+                                 setTimeout(() => {
+                                  $('#deleteOrder').modal('hide');
+                                  location.reload();
+                                 
+                                 
+                                }, 1000); 
                             }
                         },
                         error: function(){
@@ -416,8 +375,10 @@
 
 
 
+
   </script>
 
+@endpush
 
 @endsection       
 </div>
