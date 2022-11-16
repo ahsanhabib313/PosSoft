@@ -40,7 +40,7 @@
                 <div class="row d-flex justify-content-center">
                   <div class="col-12">
                       <div class="card">
-                          <div class="card-header">
+                          <div class="card-header bg-success">
                               <div class="card-title">
                                 <h5 class="text-dark font-weight-bold">পণ্য যোগ করুন</h5>
                               </div>
@@ -100,15 +100,23 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-5">
-                                                  <div class="form-group">
-                                                    <label for="">কোম্পানির নাম</label>
-                                                     <input type="text" class="form-control" name="companyName" value="{{ old('companyName')}}"">
-                                                    @error('companyName')
-                                                    <p class="text-danger">{{ $message }}</p> 
-                                                     @enderror
-                                                      </div>
+                                                    <div class="form-group">
+                                                      <label for="">কোম্পানী</label>
+                                                      <select name="company_id" id="" class="form-control">
+                                                        <option selected disabled>বাছাই করুন</option>
+                                                        @isset($companies)
+                                                            @foreach ($companies as $company)
+                                                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                                            @endforeach
+                                                        @endisset
+                                                      </select>
+      
+                                                      @error('company_id')
+                                                      <p class="text-danger">{{ $message }}</p> 
+                                                       @enderror
                                                     </div>
                                                 </div>
+                                              </div>
       
                                               <div class="form-row">
                                                 <div class="col-md-5 offset-1">
@@ -183,7 +191,6 @@
                                                 </div>
                                                   <div class="form-row">
                                                     <div class="col-md-5 offset-1">
-      
                                                       <div class="form-group">
                                                         <label for="">পণ্যের সংখ্যার একক (বোতল/প্যাকেট)</label>
                                                          <select name="productQuantityUnit" id="" class="form-control">
@@ -197,7 +204,7 @@
                                                          @error('productQuantityUnit')
                                                          <p class="text-danger">{{ $message }}</p> 
                                                           @enderror
-                                                           </div>
+                                                      </div>
                                                     </div>
                                                     <div class="col-md-5">
                                                       <div class="form-group">
@@ -208,27 +215,39 @@
                                                          @enderror
                                                          </div>
                                                         </div>
-                                                    </div>
+                                                  </div>
                                                       <div class="form-row">
-                                                        <div class="col-md-5 offset-1">
-                                                            <div class="form-group"> 
-                                                              <label for="">বার কোড নাম্বার</label>
-                                                              <input type="number" class="form-control" name="barCode" value="{{ old('barCode')}}"">
-                                                              @error('barCode')
-                                                              <p class="text-danger">{{ $message }}</p> 
-                                                              @enderror
+                                                          <div class="col-md-5 offset-1">
+                                                              <div class="form-group"> 
+                                                                <label for="">বার কোড নাম্বার</label>
+                                                                <input type="number" class="form-control" name="barCode" value="{{ old('barCode')}}"">
+                                                                @error('barCode')
+                                                                <p class="text-danger">{{ $message }}</p> 
+                                                                @enderror
+                                                              </div>
+                                                          </div>
+                                                          <div class="col-md-5">
+                                                            <div class="form-group">
+                                                              <label for="">উৎপাদন তারিখ</label>
+                                                                <input type="date" class="form-control engFont" name="produceDate" value="{{ old('produceDate')}}">
+                                                                @error('produceDate')
+                                                                <p class="text-danger">{{ $message }}</p> 
+                                                                @enderror
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                          <div class="form-group">
-                                                           <label for="">মেয়াদ উত্তীর্ণ তারিখ</label>
-                                                            <input type="date" class="form-control engFont" name="expireDate" value="{{ old('expireDate')}}"">
-                                                            @error('expireDate')
-                                                            <p class="text-danger">{{ $message }}</p> 
-                                                            @enderror
+                                                             
+                                                          </div>
+                                                      </div>
+                                                      <div class="form-row">
+                                                          <div class="col-md-5 offset-1">
+                                                            <div class="form-group">
+                                                              <label for="">মেয়াদ উত্তীর্ণ তারিখ</label>
+                                                                <input type="date" class="form-control engFont" name="expireDate" value="{{ old('expireDate')}}"">
+                                                                @error('expireDate')
+                                                                <p class="text-danger">{{ $message }}</p> 
+                                                                @enderror
                                                             </div>
-                                                            </div>
-                                                        </div>
+                                                          </div>
+                                                      </div>
                                                     <div class="form-row">
                                                       <div class="col-md-5 offset-1 ">
                                                         <button type="submit" class="text-center btn btn-success">জমা করুন</button>
@@ -263,33 +282,41 @@
                                           </div>
                                        </div>
                                        <div class="form-row">
-                                         <div class="col-md-5 offset-1">
-                                             <div class="form-group">
-                                               <label for=""> পণ্যের শ্রেণী</label>
-                                               <select name="category_id" id="" class="form-control">
-                                                 <option selected disabled>বাছাই করুন</option>
-                                                 @isset($categories)
-                                                     @foreach ($categories as $category)
-                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                     @endforeach
-                                                 @endisset
-                                               </select>
-      
-                                               @error('category_id')
-                                               <p class="text-danger">{{ $message }}</p> 
-                                                @enderror
-                                             </div>
-                                         </div>
-                                         <div class="col-md-5">
-                                           <div class="form-group">
-                                             <label for="">কোম্পানীর নাম</label>
-                                              <input type="text" class="form-control" name="companyName" value="{{ old('companyName') }}">
-                                             @error('companyName')
-                                             <p class="text-danger">{{ $message }}</p> 
-                                              @enderror
-                                               </div>
-                                             </div>
-                                         </div>
+                                        <div class="col-md-5 offset-1">
+                                            <div class="form-group">
+                                              <label for="">পণ্যের শ্রেণী</label>
+                                              <select name="category_id" id="" class="form-control">
+                                                <option selected disabled>বাছাই করুন</option>
+                                                @isset($categories)
+                                                    @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    @endforeach
+                                                @endisset
+                                              </select>
+
+                                              @error('category_id')
+                                              <p class="text-danger">{{ $message }}</p> 
+                                               @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                              <label for="">কোম্পানী</label>
+                                              <select name="company_id" id="" class="form-control">
+                                                <option selected disabled>বাছাই করুন</option>
+                                                @isset($companies)
+                                                    @foreach ($companies as $company)
+                                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                                    @endforeach
+                                                @endisset
+                                              </select>
+
+                                              @error('company_id')
+                                              <p class="text-danger">{{ $message }}</p> 
+                                               @enderror
+                                            </div>
+                                        </div>
+                                      </div>
                                          <div class="form-row">
                                             <div class="col-md-5 offset-1" >
                                               <div class="form-group">
@@ -398,15 +425,27 @@
                                                   </div>
                                                 </div>
                                                 <div class="col-md-5">
-                                                  <div class="form-group">
-                                                    <label for="">মেয়াদ উত্তীর্ণ তারিখ</label>
-                                                    <input type="date" class="form-control engFont" name="expireDate"  value="{{ old('expireDate') }}">
-                                                    @error('expireDate')
-                                                    <p class="text-danger">{{ $message }}</p> 
-                                                    @enderror
-                                                  </div>
+                                                    <div class="form-group">
+                                                      <label for="">উৎপাদন তারিখ</label>
+                                                        <input type="date" class="form-control engFont" name="produceDate" value="{{ old('produceDate')}}">
+                                                        @error('produceDate')
+                                                        <p class="text-danger">{{ $message }}</p> 
+                                                        @enderror
                                                     </div>
+                                                
+                                                  </div>
                                                 </div>
+                                                <div class="form-row">
+                                                  <div class="col-md-5 offset-1">
+                                                    <div class="form-group">
+                                                      <label for="">মেয়াদ উত্তীর্ণ তারিখ</label>
+                                                      <input type="date" class="form-control engFont" name="expireDate"  value="{{ old('expireDate') }}">
+                                                      @error('expireDate')
+                                                      <p class="text-danger">{{ $message }}</p> 
+                                                      @enderror
+                                                    </div>
+                                                  </div>
+                                              </div>
                                               
                                               <div class="form-row">
                                                 <div class="col-md-5 offset-1 ">
@@ -443,7 +482,7 @@
                                           <form action="{{url('admin/search/product')}}" method="post" id="searchProduct">
                                             <div class="row">
                                               <div class=" col-12 form-group">
-                                                <label class="text-dark" style="font-size:16px" for="">পণ্যের নাম/কোম্পানীর নাম/বারকোড</label>
+                                                <label class="text-dark" style="font-size:16px" for="">পণ্যের নাম/বারকোড</label>
                                                   <input type="text" name="" id="" class="form-control form-control-md text-black" placeholder=" " aria-describedby="helpId" onkeyup="searchProduct(this.value)" placeholder="পণ্য খুজুন" style="border-color:#006400">
                                                 </div>
                                                 <div class="col-12 form-group">
@@ -520,7 +559,8 @@
                               <input type="hidden" class="photo_{{ $product->id }}" value="{{ $product->photo }}">
                               <input type="hidden" class="category_name_{{ $product->id }}" value="{{ $product->category->name }}">
                               <input type="hidden" class="category_{{ $product->id }}" value="{{ $product->category_id }}">
-                              <input type="hidden" class="companyName_{{ $product->id }}" value="{{ $product->companyName }}">
+                              <input type="hidden" class="company_name_{{ $product->id }}" value="{{ $product->company->name }}">
+                              <input type="hidden" class="company_id_{{ $product->id }}" value="{{ $product->company_id }}">
                               <input type="hidden" class="productWeight_{{ $product->id }}" value="{{ $product->productWeight }}">
                               <input type="hidden" class="productWeightUnit_{{ $product->id }}" value="{{ $product->productWeightUnit }}">
                               <input type="hidden" class="productQuantityUnit_{{ $product->id }}" value="{{ $product->productQuantityUnit }}">
@@ -531,6 +571,7 @@
                               <input type="hidden" class="alertQuantity_{{ $product->id }}" value="{{ $product->alertQuantity }}">
                               <input type="hidden" class="barCode_{{ $product->id }}" value="{{ $product->barCode }}">
                               <input type="hidden" class="expireDate_{{ $product->id }}" value="{{ $product->expireDate }}">
+                              <input type="hidden" class="produceDate_{{ $product->id }}" value="{{ $product->produceDate }}">
                               <input type="hidden" class="buyingDate_{{ $product->id }}" value="{{ $product->updated_at }}">
                              
                                <tr>
@@ -646,14 +687,22 @@
                         </div>
                     </div>
                     <div class="col-md-5">
-                      <div class="form-group">
-                        <label for="">কোম্পানীর নাম</label>
-                        <input type="text" class="form-control" name="companyName" value="{{ old('companyName') }}">
-                        @error('companyName')
-                        <p class="text-danger">{{ $message }}</p> 
-                        @enderror
-                          </div>
+                        <div class="form-group">
+                          <label for="">কোম্পানী</label>
+                          <select name="company_id" id="" class="form-control">
+                            <option selected disabled>বাছাই করুন</option>
+                            @isset($companies)
+                                @foreach ($companies as $company)
+                                <option class="company_option" value="{{ $company->id }}">{{ $company->name }}</option>
+                                @endforeach
+                            @endisset
+                          </select>
+
+                          @error('company_id')
+                          <p class="text-danger">{{ $message }}</p> 
+                          @enderror
                         </div>
+                    </div>
                     </div>
                     <div class="form-row">
                       <div class="col-md-5 offset-1" >
@@ -751,9 +800,18 @@
                             </div>
                         </div>
                         
-                          <div class="form-row">
+                        <div class="form-row">
                          
                           <div class="col-md-5 offset-1">
+                            <div class="form-group">
+                              <label for="">উৎপাদন তারিখ</label>
+                              <input type="date" class="form-control" name="produceDate"  value="{{ old('produceDate') }}">
+                              @error('produceDate')
+                              <p class="text-danger">{{ $message }}</p> 
+                              @enderror
+                            </div>
+                          </div>
+                          <div class="col-md-5">
                             <div class="form-group">
                               <label for="">মেয়াদ উত্তীর্ণ তারিখ</label>
                               <input type="date" class="form-control" name="expireDate"  value="{{ old('expireDate') }}">
@@ -761,8 +819,8 @@
                               <p class="text-danger">{{ $message }}</p> 
                               @enderror
                             </div>
-                              </div>
                           </div>
+                        </div>
                         
                         <div class="form-row">
                           <div class="col-md-5 offset-1 ">

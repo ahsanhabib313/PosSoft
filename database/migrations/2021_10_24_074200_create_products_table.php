@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('productName')->nullable();
             $table->string('photo')->nullable();
             $table->unsignedInteger('category_id');
-            $table->string('companyName')->nullable();
+            $table->unsignedInteger('company_id')->nullable();
             $table->double('productWeight')->nullable();
             $table->string('productWeightUnit')->nullable();
             $table->double('buyingPrice')->nullable();
@@ -31,10 +31,14 @@ class CreateProductsTable extends Migration
             $table->integer('alertQuantity')->nullable();
             $table->bigInteger('barCode')->nullable();
             $table->date('expireDate')->nullable();
+            $table->date('produceDate')->nullable();
+            $table->double('retailProfit')->nullable();
+            $table->double('wholesaleProfit')->nullable();
 
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
            
         });
     }

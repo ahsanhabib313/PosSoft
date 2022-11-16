@@ -15,8 +15,9 @@
           <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link btn btn-primary text-white" onclick="hideCategory(this)" hide="off" id="hide-btn">ক্যাটাগরি অদৃশ্য করুন</a>
+                    <a class="nav-link btn btn-primary text-white" onclick="hideCategory(this)" hide="off" id="hide-btn">ক্যাটাগরি</a>
                 </li>
+               
                 <li class="nav-item">
                     <a class="nav-link btn btn-info text-white ml-3" href="#calculator-modal" data-toggle="modal">ক্যালকুলেটর</a>
 

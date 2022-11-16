@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Product;
 use App\Models\Unit;
 use App\Models\ProductPlace;
@@ -21,22 +22,25 @@ class ProductController extends Controller
          //get all units
          $units = Unit::all();
 
+        //get all companies
+        $companies = Company::all();
+
            //get unread notification 
         $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
      
-        return view('admin.product', compact('products','categories', 'units', 'totalAlert'));
+        return view('admin.product', compact('products','categories', 'units', 'totalAlert','companies'));
     }
 
     //store the resources 
     public function store(Request $request){
-
+    
             //validate the resource
             $request->validate([
                 'manufacture' => 'required',
                 'productName' => 'required',
                 'photo' => 'required',
                 'category_id' => 'required',
-                'companyName' => 'required',
+                'company_id' => 'required',
                 'productWeight' => 'required',
                 'productWeightUnit' => 'required',
                 'buyingPrice' => 'required',
@@ -46,13 +50,14 @@ class ProductController extends Controller
                 'productQuantityUnit' => 'required',
                 'alertQuantity' => 'required',
                 'barCode' => 'required|unique:products',
+                'produceDate' => 'required',
                 'expireDate' => 'required',
                 
             ],[
                 'productName.required'=> 'পণ্যের নাম পূরণ হয় নি',
                 'photo.required'=> 'ছবি পূরণ করা হয় নি',
                 'category_id.required' => 'ক্যাটাগরি বাছাই করা হয় নি',
-                'companyName.required' =>'কোম্পানীর নাম পুরণ করা হয় নি',
+                'company_id.required' =>'কোম্পানীর নাম পুরণ করা হয় নি',
                 'productWeight.required' =>'পণ্যের ওজন পূরণ করা হয় নি ',
                 'productWeightUnit.required' =>'পণ্যের ওজনের একক পূরণ করা হয় নি',
                 'buyingPrice.required' =>'ক্রয়মূল্য পূরণ করা হয় নি',
@@ -63,6 +68,7 @@ class ProductController extends Controller
                 'alertQuantity.required'=>'পণ্যের সতর্ককরণ সংখ্যা পুরণ করা হয় নি ',
                 'barCode.required' =>'বারকোড পূরণ করা হয় নি ',
                 'barCode.unique' => 'বারকোড অদ্বিতীয় হতে হবে',
+                'produceDate.required'=>'পণ্যের উৎপাদন তারিখ পূরণ করা হয় নি',
                 'expireDate.required'=>'পণ্যের মেয়াদোত্তীর্ণ তারিখ পূরণ করা হয় নি',
             ]);     
 
@@ -79,7 +85,7 @@ class ProductController extends Controller
                 'productName' => $request->productName,
                 'photo' => $photoName,
                 'category_id' => $request->category_id,
-                'companyName' => $request->companyName,
+                'company_id' => $request->company_id,
                 'productWeight' => $request->productWeight,
                 'productWeightUnit' =>  $request->productWeightUnit,
                 'buyingPrice' => $request->buyingPrice,
@@ -89,7 +95,10 @@ class ProductController extends Controller
                 'productQuantityUnit' => $request->productQuantityUnit,
                 'alertQuantity' => $request->alertQuantity,
                 'barCode' => $request->barCode,
+                'produceDate' => $request->produceDate,
                 'expireDate' => $request->expireDate,
+                'retailProfit' => $request->retailPrice - $request->buyingPrice,
+                'wholesaleProfit' => $request->wholesalePrice - $request->buyingPrice,
                
 
        ]);
@@ -110,7 +119,7 @@ class ProductController extends Controller
             
             'productName' => 'required',
             'category_id' => 'required',
-            'companyName' => 'required',
+            'company_id' => 'required',
             'productWeight' => 'required',
             'productWeightUnit' => 'required',
             'buyingPrice' => 'required',
@@ -119,13 +128,14 @@ class ProductController extends Controller
             'quantity' => 'required',
             'productQuantityUnit' => 'required',
             'alertQuantity' => 'required',
+            'produceDate' => 'required',
             'expireDate' => 'required',
             
         ],[
             'productName.required'=> 'পণ্যের নাম পূরণ হয় নি',
             'photo.required'=> 'ছবি পূরণ করা হয় নি',
             'category_id.required' => 'ক্যাটাগরি বাছাই করা হয় নি',
-            'companyName.required' =>'কোম্পানীর নাম পুরণ করা হয় নি',
+            'company_id.required' =>'কোম্পানীর নাম পুরণ করা হয় নি',
             'productWeight.required' =>'পণ্যের ওজন পূরণ করা হয় নি ',
             'productWeightUnit.required' =>'পণ্যের ওজনের একক পূরণ করা হয় নি',
             'buyingPrice.required' =>'ক্রয়মূল্য পূরণ করা হয় নি',
@@ -134,6 +144,7 @@ class ProductController extends Controller
             'quantity.required' =>'পণ্যের সংখ্যা পুরণ করা হয় নি ',
             'productQuantityUnit.required' => 'পণ্যের সংখ্যার একক পূরণ করা হয় নি',
             'alertQuantity.required'=>'পণ্যের সতর্ককরণ সংখ্যা পুরণ করা হয় নি ',
+            'produceDate.required'=>'পণ্যের উৎপাদন তারিখ পূরণ করা হয় নি',
             'expireDate.required'=>'পণ্যের মেয়াদোত্তীর্ণ তারিখ পূরণ করা হয় নি',
         ]);  
         
@@ -141,10 +152,9 @@ class ProductController extends Controller
          //store the resource in database table
         $product = Product::find($request->product_id);
 
-        $product->manufacture = $request->manufacture;
         $product->productName = $request->productName;
         $product->category_id = $request->category_id;
-        $product->companyName = $request->companyName;
+        $product->company_id = $request->company_id;
         $product->productWeight = $request->productWeight;
         $product->productWeightUnit =  $request->productWeightUnit;
         $product->buyingPrice = $request->buyingPrice;
@@ -153,11 +163,13 @@ class ProductController extends Controller
         $product->quantity = $request->quantity;
         $product->productQuantityUnit = $request->productQuantityUnit;
         $product->alertQuantity = $request->alertQuantity;
+        $product->produceDate = $request->produceDate;
         $product->expireDate = $request->expireDate;
+        $product->retailProfit = $request->retailPrice - $request->buyingPrice;
+        $product->wholesaleProfit = $request->wholesalePrice - $request->buyingPrice;
         
 
-       
-
+        //check if photo uploaded
         if($request->hasFile('photo')){
 
             $photo = $request->file('photo');
@@ -167,11 +179,9 @@ class ProductController extends Controller
             $product->photo = $photoName;
         
         }
-   
        $store = $product->save();
 
    if($store){
-
        $request->session()->flash('success', 'আপনার পণ্য সফলভাবে সংশোধন হয়েছে...');
        return back();
    }
@@ -224,7 +234,8 @@ public function productWholesalePrice(Request $request){
                 $data = [
                     'id'=>$product->id,
                     'price' => $product->retailPrice,
-                    'unit' =>$product->productQuantityUnit
+                    'unit' =>$product->productQuantityUnit,
+                    'profit' =>$product->retailProfit
                 ];
                 
                 return response()->json($data);
@@ -234,7 +245,8 @@ public function productWholesalePrice(Request $request){
                 $data = [
                     'id'=>$product->id,
                     'price' => $product->retailPrice,
-                    'unit' =>$product->productWeightUnit
+                    'unit' =>$product->productWeightUnit,
+                    'profit' =>$product->retailProfit
                 ];
                 
                 return response()->json($data);
@@ -247,7 +259,8 @@ public function productWholesalePrice(Request $request){
         $data = [
             'id'=>$product->id,
             'price' => $product->wholesalePrice,
-            'unit' =>$product->productQuantityUnit
+            'unit' =>$product->productQuantityUnit,
+            'profit' =>$product->wholesaleProfit
         ];
 
         return response()->json($data);
@@ -260,15 +273,17 @@ public function productWholesalePrice(Request $request){
 public function search(Request $request){
   
     $search_value = $request->value;
+   
         // get the value
-        if($search_value !=''){
+        if(!is_null($search_value)){
 
             $products =Product::where('productName','like', '%'.$search_value.'%')
-            ->orWhere('companyName','like', '%'.$search_value.'%')
             ->orWhere('barCode', $search_value)
             ->orWhere('category_id', $search_value)
             ->simplePaginate(10);  
            
+        }else{
+            $products =Product::all();
         }
 
         $html = ' ';

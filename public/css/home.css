@@ -69,24 +69,34 @@ nav.navbar {
     margin-right: 10px !important;
     margin-bottom: 10px !important;
     font-weight: bold !important;
+    width: auto;
+    text-align: center;
 }
 
  .main-content .category{
     box-shadow: 0px 0px 10px #c3c0c0;
 } 
 
-.main-content .products{
+#category-section{
+    height: 100vh;
+    overflow-y: scroll;
+   
+}
+
+#category-section::-webkit-scrollbar{
+    display: none;
+}
+.products {
     margin-top: 10px;
     box-shadow: 0px 0px 10px #c3c0c0;
-    max-height: 65
-    0px;
-    overflow-y: auto;
+    overflow-y: scroll;
     padding: 10px;
+    min-height: 87vh;
 } 
 
 
 
-.main-content .products .product-card {
+ .products .product-card {
 
     width: 145px;
     padding: 10px;
@@ -96,7 +106,7 @@ nav.navbar {
   
 }
 
-.main-content .products .product-card .card-img-top{
+ .products .product-card .card-img-top{
     
     display: block !important;
     width: 120px !important;
@@ -105,16 +115,16 @@ nav.navbar {
   
 }
 
-.main-content .products .product-card .card-body{
+ .products .product-card .card-body{
     padding: 0 !important;
 }
-.main-content .products .product-card .card-body .productName {
+ .products .product-card .card-body .productName {
     font-size: 14px;
 }
-.main-content .products .product-card .card-body .productWeight, .retailPrice, .wholesalePrice {
+ .products .product-card .card-body .productWeight, .retailPrice, .wholesalePrice {
     font-size: 15px;
 }
-.main-content .products .product-card .card-body .productSellType{
+ .products .product-card .card-body .productSellType{
    
     width: 130px;
     display: block;
@@ -124,6 +134,18 @@ nav.navbar {
 }
 
 /******** order ***********/
+
+#order-section{
+    overflow-y: scroll;
+    height: 100vh;
+
+}
+#order-section::-webkit-scrollbar{
+   display: none;
+
+}
+
+
 
 .order{
     background-color: #262d33a8  !important;

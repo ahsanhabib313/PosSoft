@@ -5,7 +5,7 @@ function viewProduct(id){
   var photo = $('.photo_'+id).val();
   var category = $('.category_'+id).val();
   var categoryName = $('.category_name_'+id).val();
-  var companyName = $('.companyName_'+id).val();
+  var companyName = $('.company_name_'+id).val();
   var productWeight = $('.productWeight_'+id).val();
   var productWeightUnit = $('.productWeightUnit_'+id).val();
   var buyingPrice = $('.buyingPrice_'+id).val();
@@ -16,6 +16,7 @@ function viewProduct(id){
   var alertQuantity = $('.alertQuantity_'+id).val();
   var barCode = $('.barCode_'+id).val();
   var expireDate = $('.expireDate_'+id).val();
+  var produceDate = $('.produceDate_'+id).val();
   var buyingDate = $('.buyingDate_'+id).val();
 
   var product = ' ';
@@ -55,12 +56,13 @@ function viewProduct(id){
       product +='<td>পণ্য ক্রয়ের তারিখ</td>';
       product +=' <td>'+buyingDate+'</td>';
       product +='</tr><tr>';
+      product +='<td>উৎপাদন তারিখ</td>';
+      product +=' <td>'+produceDate+'</td>';
+      product +='</tr><tr>';
       product +='<td>মেয়াদত্তীর্ণের তারিখ</td>';
       product +=' <td>'+expireDate+'</td>';
       product +='</tr>';
       product +='</table>';
-
-
 
       $('#viewProduct .view-table').html(product);
 }
@@ -71,7 +73,7 @@ function editProduct(id){
   
   var productName = $('.productName_'+id).val();
   var category_id = $('.category_'+id).val();
-  var companyName = $('.companyName_'+id).val();
+  var company_id = $('.company_id_'+id).val();
   var productWeight = $('.productWeight_'+id).val();
   var productWeightUnit = $('.productWeightUnit_'+id).val();
   var productQuantityUnit = $('.productQuantityUnit_'+id).val();
@@ -81,13 +83,13 @@ function editProduct(id){
   var quantity = $('.quantity_'+id).val();
   var alertQuantity = $('.alertQuantity_'+id).val();
   var barCode = $('.barCode_'+id).val();
+  var produceDate = $('.produceDate_'+id).val();
   var expireDate = $('.expireDate_'+id).val();
 
  
   //set the product on edit form 
   $('#editProduct input[name=product_id]').val(id);
   $('#editProduct input[name=productName]').val(productName);
-  $('#editProduct input[name=companyName]').val(companyName);
   $('#editProduct input[name=productWeight]').val(productWeight);
   $('#editProduct input[name=buyingPrice]').val(buyingPrice);
   $('#editProduct input[name=retailPrice]').val(retailPrice);
@@ -95,8 +97,18 @@ function editProduct(id){
   $('#editProduct input[name=quantity]').val(quantity);
   $('#editProduct input[name=alertQuantity]').val(alertQuantity);
   $('#editProduct input[name=barCode]').val(barCode);
+  $('#editProduct input[name=produceDate]').val(produceDate);
   $('#editProduct input[name=expireDate]').val(expireDate);
 
+  //select company
+  $('.company_option').each(function(){
+    if(company_id == $(this).val()){
+      $(this).attr('selected',true);
+    }else{
+      $(this).attr('selected',false);
+    }
+  })
+    
   //select category
   $('.category_option').each(function(){
     if(category_id == $(this).val()){

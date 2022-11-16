@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Product;
 use App\Models\SellType;
 use App\Models\Unit;
@@ -21,9 +22,11 @@ class HomeController extends Controller
         $selling_types = SellType::all();
         //get the categories
         $categories = Category::all();
+        //get the companies
+        $companies = Company::all();
         
 
-        return view('user.dashboard', compact('categories', 'selling_types'));
+        return view('user.dashboard', compact('categories', 'selling_types','companies'));
     }
 
 
@@ -33,16 +36,52 @@ class HomeController extends Controller
 
         //get the request data
         $category_id = $request->category_id;
+        $company_id = $request->company_id;
         //get the products according to category
-        $products = Product::where('category_id', $category_id)->get();
+        $products = Product::where('category_id', $category_id)
+                             ->where('company_id', $company_id)->get();
+
         
-        return response()->json([
-            'products' => $products,
-        ]);
+        if(count($products) > 0){
+            return response()->json([
+                'status' => 'true',
+                'products' => $products,
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'false',
+                'products' => 'কোন পণ্য পাওয়া যায় নি!',
+            ]);
+        }
+      
     }
 
 
+ //fetch the company according to category
 
+        public function getCompany($id){
+
+           $category = Category::find($id);
+           $companies = json_decode($category->company_id);
+           
+           $option = '';
+           if(!is_null($companies)){
+                    foreach($companies as $company_id){
+                        
+                        $option .='<option value="'.$company_id.'">'.Company::find($company_id)->name.'</option>';
+                }
+
+           return response()->json([
+            'option' => $option
+            ]);
+        }else{
+            return response()->json([
+                'option' => $option
+                ]);
+        }
+           
+      
+    }
   
 
     /**

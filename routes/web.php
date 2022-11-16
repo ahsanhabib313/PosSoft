@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeePaymentController;
 use App\Http\Controllers\MerchantController;
@@ -44,12 +45,13 @@ Route::prefix('user/')->name('user.')->group(function(){
       Route::post('get/product',[HomeController::class, 'getProduct'])->name('get.product');
       Route::post('/search/debit',[OrderController::class, 'searchDebit'])->name('search.debit');
       Route::post('search/orderItem/barcode',[ProductController::class, 'searchOrderItem'])->name('search.orderItem.barcode');
-      Route::post('draft/order/confirm',[DraftOrderController::class, 'store'])->name('draft.order.confirm');
+  
       /** get the product wholesale price */
       Route::post('/sellType/product/wholesaleprice', [ProductController::class, 'productWholesalePrice']);
 
        //get the product according to category
       Route::post('get/product',[HomeController::class, 'getproduct'])->name('get.product');
+      Route::GET('get/company/{id}',[HomeController::class, 'getCompany'])->name('get.company');
       Route::get('get/invoice/pdf',[OrderController::class, 'getInvoice'])->name('get.invoice.pdf');
 
       Route::get('logout/', [AuthController::class, 'logout'])->name('logout');
@@ -66,12 +68,9 @@ Route::prefix('admin/')->name('admin.')->group(function(){
             Route::post('login/check', [AdminController::class, 'login'])->name('login.check');
             Route::view('register/', 'admin.register')->name('register');
             Route::post('register/', [AdminController::class,'register'])->name('register');
- 
 
     });
     Route::middleware(['auth:admin','preventBackHistory'])->group(function(){
-
-              
             
             Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard'); 
 
@@ -79,6 +78,13 @@ Route::prefix('admin/')->name('admin.')->group(function(){
             Route::get('/show/notification/',[AdminController::class, 'showNotification'])->name('show.notification');
             /** mark the notifications as read  **/
             Route::get('/notification/mark/read',[AdminController::class, 'markAsReadNotification'])->name('notification.mark.read');
+
+            /** Company Route **/
+            Route::get('/company', [CompanyController::class, 'index'])->name('company');
+            Route::post('/company/store', [CompanyController::class, 'store'])->name('company.store');
+            Route::post('/company/update', [CompanyController::class, 'update'])->name('company.update');
+            Route::post('/company/delete', [CompanyController::class, 'destroy'])->name('company.delete');
+            Route::post('/search/company/',[CompanyController::class, 'search'])->name('search.company');
             
             /** Category Route **/
             Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
@@ -163,7 +169,10 @@ Route::prefix('admin/')->name('admin.')->group(function(){
             Route::post('/transaction/update', [TransactionController::class, 'update'])->name('transaction.update');
             Route::post('/transaction/delete', [TransactionController::class, 'destroy'])->name('transaction.delete');
             Route::get('logout/', [AdminController::class, 'logout'])->name('logout');
-            
+
+
+            /**********  Comapny route ******************/
+            Route::get('/company',[CompanyController::class, 'index'])->name('company');
 
 
     });

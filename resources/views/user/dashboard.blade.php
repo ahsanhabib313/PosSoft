@@ -15,8 +15,8 @@
   </div>
 </div> 
 
-  {{-- Calculator Modal--}}
-                    <!-- Modal -->
+                 {{-- start Calculator Modal--}}
+                
                     <div class="modal fade" id="calculator-modal" tabindex="-1" role="dialog" aria-labelledby="calculatorModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -36,6 +36,7 @@
                         </div>
                       </div>
                     </div>
+                  {{-- end Calculator Modal--}}
 @section('content')
     
     {{--start content--}}   
@@ -52,16 +53,30 @@
                         <div class="row">
                             <div class="col-12"> 
                                 {{--start product part--}} 
-                              <div class="category mt-2 p-2 rounded bg-white " >
-                                   <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                                    @isset($categories)
-                                      @foreach ($categories as $category)
-                                          <li class="nav-item">
-                                            <button  class="btn btn-info nav-link  text-dark font-weight-bold active" onclick="getProduct('{{$category->id}}')">{{ $category->name }}</button>
-                                          </li>
-                                      @endforeach
-                                    @endisset
-                                  </ul> 
+                              <div class="category mt-2 p-2 rounded bg-white d-flex justify-content-lg-between" >
+                                <div>
+                                  <select class="form-control" id="category_id" onchange="getCompany(this.value)">
+                                    <option selected disabled>ক্যাটাগরি</option>
+                                        @isset($categories)
+                                            @foreach ($categories as $category)
+                                            <option value="{{$category->id}}">{{ $category->name }}</option>
+                                            @endforeach
+                                        @endisset
+                                  </select>
+                                </div>
+                                <div>
+                                  <select class="form-control" id="company_id">
+                                    <option selected disabled>কোম্পানী</option>
+                                        @isset($companies)
+                                            @foreach ($companies as $company)
+                                            <option value="{{$company->id}}">{{ $company->name }}</option>
+                                            @endforeach
+                                        @endisset
+                                  </select>
+                                </div>
+                                <div class="btn-group" role="group">
+                                  <button  type="button" class="btn btn-secondary btn-md" onclick="getProduct()">সার্চ</button>
+                                </div>
                               </div>
                             </div>
                         </div>
@@ -103,6 +118,7 @@
                                          <th>একক</th>
                                          <th>দাম</th>
                                          <th>একক দাম</th>
+                                         <th>লাভ</th>
                                          <th>কার্যকলাপ</th>
                                      </thead>
                                      <tbody>
@@ -111,51 +127,58 @@
                                      <tfoot>
                                        <tr>
                                           {{--  <td  colspan="4"></td> --}}
-                                           <td class="text-left text-dark font-weight-bold" colspan="5">মোট বিলঃ </td>
+                                           <td class="text-left text-dark font-weight-bold" colspan="6">মোট বিলঃ </td>
                                            <td colspan="2"><span class="totalPrice">0</span> টাকা
                                              <input type="hidden" name="totalPrice" value="0" min="0">
                                            </td>
                                        </tr>
+                                       <tr>
+                                          
+                                           <td class="text-left text-dark font-weight-bold" colspan="6">মোট লাভঃ </td>
+                                           <td colspan="2"><span class="totalProfit">0</span> টাকা
+                                             <input type="hidden" name="totalProfit" value="0" min="0">
+                                           </td>
+                                       </tr>
                                         <tr class="border">
                                              {{-- <td  colspan="3"></td> --}}
-                                             <td  class="text-left text-dark font-weight-bold" colspan="5">ডিসকাউন্টঃ 
+                                             <td  class="text-left text-dark font-weight-bold" colspan="6">ডিসকাউন্টঃ 
                                              </td>
                                              <td colspan="2">
-                                               <input class="form-control discount" onmouseover="this.focus()" type="number" name="discount" value="0" min="0" onchange="discountFunction(this.value)">%
+                                               <input class="form-control discount" onmouseover="this.focus()" type="number" name="discount" value="0" min="0" onkeyup="discountFunction(this.value)">
                                              </td>
                                        </tr>
                                         <tr>
-                                             <td colspan="5" class="text-left text-dark font-weight-bold">পরিশোধ করতে হবেঃ</td>
+                                             <td colspan="6" class="text-left text-dark font-weight-bold">পরিশোধ করতে হবেঃ</td>
                                              <td colspan="2"><span class="toBePaid">0</span> টাকা
                                                <input type="hidden" name="toBePaid" value="0" min="0">
                                              </td>
                                        </tr>
                                         <tr>
-                                           <td colspan="5" class="text-left text-dark font-weight-bold">গ্রহণকৃত টাকাঃ </td>
+                                           <td colspan="6" class="text-left text-dark font-weight-bold">গ্রহণকৃত টাকাঃ </td>
                                            <td colspan="2"><input type="number" name="receivedMoney"  onmouseover="this.focus()"  class="form-control receivedMoney"  oninput="receivedMoneyFunction(this.value)" value="0" min="0"></span>
                                            </td>
                                        </tr>
                                        <tr> 
-                                         <td  colspan="5" class="text-left text-dark font-weight-bold">  বর্তমান বকেয়াঃ </td>
+                                         <td  colspan="6" class="text-left text-dark font-weight-bold">  বর্তমান বকেয়াঃ </td>
                                          <td colspan="2"> <span class="presentDebit">0</span></span><span> টাকা </span>
                                            <input type="hidden" name="presentDebit" value="0" min="0">
                                          </td>
                                        </tr>
                                        <tr>
-                                         <td colspan="5" class="text-left text-dark font-weight-bold"> আগের বকেয়াঃ  </td>
+                                         <td colspan="6" class="text-left text-dark font-weight-bold"> আগের বকেয়াঃ  </td>
                                          <td colspan="2"><span class="pastDebit text-danger">0</span> টাকা (<span class="debitDate"></span>)
                                            <input type="hidden" name="pastDebit" value="0" onchange="changeTotalDebit(this.value)" min="0">
                                          </td>
                                        </tr>
                                        <tr>
-                                         <td colspan="5" class="text-left text-dark font-weight-bold">মোট বকেয়াঃ </td>
+                                         <td colspan="6" class="text-left text-dark font-weight-bold">মোট বকেয়াঃ </td>
                                          <td colspan="2"><span class="totalDebit">0</span> টাকা 
                                            <input type="hidden" name="totalDebit" value="0" min="0">
                                          </td>
                                        </tr>
                                        <tr>
-                                         <td colspan="7" class="text-center">   
-                                           <button id="order-btn" class="btn btn-success mt-3">অর্ডার করুন</button>
+                                         <td colspan="8" class="text-center">   
+                                           <button id="order-btn" class="btn btn-info mt-3">অর্ডার করুন</button>
                                          </td>
                                        </tr>
                                      </tfoot>
@@ -180,6 +203,36 @@
 <script src="{{ asset('js/calculator/calculator.js')}}"></script>
 
 <script>  
+
+/**   get the company   ***/
+function getCompany(value){
+
+  $.ajaxSetup({
+          headers:{
+              'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+   $.ajax({
+
+          url:'/user/get/company/'+value,
+          type:'get',
+          processData:false,
+          contentType:false,
+          success: function(data){
+             
+            $('#company_id').html(data.option);
+             
+
+          },
+          error:function(data){
+
+          }
+
+   });
+
+
+}
 /*       hide the category section   */
   function hideCategory(data){
 
@@ -188,7 +241,7 @@
     let hide = btn.attr('hide');
     if(hide == 'off'){
       btn.attr('hide','on');
-      btn.text('ক্যাটাগরি দৃশ্যমান করুন');
+      btn.text('ক্যাটাগরি সেকশন দৃশ্যমান করুন');
       //hide the category section
       $('#category-section').css('transition','all 1s ease')
       $('#category-section').removeClass('col-sm-5');
@@ -202,7 +255,7 @@
     }
     if(hide =='on'){
       btn.attr('hide','off');
-      btn.text('ক্যাটাগরি অদৃশ্য করুন')
+      btn.text('ক্যাটাগরি সেকশন অদৃশ্য করুন')
        //show the category section
       $('#category-section').css('transition','all 1s ease')
        $('#category-section').addClass('col-sm-5');
@@ -214,14 +267,18 @@
       $('#order-section').removeClass('col-sm-12');
     }
   }
-  let hide_btn = $('#hide-btn')
-  hideCategory(hide_btn);
+
+
  //get the product from the dataabse according to category 
-  function getProduct(category_id){
+  function getProduct(){
+
+       let category_id = $('#category_id').val();
+       let company_id = $('#company_id').val();
 
         //formdata
         var formData = new FormData();
         formData.append('category_id', category_id);
+        formData.append('company_id', company_id);
 
         $.ajaxSetup({
           headers:{
@@ -238,8 +295,10 @@
           processData:false,
           contentType:false,
           success: function(data){
-            
-            //initially empty the product box
+          
+            if(data.status == 'true'){
+
+              //initially empty the product box
             $('#products_box').html('');
             var html
             for(let i=0; i<data.products.length; i++){
@@ -268,9 +327,15 @@
                   html +='<div><button type="submit" class="btn btn-block btn-sm btn-info" onclick="barCodeFunction('+ data.products[i].barCode+')" >যোগ করুন</button></div></div>';
 
                 }
-                $('#products_box').append(html);
+                //$('.category').hide();
+                $('#products_box').html(html);
                                                                 
             }
+            }else{
+
+              $('#products_box').html(`<h2 class="text-center text-danger">${data.products}</h1>`);
+            }
+            
           },
           error: function(data){
 
@@ -289,10 +354,20 @@ function totalPrice(){
         total +=  parseInt($(this).val());
         
       })
+      var totalProfit = 0;
+      $('.order-table tbody tr').find('input.unitProfit').each(function(){
+        totalProfit +=  parseInt($(this).val());
+        
+      })
+      
 
       //set the total price 
       $('.totalPrice').text(total);
       $('input[name="totalPrice"]').val(total);
+
+      //set the total price 
+      $('.totalProfit').text(totalProfit);
+      $('input[name="totalProfit"]').val(totalProfit);
 
       // after discount total price 
       var discount = $('input[name="discount"]').val();
@@ -304,7 +379,7 @@ function totalPrice(){
 function discountFunction(discount){
 
       var totalPrice = $('input[name="totalPrice"]').val();
-      var afterDiscountTotalPrice  = parseInt(totalPrice)  - parseInt(totalPrice*(discount/100)) ;
+      var afterDiscountTotalPrice  = parseInt(totalPrice)  - parseInt(discount) ;
      
       //set the total price after discount
       $('.toBePaid').text(afterDiscountTotalPrice);
@@ -355,13 +430,22 @@ function editQuantity(id){
 
       var quantity= $('.order-table tbody tr').find('.productQuantity_'+id).val();
       var productPrice =$('.order-table tbody tr').find('input.productPrice_'+id).val();
+      var profit =$('.order-table tbody tr').find('input.profit_'+id).val();
 
       productPrice = parseInt(productPrice);
       var productUnitPrice = quantity * productPrice;
           productUnitPrice = parseInt(productUnitPrice);
 
+      profit = parseInt(profit);
+      var unitProfit = quantity * profit;
+          unitProfit = parseInt(unitProfit);
+
       $('.order-table tbody tr').find('.productUnitPrice_'+id).text(productUnitPrice);
       $('.order-table tbody tr').find('input.productUnitPrice_'+id).val(productUnitPrice);
+
+      $('.order-table tbody tr').find('.profit_'+id).text(unitProfit);
+      $('.order-table tbody tr').find('input.unitProfit_'+id).val(unitProfit);
+     
 
       //get the total price
       totalPrice();
@@ -485,14 +569,18 @@ function barCodeFunction(value){
                 }
           
                 product += '<td class="productPrice_'+data[0].id+'">'+data[0].retailPrice+'</td>';
-                product += '<input type="hidden"  class="productPrice productPrice_'+data[0].id+'" value="'+data[0].retailPrice+'">';
+               
+                product += '<input type="hidden"  class="profit profit_'+data[0].id+'" value="'+data[0].retailProfit+'">';
+                product += '<input type="hidden"  class="unitProfit unitProfit_'+data[0].id+'" value="'+data[0].retailProfit+'">';
                 product += '<td  class="productUnitPrice_'+data[0].id+'">'+data[0].retailPrice+'</td>';
                 product += '<input type="hidden" class="productUnitPrice productUnitPrice_'+data[0].id+'"  value="'+data[0].retailPrice+'">';
-              
+                product += '<td  class="profit profit_'+data[0].id+'">'+data[0].retailProfit+'</td>';
+                product += '<input type="hidden"  class="productPrice productPrice_'+data[0].id+'" value="'+data[0].retailPrice+'">';
                 product += '<td><a id="delete-product_'+data[0].id+'"  class="btn btn-danger " onclick="deleteProduct('+data[0].id+')" ><i class="fa fa-trash-alt text-white"></i></a></td>';
                 product += '</tr>';
                   
                 $('.order-table tbody').append(product);
+
                 totalPrice()
               
                 $('input[name=barCodeScanner]').val(null); 
@@ -539,11 +627,14 @@ function sellTypeFunction(sell_type_id, product_id){
             var id = data.id;
             var price = data.price;
             var unit = data.unit;
+            var profit = data.profit;
 
             $('.order-table tbody').find('.productPrice_'+id).text(price);
             $('.order-table tbody').find('.productPrice').val(price);
             $('.order-table tbody').find('.productUnit_'+id).text(unit);
             $('.order-table tbody').find('.productUnit').val(unit);
+            $('.order-table tbody').find('.profit_'+id).text(profit);
+            $('.order-table tbody').find('.profit').val(profit);
             
             //call the edit quantity function
             editQuantity(id)

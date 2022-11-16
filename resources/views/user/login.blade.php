@@ -24,6 +24,7 @@
                                 {{ Session::get('fail') }}
                             </div>
                             @endif
+                           
                             <div class="form-group ">
                                 <label for="emial" class="">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">

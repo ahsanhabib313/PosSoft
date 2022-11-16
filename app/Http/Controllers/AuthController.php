@@ -34,13 +34,13 @@ class AuthController extends Controller
      */
     public function login(Request $request){
 
-        //validate the input 
-       $request->validate([
+          //validate the input 
+        $request->validate([
 
-        'email'    => 'required',
-        'password' => 'required'
+          'email'    => 'required',
+          'password' => 'required'
 
-      ]);
+        ]);
 
       $email = $request->email;
       $password = $request->password;
@@ -57,14 +57,11 @@ class AuthController extends Controller
           return back()->with('fail','You are pending yet...!');
         }
 
-            $request->session()->regenerate();
+              $request->session()->regenerate();
               return redirect()->route('user.dashboard');
-            
-           
-
       }else{
         
-      $request->session()->flash('error','আপনার দেওয়া তথ্যে ভুল আছে ');
+      $request->session()->flash('fail','আপনার দেওয়া তথ্যে ভুল আছে ');
       return back();
 
       }

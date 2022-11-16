@@ -21,20 +21,16 @@
       }
        
     </style>
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
   @section('content')
   <div class="container">
-     
-      
 {{--========================== stop search box  =========================--}}
-   
         <!-- Modal -->
         <div class="modal fade" id="productaddmodal" tabindex="-1" aria-labelledby="productaddmodal" aria-hidden="true">
           <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
               <div class="modal-header">
-               
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true"  class="engFont">&times;</span>
                 </button>
@@ -43,7 +39,7 @@
                 <div class="row d-flex justify-content-center">
                   <div class="col-10">
                                     <div class="card ">
-                                      <div class="card-header ">
+                                      <div class="card-header bg-success ">
                                           <div class="card-title">
                                             <h5 class="text-dark  font-weight-bold">ক্যাটাগরি তৈরি করুন</h5>
                                           </div>
@@ -59,6 +55,16 @@
                                                    @error('name')
                                                      <p class="text-danger">{{ $message }}</p>
                                                    @enderror
+                                                 </div>
+                                                 <div class="form-group">
+                                                  <label for="" style="font-size: 16px; color:#000">কোম্পানী</label>
+                                                  <select class="company" name="company_id[]" multiple="multiple">
+                                                     @isset($companies)
+                                                          @foreach($companies as $company)
+                                                              <option value="{{$company->id}}">{{$company->name}}</option>
+                                                          @endforeach
+                                                     @endisset
+                                                  </select>
                                                  </div>
                                              </div>
                                           </div>
@@ -98,7 +104,7 @@
                     
                       <div class="form-group">
                         <label style="font-size:18px; color:#4B0082; ">ক্যাটাগরি খুঁজুন</label>
-                          <input type="text" name="" id="" class="form-control text-black" placeholder="" aria-describedby="helpId" oninput="searchCategory(this.value)" style="border-color:#006400">
+                          <input type="text" name="" id="" class="form-control text-black" placeholder="" aria-describedby="helpId" onkeyup="searchCategory(this.value)" style="border-color:#006400">
                         </div>
                    
                 </form>
@@ -144,6 +150,7 @@
               <tr>
                 <td>সিরিয়াল নং.</td>
                 <td>নাম</td>
+                <td>কোম্পানী</td>
                 <td>কার্যকলাপ</td>
               </tr>
             </thead>
@@ -153,6 +160,18 @@
                        <tr>
                            <td>{{ $loop->index + 1 }}</td>
                            <td class="category_{{ $category->id }}">{{ $category->name }}</td>
+                           @php
+                              $company_ids = json_decode($category->company_id);
+                           @endphp
+                           <td>
+                              @isset($company_ids)
+                               
+                                 @foreach ($company_ids as $item)
+                                      <button class="btn btn-sm btn-secondary">{{App\Models\Company::find($item)->name}}</button>
+                                 @endforeach
+
+                              @endisset
+                          </td>
                            <td>
                              <button class="btn btn-sm btn-info d-inline-block mb-1" data-toggle="modal" data-target="#editCategory"  onclick="editFunction({{$category->id}})">সংশোধন</button>
                              <button class="btn btn-sm btn-danger d-inline-block" data-toggle="modal" data-target="#deleteCategory"  onclick="deleteFunction({{$category->id}})" style="    margin-top: -4px;">বাতিল</button>
@@ -184,7 +203,7 @@
             <div class="row d-flex justify-content-center">
               <div class="col-md-10">
                                 <div class="card">
-                                  <div class="card-header  text-white">
+                                  <div class="card-header  text-white bg-success">
                                     <h4 class="card-title">ক্যাটাগরি সংশোধন</h4>
                                   </div>
                                   <div class="card-body">
@@ -193,12 +212,23 @@
                                      
                                         <input type="hidden" name="category_id">
                                              <div class="form-group">
-                                               <label for=""> নাম</label>
+                                               <label for="" style="font-size: 16px; color:#000"> নাম</label>
                                                
                                                <input type="text" class="form-control" name="name">
                                                @error('name')
                                                  <p class="text-danger">{{ $message }}</p>
                                                @enderror
+                                             </div>
+                                             <div class="form-group">
+                                              <label for="" style="font-size: 16px; color:#000">কোম্পানী</label>
+                                              <select class="company" name="company_id[]" multiple="multiple">
+                                                <option>কোম্পানী সিলেক্ট করুন...</option>
+                                                 @isset($companies)
+                                                      @foreach($companies as $company)
+                                                          <option value="{{$company->id}}">{{$company->name}}</option>
+                                                      @endforeach
+                                                 @endisset
+                                              </select>
                                              </div>
                                      <div class="form-group">
                                            <button type="submit" class="text-center btn btn-primary">সংশোধন করুন</button>
@@ -253,10 +283,19 @@
 
     
   </div>
+  @push('scripts')
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script>
+    $('.company').select2();
+
+  </script>
+
   <script  src="{{ asset('js/category.js') }}"></script>
   
+  @endpush
+ 
 @endsection   
 
     

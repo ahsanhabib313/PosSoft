@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Translation\Provider\NullProvider;
 
 class CategoryController extends Controller
 {
@@ -18,7 +20,8 @@ class CategoryController extends Controller
         //get unread notification 
         $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
         $categories = Category::paginate(10);
-        return view('admin.category', compact('categories','totalAlert'));
+        $companies = Company::all();
+        return view('admin.category', compact('categories','totalAlert','companies'));
     }
 
     /**
@@ -42,16 +45,19 @@ class CategoryController extends Controller
         //validate the resource
         $request->validate([
             'name' => 'required',
+            
         ],
         [
-            'name.required' => 'শ্রেণী ইনপুট ফিল্ড পূরণ করা হয় নি ',
+            'name.required' => 'নাম পূরণ করা হয় নি ',
         ]);
 
         //store the resource
         $store = Category::create([
             
              'name' => $request->name,
+             'company_id' => $request->company_id ? json_encode($request->company_id) : null,
         ]);
+        
 
         if($store){
             $request->session()->flash('success', 'আপনার ক্যাটাগরি সাফল্যের সাথে যোগ হয়েছে...');
@@ -94,15 +100,18 @@ class CategoryController extends Controller
         //validate the resource
         $request->validate([
             'name' => 'required',
-        ], [
-            'name.required' => 'শ্রেণী ইনপুট ফিল্ড পূরণ করা হয় নি ',
+        ],
+        [
+            'name.required' => 'নাম পূরণ করা হয় নি ',
         ]);
 
         //store the resource
         $update = Category::where('id', $request->category_id)
                          ->update([
-            
+
                                  'name' => $request->name,
+                                 'company_id' => $request->company_id ? $request->company_id : Null
+
                                  ]);
 
         if($update){

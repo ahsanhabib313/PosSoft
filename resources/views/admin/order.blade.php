@@ -39,16 +39,15 @@
                              <div class="row">
                                 <div class=" col-6 form-group">
                                   <label>অর্ডার নাম্বার</label>
-                                    <input type="text" name=""   class="form-control form-control-md text-black order_id" placeholder="" aria-describedby="helpId" onchange="searchOrder(this.value) " >
+                                    <input type="text" name=""   class="form-control form-control-md text-black order_id" placeholder="" aria-describedby="helpId" onkeyup="searchOrder(this.value) " >
                                   </div>
                                   <div class=" col-6 form-group">
                                     <label>মোবাইলে নাম্বার</label>
-                                    <input type="text"  class="form-control form-control-md text-black mobile_number" placeholder="" aria-describedby="helpId" onchange="searchOrder(this.value) " >
+                                    <input type="text"  class="form-control form-control-md text-black mobile_number" placeholder="" aria-describedby="helpId" onkeyup="searchOrder(this.value) " >
                                   </div>
                                   <div class="col-6 form-group">
                                     <label>তারিখ</label>
                                     <input type="date" class="form-control order_date engFont"  onchange="searchOrder(this.value)">
-                                    
                                   </div>
                                 
                            

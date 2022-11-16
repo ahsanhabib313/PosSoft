@@ -20,7 +20,8 @@
    
     <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('admin/assets/css/app.css')}}">
-    <style>.loader {
+    <style>
+    .loader {
             position: fixed;
             left: 0;
             top: 0;
@@ -35,6 +36,13 @@
             position: absolute;
             top: 50%;
             left: 50%;
+        }
+        .modal-lg {
+            max-width: 100%;
+        }
+        .alert-success, .alert-danger{
+            font-size: 15px;
+            font-weight: 600;
         }
     </style>
 
@@ -104,6 +112,11 @@
                     <span style="color:#8B0000">ডেসবোর্ড </span>
                 </a>
                 </li>
+                <li class="treeview"><a href="{{route('admin.company')}}">
+                    <i class="icon icon icon-package light-green-text s-18"></i>
+                    <span  style="color:#8B0000">কোম্পানী</span>
+                </a>
+                </li>
                 <li class="treeview"><a href="{{ route('admin.category.index') }}">
                     <i class="icon icon icon-package light-green-text s-18"></i>
                     <span  style="color:#8B0000">পণ্যের শ্রেণী</span>
@@ -122,22 +135,12 @@
                     </a>
                 </li>
 
+              
+               
                 <li class="treeview no-b">
                     <a href="{{ route('admin.designation') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
                         <span  style="color:#8B0000">পদবি</span>
-                    </a>
-                </li>
-                <li class="treeview no-b">
-                    <a href="{{ route('admin.bank') }}">
-                        <i class="icon icon-package light-green-text s-18"></i>
-                        <span style="color:#8B0000">ব্যাংক</span>
-                    </a>
-                </li>
-                <li class="treeview no-b">
-                    <a href="{{ route('admin.merchant') }}">
-                        <i class="icon icon-package light-green-text s-18"></i>
-                        <span style="color:#8B0000">আড়ৎদার </span>
                     </a>
                 </li>
                 <li class="treeview no-b">
@@ -151,6 +154,19 @@
                     <a href="{{ route('admin.employee.payment') }}">
                         <i class="icon icon-package light-green-text s-18"></i>
                         <span style="color:#8B0000">কর্মচারীর বেতন</span>
+                    </a>
+                </li>
+             
+                <li class="treeview no-b">
+                    <a href="{{ route('admin.merchant') }}">
+                        <i class="icon icon-package light-green-text s-18"></i>
+                        <span style="color:#8B0000">আড়ৎদার </span>
+                    </a>
+                </li>
+                <li class="treeview no-b">
+                    <a href="{{ route('admin.bank') }}">
+                        <i class="icon icon-package light-green-text s-18"></i>
+                        <span style="color:#8B0000">ব্যাংক</span>
                     </a>
                 </li>
                 <li class="treeview no-b">
@@ -218,8 +234,15 @@
                            
                         </ul>
                     </li>
+                    <li style="margin-top:15px">
+                        <a href="{{ route('admin.logout') }}">
+                            
+                            <div class="pt-1 font-weight-bold text-white ">লগ আউট</div>
+                            
+                        </a>
+                    </li>
                   
-                    <li class="dropdown custom-dropdown user user-menu ">
+                   {{--  <li class="dropdown custom-dropdown user user-menu ">
                         <a href="panel-page-dashboard2.html#" class="nav-link" data-toggle="dropdown">
                             <img src="{{asset('admin\assets\img\dummy\u1.png')}}" class="user-image" alt="User Image">
                             <i class="icon-more_vert "></i>
@@ -247,7 +270,7 @@
                             </div>
                           
                         </div>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -261,10 +284,9 @@
 
 <script src="{{ asset('admin/assets/js/app.js')}}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" async integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
 @stack('scripts')
 <script>
 
@@ -272,7 +294,7 @@
 
 
 //create notification and show
-function createShowNotify(){
+ function createShowNotify(){
     
     $.ajaxSetup({
                     headers: {
@@ -304,10 +326,10 @@ function createShowNotify(){
 }
 
 createShowNotify();
-
+ 
 
 // show notificaion after a interval
- setInterval(() => {
+  setInterval(() => {
      createShowNotify();
     }, 300000); 
  
