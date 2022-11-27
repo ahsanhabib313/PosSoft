@@ -1,3 +1,35 @@
+/**   get the company   ***/
+function getCompany(value,manufacture){
+
+  $.ajaxSetup({
+          headers:{
+              'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+   $.ajax({
+
+          url:'/admin/get/company/'+value,
+          type:'get',
+          processData:false,
+          contentType:false,
+          success: function(data){
+
+            if(manufacture == 1){
+              $('#manufactureCompany').html(data.company_html);
+            }else{
+              $('#unmanufactureCompany').html(data.company_html);
+            }
+            
+          },
+          error:function(data){
+
+          }
+
+   });
+
+
+}
 //view the product info
 function viewProduct(id){
   

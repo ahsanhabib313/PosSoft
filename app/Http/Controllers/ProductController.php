@@ -33,7 +33,7 @@ class ProductController extends Controller
 
     //store the resources 
     public function store(Request $request){
-    
+          
             //validate the resource
             $request->validate([
                 'manufacture' => 'required',
@@ -77,6 +77,17 @@ class ProductController extends Controller
         $photoName = time().'.'.$photo->getClientOriginalExtension();
         $path = public_path('img/products');
         $photo->move($path, $photoName);
+        
+        //evaluate the profit according  to manufacture
+        if($request->manufacture == 0){
+              
+               $perUnitBuyingPrice = ($request->buyingPrice / $request->productWeight);
+       
+               $retailProfit = $request->retailPrice - $perUnitBuyingPrice;
+        }else{
+               $retailProfit = $request->retailPrice - $request->buyingPrice;
+        }
+   
     
        //store the resource in database table
        $store = Product::create([
@@ -97,7 +108,7 @@ class ProductController extends Controller
                 'barCode' => $request->barCode,
                 'produceDate' => $request->produceDate,
                 'expireDate' => $request->expireDate,
-                'retailProfit' => $request->retailPrice - $request->buyingPrice,
+                'retailProfit' => $retailProfit,
                 'wholesaleProfit' => $request->wholesalePrice - $request->buyingPrice,
                
 
@@ -147,6 +158,17 @@ class ProductController extends Controller
             'produceDate.required'=>'পণ্যের উৎপাদন তারিখ পূরণ করা হয় নি',
             'expireDate.required'=>'পণ্যের মেয়াদোত্তীর্ণ তারিখ পূরণ করা হয় নি',
         ]);  
+
+
+         //evaluate the profit according  to manufacture
+         if($request->manufacture == 0){
+              
+            $perUnitBuyingPrice = ($request->buyingPrice / $request->productWeight);
+    
+            $retailProfit = $request->retailPrice - $perUnitBuyingPrice;
+     }else{
+            $retailProfit = $request->retailPrice - $request->buyingPrice;
+     }
         
         
          //store the resource in database table
@@ -165,7 +187,7 @@ class ProductController extends Controller
         $product->alertQuantity = $request->alertQuantity;
         $product->produceDate = $request->produceDate;
         $product->expireDate = $request->expireDate;
-        $product->retailProfit = $request->retailPrice - $request->buyingPrice;
+        $product->retailProfit = $retailProfit;
         $product->wholesaleProfit = $request->wholesalePrice - $request->buyingPrice;
         
 
@@ -327,4 +349,35 @@ public function search(Request $request){
         ]);
 
     }
+
+    
+    //fetch the company according to category
+    public function getCompany($category_id){
+
+        $category = Category::find($category_id);
+        $companies = json_decode($category->company_id);
+        
+        $company_html  = '';
+
+        if(!is_null($companies)){
+                
+                $company_html .= '<option selected disabled>বাছাই করুন</option>';
+                foreach($companies as $company_id){
+
+                    $company_html .= '<option value="'.$company_id.'">'.Company::find($company_id)->name.'</option>';
+
+            }
+
+        return response()->json([
+        'company_html' => $company_html
+        ]);
+    }else{
+        return response()->json([
+            'company_html' => $company_html
+            ]);
+    }
+        
+
+    }
+
 }

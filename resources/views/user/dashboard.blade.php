@@ -14,7 +14,6 @@
     </div>
   </div>
 </div> 
-
                  {{-- start Calculator Modal--}}
                 
                     <div class="modal fade" id="calculator-modal" tabindex="-1" role="dialog" aria-labelledby="calculatorModalLabel" aria-hidden="true">
@@ -50,13 +49,13 @@
         <div class="main-content">
             <div class="row d-flex">
                     <div class="col-sm-5 order-sm-1 order-2" id="category-section">
-                        <div class="row">
+                       {{--  <div class="row">
                             <div class="col-12"> 
-                                {{--start product part--}} 
+                                
                               <div class="category mt-2 p-2 rounded bg-white d-flex justify-content-lg-between" >
                                 <div>
                                   <select class="form-control" id="category_id" onchange="getCompany(this.value)">
-                                    <option selected disabled>ক্যাটাগরি</option>
+                                    <option selected disabled>ক্যাটাগরি বাছাই করুন</option>
                                         @isset($categories)
                                             @foreach ($categories as $category)
                                             <option value="{{$category->id}}">{{ $category->name }}</option>
@@ -65,8 +64,8 @@
                                   </select>
                                 </div>
                                 <div>
-                                  <select class="form-control" id="company_id">
-                                    <option selected disabled>কোম্পানী</option>
+                                  <select class="form-control" id="company_id" onchange="getProduct()">
+                                    <option selected disabled>কোম্পানী বাছাই করুন</option>
                                         @isset($companies)
                                             @foreach ($companies as $company)
                                             <option value="{{$company->id}}">{{ $company->name }}</option>
@@ -74,16 +73,26 @@
                                         @endisset
                                   </select>
                                 </div>
-                                <div class="btn-group" role="group">
-                                  <button  type="button" class="btn btn-secondary btn-md" onclick="getProduct()">সার্চ</button>
-                                </div>
+                              
                               </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="row">
                           <div class="col-12">
-                            <div class=" products">
+                            <div class="products">
                               <div class=" d-flex flex-wrap justify-content-start"   id="products_box">
+
+                                @isset($categories)
+                                    @foreach ($categories as $category)
+                                      <div class="card" style="width: 7.3rem; margin-right:1%;height: 175px;max-height: 175px; cursor:pointer" onclick="getCompany({{$category->id}})">
+                                            <img class="card-img-top" src="{{asset('img/category/'.$category->image)}}" alt="category image cap" style="height: 115px; max-height:115px ">
+                                            <div class="card-body">
+                                              <p class="card-text text-center" style="font-size: 12px">{{$category->name}}</p>
+                                            </div>
+                                      </div>
+                                    @endforeach
+                                @endisset
+                               
                               </div>
                           </div>   
                         </div> 
@@ -97,13 +106,13 @@
                               <h3 class=" text-center font-weight-bold d-none">অর্ডার</h3>
                               <div class="form-row">
                                    <div class=" col-4 form-group"> 
-                                     <input type="number" onmouseover="this.focus()" oninput="barCodeFunction(this.value)" name="barCodeScanner" class="form-control engFont" placeholder="বারকোড প্রদান করুন " >
+                                     <input type="number" onmouseover="this.focus()" oninput="barCodeFunction(this.value)" name="barCodeScanner" class="form-control" placeholder="বারকোড প্রদান করুন " >
                                    </div>
                                    <div class=" col-4 form-group">
-                                    <input type="text"  onmouseover="this.focus()" name="customerName" class="form-control engFont" placeholder="ক্রেতার নাম" >
+                                    <input type="text"  onmouseover="this.focus()" name="customerName" class="form-control" placeholder="ক্রেতার নাম" >
                                   </div>
                                   <div class=" col-4 form-group"> 
-                                    <input type="number"  onmouseover="this.focus()" name="mobileNumber" class="form-control engFont" placeholder="মোবাইল নাম্বার" onblur="searchDebitFunction()">
+                                    <input type="number"  onmouseover="this.focus()" name="mobileNumber" class="form-control" placeholder="মোবাইল নাম্বার" onblur="searchDebitFunction()">
                                   </div>
                               </div>
                               <div class="form-row ">
@@ -112,8 +121,8 @@
                               </div>
                                <table class="table table-responsive-lg mt-0 mb-2 text-white  order-table d-1">
                                      <thead>
-                                         <th>বিক্রির ধরণ</th>
-                                         <th>পণ্যের নাম</th>
+                                         <th>প্রকার</th>
+                                         <th>নাম</th>
                                          <th>পরিমান</th>
                                          <th>একক</th>
                                          <th>দাম</th>
@@ -132,29 +141,43 @@
                                              <input type="hidden" name="totalPrice" value="0" min="0">
                                            </td>
                                        </tr>
-                                       <tr>
-                                          
-                                           <td class="text-left text-dark font-weight-bold" colspan="6">মোট লাভঃ </td>
-                                           <td colspan="2"><span class="totalProfit">0</span> টাকা
-                                             <input type="hidden" name="totalProfit" value="0" min="0">
-                                           </td>
-                                       </tr>
+                                      
                                         <tr class="border">
                                              {{-- <td  colspan="3"></td> --}}
-                                             <td  class="text-left text-dark font-weight-bold" colspan="6">ডিসকাউন্টঃ 
+                                             <td  class="text-left text-dark font-weight-bold" colspan="6">ছাড়ঃ 
                                              </td>
                                              <td colspan="2">
                                                <input class="form-control discount" onmouseover="this.focus()" type="number" name="discount" value="0" min="0" onkeyup="discountFunction(this.value)">
                                              </td>
                                        </tr>
+                                       <tr>
+                                          
+                                        <td class="text-left text-dark font-weight-bold" colspan="6">মোট লাভঃ </td>
+                                        <td colspan="2"><span class="totalProfit">0</span> টাকা
+                                          <input type="hidden" name="totalFirstTermProfit" value="0" min="0">
+                                          <input type="hidden" name="totalProfit" value="0" min="0">
+                                        </td>
+                                    </tr>
                                         <tr>
-                                             <td colspan="6" class="text-left text-dark font-weight-bold">পরিশোধ করতে হবেঃ</td>
+                                             <td colspan="6" class="text-left text-dark font-weight-bold">ছাড় পরবর্তী মোট বিলঃ</td>
                                              <td colspan="2"><span class="toBePaid">0</span> টাকা
                                                <input type="hidden" name="toBePaid" value="0" min="0">
                                              </td>
                                        </tr>
+                                       <tr>
+                                        <td colspan="6" class="text-left text-dark font-weight-bold"> আগের বকেয়াঃ  </td>
+                                        <td colspan="2"><span class="pastDebit text-danger">0</span> টাকা <span class="debitDate"></span>
+                                          <input type="hidden" name="pastDebit" value="0" onchange="changeTotalDebit(this.value)" min="0">
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td colspan="6" class="text-left text-dark font-weight-bold">আগের বকেয়াসহ মোট বিলঃ </td>
+                                        <td colspan="2"><span class="totalDebit">0</span> টাকা 
+                                          <input type="hidden" name="totalDebit" value="0" min="0">
+                                        </td>
+                                      </tr>
                                         <tr>
-                                           <td colspan="6" class="text-left text-dark font-weight-bold">গ্রহণকৃত টাকাঃ </td>
+                                           <td colspan="6" class="text-left text-dark font-weight-bold">নগদ গ্রহনঃ </td>
                                            <td colspan="2"><input type="number" name="receivedMoney"  onmouseover="this.focus()"  class="form-control receivedMoney"  oninput="receivedMoneyFunction(this.value)" value="0" min="0"></span>
                                            </td>
                                        </tr>
@@ -162,18 +185,6 @@
                                          <td  colspan="6" class="text-left text-dark font-weight-bold">  বর্তমান বকেয়াঃ </td>
                                          <td colspan="2"> <span class="presentDebit">0</span></span><span> টাকা </span>
                                            <input type="hidden" name="presentDebit" value="0" min="0">
-                                         </td>
-                                       </tr>
-                                       <tr>
-                                         <td colspan="6" class="text-left text-dark font-weight-bold"> আগের বকেয়াঃ  </td>
-                                         <td colspan="2"><span class="pastDebit text-danger">0</span> টাকা (<span class="debitDate"></span>)
-                                           <input type="hidden" name="pastDebit" value="0" onchange="changeTotalDebit(this.value)" min="0">
-                                         </td>
-                                       </tr>
-                                       <tr>
-                                         <td colspan="6" class="text-left text-dark font-weight-bold">মোট বকেয়াঃ </td>
-                                         <td colspan="2"><span class="totalDebit">0</span> টাকা 
-                                           <input type="hidden" name="totalDebit" value="0" min="0">
                                          </td>
                                        </tr>
                                        <tr>
@@ -204,6 +215,37 @@
 
 <script>  
 
+
+/***** Get all Categories ****/
+function getCategories(){
+
+    $.ajaxSetup({
+          headers:{
+              'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+   $.ajax({
+
+          url:'/user/dashboard/',
+          type:'get',
+          processData:false,
+          contentType:false,
+          success: function(data){
+             
+            $('#products_box').html(data.category_html);
+             
+
+          },
+          error:function(data){
+
+          }
+
+   });
+
+
+}
+
 /**   get the company   ***/
 function getCompany(value){
 
@@ -221,7 +263,7 @@ function getCompany(value){
           contentType:false,
           success: function(data){
              
-            $('#company_id').html(data.option);
+            $('#products_box').html(data.company_html);
              
 
           },
@@ -241,7 +283,7 @@ function getCompany(value){
     let hide = btn.attr('hide');
     if(hide == 'off'){
       btn.attr('hide','on');
-      btn.text('ক্যাটাগরি সেকশন দৃশ্যমান করুন');
+      btn.html('<i class="fa fa-eye" aria-hidden="true"></i>');
       //hide the category section
       $('#category-section').css('transition','all 1s ease')
       $('#category-section').removeClass('col-sm-5');
@@ -255,7 +297,7 @@ function getCompany(value){
     }
     if(hide =='on'){
       btn.attr('hide','off');
-      btn.text('ক্যাটাগরি সেকশন অদৃশ্য করুন')
+      btn.html('<i class="fa fa-eye-slash" aria-hidden="true"></i>')
        //show the category section
       $('#category-section').css('transition','all 1s ease')
        $('#category-section').addClass('col-sm-5');
@@ -270,10 +312,10 @@ function getCompany(value){
 
 
  //get the product from the dataabse according to category 
-  function getProduct(){
+  function getProduct(obj){
 
-       let category_id = $('#category_id').val();
-       let company_id = $('#company_id').val();
+       let category_id = $(obj).data('category_id');
+       let company_id = $(obj).data('company_id');
 
         //formdata
         var formData = new FormData();
@@ -303,7 +345,7 @@ function getCompany(value){
             var html
             for(let i=0; i<data.products.length; i++){
                 html = '';
-                html +='<div class="card product-card" >';
+                html +='<div class="card product-card" onclick="barCodeFunction('+ data.products[i].barCode+')" style="cursor:pointer;">';
                 html +=' <input type="hidden" id="productQuantityUnit_'+data.products[i].id+'" value="'+data.products[i].productQuantityUnit+'">';
                 html +=' <input type="hidden" id="manufacture_'+data.products[i].id+'" value="'+data.products[i].manufacture+'">';
                 html +=' <input type="hidden" id="productName_'+data.products[i].id+'" value="'+data.products[i].productName+'">';
@@ -311,20 +353,21 @@ function getCompany(value){
                 html +=' <input type="hidden" id="productWeightUnit_'+data.products[i].id+'" value="'+data.products[i].productWeightUnit+'">';
                 html +=' <input type="hidden" id="wholesalePrice_'+data.products[i].id+'" value="'+data.products[i].wholesalePrice+'">';
                 html +='<img class="card-img-top" src="../img/products/'+data.products[i].photo+'">';
-                html +='<div class="card-body d-flex flex-column"><div>';
-                html +='<h6 class="productName text-center  pt-1 font-weight-bold">';
+                html +='<div style="font-size:12px" class="card-body text-center d-flex flex-column"><div>';
+                html +='<h6 class="productName mb-0 mt-1 text-center">';
                 html +=data.products[i].productName+'</h6></div>';
               
-                html +='<div class=" text-left pl-2 ">';
+                html +='<div class="">';
                 html += '<span class="productWeight">ওজন:'+ data.products[i].productWeight+' '+data.products[i].productWeightUnit+'</span></div>';
           
                 if(data.products[i].quantity < data.products[i].alertQuantity && data.products[i].quantity > 0){
-                  html +='<div><button type="submit" class="btn btn-block btn-sm btn-warning" onclick="barCodeFunction('+ data.products[i].barCode+')" >যোগ করুন</button></div></div>';
+
+                  html +='<div><span class="text-warning" >স্টকে আছেঃ '+data.products[i].quantity+' '+ data.products[i].productQuantityUnit+'</span></div></div>';
 
                 }else if(data.products[i].quantity < 1){
-                  html +='<div><button type="submit" class="btn btn-block btn-sm btn-danger" onclick="barCodeFunction('+ data.products[i].barCode+')" disabled>পণ্যটি স্টকে নেই</button></div></div>';
+                  html +='<div><span class=" text-danger" >স্টকে আছেঃ '+data.products[i].quantity+' '+ data.products[i].productQuantityUnit+'</span></div></div>';
                 }else{
-                  html +='<div><button type="submit" class="btn btn-block btn-sm btn-info" onclick="barCodeFunction('+ data.products[i].barCode+')" >যোগ করুন</button></div></div>';
+                  html +='<div><span class=" text-info" >স্টকে আছেঃ '+data.products[i].quantity+' '+ data.products[i].productQuantityUnit+'</span></div></div>';
 
                 }
                 //$('.category').hide();
@@ -351,12 +394,12 @@ function totalPrice(){
 
       var total = 0;
       $('.order-table tbody tr').find('input.productUnitPrice').each(function(){
-        total +=  parseInt($(this).val());
+        total +=   ($(this).val());
         
       })
       var totalProfit = 0;
       $('.order-table tbody tr').find('input.unitProfit').each(function(){
-        totalProfit +=  parseInt($(this).val());
+        totalProfit +=   ($(this).val());
         
       })
       
@@ -368,6 +411,7 @@ function totalPrice(){
       //set the total price 
       $('.totalProfit').text(totalProfit);
       $('input[name="totalProfit"]').val(totalProfit);
+      $('input[name="totalFirstTermProfit"]').val(totalProfit);
 
       // after discount total price 
       var discount = $('input[name="discount"]').val();
@@ -377,41 +421,69 @@ function totalPrice(){
 
 //total amount after discount
 function discountFunction(discount){
+      
 
+      if(discount == ''){
+        discount = 0;
+      }
+     
       var totalPrice = $('input[name="totalPrice"]').val();
-      var afterDiscountTotalPrice  = parseInt(totalPrice)  - parseInt(discount) ;
+     
+      if(totalPrice == 'NaN'){
+        totalPrice = 0;
+      }
+      var totalFirstTermProfit = $('input[name="totalFirstTermProfit"]').val();
+      
+      if(totalFirstTermProfit == 'NaN'){
+        totalFirstTermProfit = 0;
+      }
+      var afterDiscountTotalPrice  =  (totalPrice)  -  (discount) ;
+      var afterDiscountTotalProfit  =  (totalFirstTermProfit)  -  (discount) ;
+
      
       //set the total price after discount
       $('.toBePaid').text(afterDiscountTotalPrice);
       $('input[name="toBePaid"]').val(afterDiscountTotalPrice);
 
+      //set the total profit after discount
+      $('.totalProfit').text(afterDiscountTotalProfit);
+      $('input[name="totalProfit"]').val(afterDiscountTotalProfit);
+
       //get the received money
       var receivedMoney = $('input[name="receivedMoney"]').val();
       receivedMoneyFunction(receivedMoney);
 
+    
 }
 
 
 // calcuation the debit 
 
-function receivedMoneyFunction(value){
-
-      let toBePaid  = $('input[name=toBePaid]').val();
-          toBePaid  = parseInt(toBePaid);
-
-      let presentDebit = parseInt(toBePaid) - parseInt(value);
-          presentDebit = parseInt(presentDebit);
-
-      $('.presentDebit').text(presentDebit);
+function receivedMoneyFunction(receivedMoney){
+     
+     let money = receivedMoney;
       
-      $('input[name=presentDebit]').val(presentDebit);
+     if(money == ''){
+          money = 0;
+     }
+     
+      let toBePaid  = $('input[name=toBePaid]').val();
+          toBePaid  =  (toBePaid);
 
       let pastDebit = $('input[name=pastDebit]').val();
-      
-      let totalDebit = parseInt(presentDebit) + parseInt(pastDebit) ;
+      let totalDebit =  (toBePaid) +  (pastDebit) ;
     
       $('.totalDebit').text(totalDebit);
-      $('input[name=totalDebit]').val(totalDebit);
+      $('input[name=totalDebit]').val(totalDebit);  
+
+      
+      let presentDebit =  (totalDebit) -  (money);
+      presentDebit =  (presentDebit); 
+
+      $('.presentDebit').text(presentDebit);
+      $('input[name=presentDebit]').val(presentDebit);      
+ 
+    
 }
 
 
@@ -421,7 +493,7 @@ function changeTotalDebit(pastDebit){
       let presentDebit = $('input[name=presentDebit]').val();
       let totalDebit = presentDebit + pastDebit;
 
-      $('.totalDebit').text(parseInt(totalDebit));
+      $('.totalDebit').text( (totalDebit));
       $('input[name=totalDebit]').val(totalDebit);
 
 } 
@@ -432,13 +504,13 @@ function editQuantity(id){
       var productPrice =$('.order-table tbody tr').find('input.productPrice_'+id).val();
       var profit =$('.order-table tbody tr').find('input.profit_'+id).val();
 
-      productPrice = parseInt(productPrice);
+      productPrice =  (productPrice);
       var productUnitPrice = quantity * productPrice;
-          productUnitPrice = parseInt(productUnitPrice);
+          productUnitPrice =  (productUnitPrice);
 
-      profit = parseInt(profit);
+      profit =  (profit);
       var unitProfit = quantity * profit;
-          unitProfit = parseInt(unitProfit);
+          unitProfit =  (unitProfit);
 
       $('.order-table tbody tr').find('.productUnitPrice_'+id).text(productUnitPrice);
       $('.order-table tbody tr').find('input.productUnitPrice_'+id).val(productUnitPrice);
@@ -482,8 +554,9 @@ function searchDebitFunction(){
       contentType: false,
       success: function(data){
        
+            $('input[name="customerName"]').val(data.name);
             $('.pastDebit').text(data.pastDebit);
-            $('.debitDate').text(data.debitDate);
+            $('.debitDate').text('('+data.debitDate+')');
             $('input[name=pastDebit]').val(data.pastDebit);
             //get the total price
             
@@ -501,7 +574,7 @@ function searchDebitFunction(){
 
 function barCodeFunction(value){
 
-      var barCode = parseInt(value) ;
+      var barCode =  (value) ;
 
       let checkBarCode = document.querySelector(`.tr_${barCode}`);
 
@@ -512,7 +585,7 @@ function barCodeFunction(value){
 
          let prodQuantity = $('.tr_'+barCode).find('.quantity').val();
 
-         prodQuantity = parseInt(prodQuantity) +  1;
+         prodQuantity =  (prodQuantity) +  1;
 
          $('.tr_'+barCode).find('.quantity').val(prodQuantity);
 
@@ -647,15 +720,48 @@ function sellTypeFunction(sell_type_id, product_id){
       });
 }
 
+ function convertEngToBangla(value){
+  
+    value = String(value).split('');
 
+    let length = value.length;
 
+    for(let i = 0; i < length; i++){
+        
+        if(Number(value[i]) == 0){
+          value[i] = '০';
+        }else if(Number(value[i]) == 1){
+          value[i] = '১';
+        }else if(Number(value[i]) == 2){
+          value[i] ='২';
+        }
+        else if(Number(value[i]) == 3){
+          value[i] ='৩';
+        }
+        else if(Number(value[i]) == 4){
+          value[i] ='৪';
+        }else if(Number(value[i]) == 5){
+          value[i] ='৫';
+        }else if(Number(value[i]) == 6){
+          value[i] ='৬';
+        }else if(Number(value[i]) == 7){
+          value[i] ='৭';
+        }else if(Number(value[i]) == 8){
+          value[i] ='৮';
+        }else if(Number(value[i]) == 9){
+          value[i] ='৯';
+        }
+      }
+
+     value = value.toString();
+     return value.replaceAll(',','');
+    }
+    
 //get all informations about order
 $(document).on('click','#order-btn',function(e){
 
       e.preventDefault();
 
-      
-      
       var customerName = $('input[name=customerName]').val();
       var mobileNumber = $('input[name=mobileNumber]').val();
 
@@ -708,7 +814,39 @@ $(document).on('click','#order-btn',function(e){
 
   
       var totalPrice =  $('input[name="totalPrice"]').val();
-      var totalDebit =  $('input[name="totalDebit"]').val();
+      var presentDebit =  $('input[name="presentDebit"]').val();
+
+      if(presentDebit !=0 && mobileNumber == ''){
+        $('#order-btn').text('বকেয়া আছে, মোবাইল নাম্বার দিন!!!');
+        $('#order-btn').removeClass('btn-info');
+        $('#order-btn').addClass('btn-danger');
+
+
+        setTimeout(() => {
+          $('#order-btn').text('অর্ডার করুন');
+          $('#order-btn').removeClass('btn-danger');
+          $('#order-btn').addClass('btn-info');
+        }, 1000);
+
+        return;
+        
+      }
+      if(totalPrice == 0){
+        $('#order-btn').text('লেনদেন করুন!!!');
+        $('#order-btn').removeClass('btn-info');
+        $('#order-btn').addClass('btn-danger');
+
+        setTimeout(() => {
+          $('#order-btn').text('অর্ডার করুন');
+          $('#order-btn').removeClass('btn-danger');
+          $('#order-btn').addClass('btn-info');
+        }, 1000);
+
+        return;
+        
+      }
+
+
 
     // create a formData instance for sending data as form data
       var data = new FormData();
@@ -724,7 +862,7 @@ $(document).on('click','#order-btn',function(e){
       data.append('productUnitPrice', productUnitPrice);
       data.append('productUnit', productUnit);
       data.append('totalPrice', totalPrice);
-      data.append('debit', totalDebit);
+      data.append('debit', presentDebit);
 
   //csrf token 
       $.ajaxSetup({
@@ -742,16 +880,15 @@ $(document).on('click','#order-btn',function(e){
           contentType: false,
           success: function(data){
                 if(data == true){
-
                     var customerName = $('input[name=customerName]').val();
-                    var mobileNumber = $('input[name=mobileNumber]').val();
-                    var totalPrice = $('input[name="totalPrice"]').val();
-                    var discount = $('input[name=discount]').val();
-                    var toBePaid = $('input[name=toBePaid]').val();
-                    var receivedMoney = $('input[name=receivedMoney]').val();
-                    var presentDebit = $('input[name="presentDebit"]').val();
-                    var pastDebit = $('input[name="pastDebit"]').val();
-                    var totalDebit = $('input[name="totalDebit"]').val();
+                    var mobileNumber = convertEngToBangla( $('input[name=mobileNumber]').val());
+                    var totalPrice = convertEngToBangla($('input[name="totalPrice"]').val());
+                    var discount = convertEngToBangla($('input[name=discount]').val());
+                    var toBePaid = convertEngToBangla($('input[name=toBePaid]').val());
+                    var receivedMoney = convertEngToBangla($('input[name=receivedMoney]').val());
+                    var presentDebit = convertEngToBangla($('input[name="presentDebit"]').val());
+                    var pastDebit = convertEngToBangla($('input[name="pastDebit"]').val());
+                    var totalDebit = convertEngToBangla($('input[name="totalDebit"]').val());
                   
                     //csrf token 
                     $.ajaxSetup({
@@ -766,6 +903,10 @@ $(document).on('click','#order-btn',function(e){
                     type:'GET',
                     success: function(response){
 
+                             let date = new Date(response.order.created_at);
+                              date= JSON.stringify(date);
+                              date= date.replace(/[a-zA-z]/g, ' ');
+                              date= date.substr(1,10);
                               var html = ''
                               html += '<table style="border:none;width:100%; text-align:center">';
                               html +='<tr><td><h5>মেসার্স তারক ভান্ডার</h5></td></tr>'
@@ -777,30 +918,34 @@ $(document).on('click','#order-btn',function(e){
                               html +='<tr><td>ক্যাশ মেমো</td></tr>'
                               html +='<tr><td><hr style="border-top: 1px dashed black"></td></tr>'
                              
-                              html +='<tr style="text-align:left"><td><h5>অর্ডার নং: '+response.order.id+'</h5></td></tr>'
-                              html +='<tr style="text-align:left"><td><h5>তারিখ: '+response.order.created_at+'</h5></td></tr>'
+                              html +='<tr style="text-align:left"><td><h5>অর্ডার নং: '+convertEngToBangla(response.order.id)+'</h5></td></tr>'
+                              html +='<tr style="text-align:left"><td><h5>তারিখ: '+convertEngToBangla(date)+'</h5></td></tr>'
                               html +='<tr style="text-align:left"><td><h5>ক্রেতার নাম: '+customerName+'</h5></td></tr>'
-                              html +='<tr style="text-align:left"><td><h5>মোবাইল নাম্বার: '+mobileNumber+'</h5></td></tr>'
+                              html +='<tr style="text-align:left"><td><h5>মোবাইল নাম্বার: '+convertEngToBangla(mobileNumber)+'</h5></td></tr>'
                               html +='<tr><td></td></tr>'
                               html +='</table>'
                               html +='<hr>'
                               html += '<table style="width:100%; border:1px solid #333; border-collapse: collapse; text-align:left">'
-                              html +='<tr style="border:1px solid #333;"><td>পণ্যের নাম</td><td>পরিমান</td><td>দাম</td><td>একক দাম</td>'
-                              html += '<td>একক</td></tr>'
+                              html +='<tr style="border:1px solid #333;"><td>পণ্যের নাম</td><td>পরিমান</td><td>একক</td><td>দাম</td><td>একক দাম</td>'
+                              html += '</tr>'
 
                               for(var i=0; i<response.order_items.length; i++){ 
                                         
-                                        html +='<tr style="border:1px solid #333;"><td>'+ response.order_items[i].product.productName+'</td><td>'+response.order_items[i].quantity+'</td><td>'+response.order_items[i].productPrice+'</td> <td>'+response.order_items[i].productUnitPrice+'</td><td>'+response.order_items[i].productUnit+'</td></tr>'
+                                        html +='<tr style="border:1px solid #333;"><td>'+response.order_items[i].product.productName+'</td><td>'+convertEngToBangla(response.order_items[i].quantity)+'</td><td>'+convertEngToBangla(response.order_items[i].productUnit)+'</td><td>'+convertEngToBangla(response.order_items[i].productPrice)+'</td> <td>'+convertEngToBangla(response.order_items[i].productUnitPrice)+'</td></tr>'
 
                               }
-                            
-                              html += '<tr  style="border:1px solid #333;" ><td colspan="3"></td><td colspan="2"><p>সর্বমোট মূল্যঃ <span>'+ totalPrice +'</span></p></td></tr>'
-                              html += '<tr  style="border:1px solid #333;" ><td colspan="3"></td><td colspan="2"><p>ডিসকাউন্টঃ <span>'+ discount +'</span></p></td></tr>'
-                              html += '<tr  style="border:1px solid #333;" ><td colspan="3"></td><td colspan="2"><p>পরিশোধ করতে হবেঃ <span>'+ toBePaid +'</span></p></td></tr>'
-                              html += '<tr  style="border:1px solid #333;" ><td colspan="3"></td><td colspan="2"><p>পরিশোধ করেছেঃ <span>'+ receivedMoney +'</span></p></td></tr>'
-                              html += '<tr  style="border:1px solid #333;" ><td colspan="3"></td><td colspan="2"><p>বর্তমান বকেয়াঃ <span>'+ presentDebit +'</span></p></td></tr>'
-                              html += '<tr  style="border:1px solid #333;" ><td colspan="3"></td><td colspan="2"><p>আগের বকেয়াঃ <span>'+ pastDebit +'</span></p></td></tr>'
-                              html += '<tr  style="border:1px solid #333;" ><td colspan="3"></td><td colspan="2"><p>মোট বকেয়াঃ <span>'+ totalDebit +'</span></p></td></tr>'
+                              
+                              html += '<tr style="border:1px solid #333;"><td colspan="5">&nbsp;</td></tr>'
+                              html += '<tr style="border:1px solid #333;"><td colspan="5">&nbsp;</td></tr>'
+                              html += '<tr style="border:1px solid #333;"><td colspan="5">&nbsp;</td></tr>'
+                              html += '<tr  style="border:1px solid #333;" ><td colspan="2"></td><td colspan="3"><p>মোট বিলঃ<span>'+ totalPrice +'</span></p></td></tr>'
+                              html += '<tr  style="border:1px solid #333;" ><td colspan="2"></td><td colspan="3"><p>ছাড়ঃ <span>'+ discount +'</span></p></td></tr>'
+                              html += '<tr  style="border:1px solid #333;" ><td colspan="2"></td><td colspan="3"><p>ছাড় পরবর্তী মোট বিলঃ <span>'+ toBePaid +'</span></p></td></tr>'
+                              html += '<tr  style="border:1px solid #333;" ><td colspan="2"></td><td colspan="3"><p>আগের বকেয়াঃ <span>'+ pastDebit +'</span></p></td></tr>'
+                              html += '<tr  style="border:1px solid #333;" ><td colspan="2"></td><td colspan="3"><p>মোট বকেয়াঃ <span>'+ totalDebit +'</span></p></td></tr>'
+                              html += '<tr  style="border:1px solid #333;" ><td colspan="2"></td><td colspan="3"><p>পরিশোধ করেছেঃ <span>'+ receivedMoney +'</span></p></td></tr>'
+                              html += '<tr  style="border:1px solid #333;" ><td colspan="2"></td><td colspan="3"><p>বর্তমান বকেয়াঃ <span>'+ presentDebit +'</span></p></td></tr>'
+
                               html +='</table>'
 
                               var originalContent = document.body.innerHTML;
@@ -819,10 +964,14 @@ $(document).on('click','#order-btn',function(e){
                               $('input[name=receivedMoney]').val(0);
                               $('input[name="pastDebit"]').val(0);
                               $('.pastDebit').text(0);
+                              $('.debitDate').text('');
                               $('input[name="presentDebit"]').val(0);
                               $('.presentDebit').text(0);
                               $('input[name="totalDebit"]').val(0);
                               $('.totalDebit').text(0); 
+                              $('.totalProfit').text(0); 
+                              $('input[name="totalProfit"]').val(0);
+                              $('#products_box').html('');
                         
 
                          

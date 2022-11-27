@@ -85,7 +85,7 @@
                                                 <div class="col-md-5 offset-1">
                                                     <div class="form-group">
                                                       <label for="">পণ্যের শ্রেণী</label>
-                                                      <select name="category_id" id="" class="form-control">
+                                                      <select name="category_id" id="" class="form-control" onchange="getCompany(this.value, 1)">
                                                         <option selected disabled>বাছাই করুন</option>
                                                         @isset($categories)
                                                             @foreach ($categories as $category)
@@ -102,7 +102,7 @@
                                                 <div class="col-md-5">
                                                     <div class="form-group">
                                                       <label for="">কোম্পানী</label>
-                                                      <select name="company_id" id="" class="form-control">
+                                                      <select name="company_id" class="form-control" id="manufactureCompany">
                                                         <option selected disabled>বাছাই করুন</option>
                                                         @isset($companies)
                                                             @foreach ($companies as $company)
@@ -285,7 +285,7 @@
                                         <div class="col-md-5 offset-1">
                                             <div class="form-group">
                                               <label for="">পণ্যের শ্রেণী</label>
-                                              <select name="category_id" id="" class="form-control">
+                                              <select name="category_id" id="" class="form-control" onchange="getCompany(this.value,0)">
                                                 <option selected disabled>বাছাই করুন</option>
                                                 @isset($categories)
                                                     @foreach ($categories as $category)
@@ -302,7 +302,7 @@
                                         <div class="col-md-5">
                                             <div class="form-group">
                                               <label for="">কোম্পানী</label>
-                                              <select name="company_id" id="" class="form-control">
+                                              <select name="company_id" class="form-control" id="unmanufactureCompany">
                                                 <option selected disabled>বাছাই করুন</option>
                                                 @isset($companies)
                                                     @foreach ($companies as $company)

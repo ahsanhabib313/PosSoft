@@ -19,9 +19,15 @@
       
         display:none;
       }
+
+      .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    cursor: default;
+    padding-left: 15px;
+    padding-right: 5px;
+}
        
     </style>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+   {{--  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
 @endpush
   @section('content')
   <div class="container">
@@ -45,7 +51,7 @@
                                           </div>
                                       </div>
                                       <div class="card-body ">
-                                        <form action="{{ route('admin.category.store') }}" method="POST">
+                                        <form action="{{ route('admin.category.store') }}" method="POST" enctype="multipart/form-data">
                                           @csrf
                                           <div class="form-row">
                                              <div class="col-md-8 offset-1">
@@ -53,6 +59,13 @@
                                                    <label for="" style="font-size: 16px; color:#000">নাম</label>
                                                    <input type="text" class="form-control" name="name">
                                                    @error('name')
+                                                     <p class="text-danger">{{ $message }}</p>
+                                                   @enderror
+                                                 </div>
+                                                 <div class="form-group">
+                                                   <label for="" style="font-size: 16px; color:#000">ছবি</label>
+                                                   <input type="file" class="form-control engFont" name="image">
+                                                   @error('image')
                                                      <p class="text-danger">{{ $message }}</p>
                                                    @enderror
                                                  </div>
@@ -150,6 +163,7 @@
               <tr>
                 <td>সিরিয়াল নং.</td>
                 <td>নাম</td>
+                <td>ছবি</td>
                 <td>কোম্পানী</td>
                 <td>কার্যকলাপ</td>
               </tr>
@@ -160,6 +174,7 @@
                        <tr>
                            <td>{{ $loop->index + 1 }}</td>
                            <td class="category_{{ $category->id }}">{{ $category->name }}</td>
+                           <td class="category_{{ $category->id }}"><img src="{{ asset('img/category/'.$category->image) }}" width="100" height="100"> </td>
                            @php
                               $company_ids = json_decode($category->company_id);
                            @endphp
@@ -207,18 +222,24 @@
                                     <h4 class="card-title">ক্যাটাগরি সংশোধন</h4>
                                   </div>
                                   <div class="card-body">
-                                    <form action="{{ route('admin.category.update') }}" method="POST">
+                                    <form action="{{ route('admin.category.update') }}" method="POST" enctype="multipart/form-data">
                                       @csrf
                                      
                                         <input type="hidden" name="category_id">
                                              <div class="form-group">
                                                <label for="" style="font-size: 16px; color:#000"> নাম</label>
-                                               
                                                <input type="text" class="form-control" name="name">
                                                @error('name')
                                                  <p class="text-danger">{{ $message }}</p>
                                                @enderror
                                              </div>
+                                             <div class="form-group">
+                                                <label for="" style="font-size: 16px; color:#000">ছবি</label>
+                                                <input type="file" class="form-control engFont" name="image">
+                                                @error('image')
+                                                  <p class="text-danger">{{ $message }}</p>
+                                                @enderror
+                                            </div>
                                              <div class="form-group">
                                               <label for="" style="font-size: 16px; color:#000">কোম্পানী</label>
                                               <select class="company" name="company_id[]" multiple="multiple">
@@ -235,7 +256,6 @@
                                     </div>
                                   </form>
                                   </div>
-                                  
                   </div>
               </div>
             </div>
@@ -280,22 +300,16 @@
         </div>
       </div>
     </div>
-
-    
   </div>
   @push('scripts')
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  <script>
-    $('.company').select2();
-
-  </script>
-
-  <script  src="{{ asset('js/category.js') }}"></script>
-  
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+      <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    {{--   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+      <script>
+          $('.company').select2();
+      </script> --}}
+      <script  src="{{ asset('js/category.js') }}"></script>
   @endpush
- 
 @endsection   
 
     

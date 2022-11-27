@@ -9,10 +9,8 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','company_id'];
+    protected $guarded = [];
 
-   /*  protected $casts = [
-        'company_id' => 'array'
-    ]; */
+   
 
 }

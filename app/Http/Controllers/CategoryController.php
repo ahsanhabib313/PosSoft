@@ -21,6 +21,7 @@ class CategoryController extends Controller
         $totalAlert = DB::table('notifications')->where('read_at', null)->count(); 
         $categories = Category::paginate(10);
         $companies = Company::all();
+
         return view('admin.category', compact('categories','totalAlert','companies'));
     }
 
@@ -42,20 +43,38 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+
         //validate the resource
         $request->validate([
             'name' => 'required',
+            'image' => 'required|image',
             
         ],
         [
             'name.required' => 'নাম পূরণ করা হয় নি ',
-        ]);
+            'image.required' => 'ছবি পূরণ করা হয় নি ',
+            'image.image' => 'ফাইল ছবি ফরমেটের হতে হবে ',
+        ]); 
 
+
+        //check the image is existed
+        if($request->file('image')){
+
+            $photo = $request->file('image');
+            $photoName = time().'.'.$photo->getClientOriginalExtension();
+            $path = public_path('img/category');
+            $photo->move($path, $photoName);
+     
+        }
+
+        
         //store the resource
         $store = Category::create([
             
              'name' => $request->name,
              'company_id' => $request->company_id ? json_encode($request->company_id) : null,
+             'image' => $photoName,
+
         ]);
         
 
@@ -105,14 +124,31 @@ class CategoryController extends Controller
             'name.required' => 'নাম পূরণ করা হয় নি ',
         ]);
 
-        //store the resource
-        $update = Category::where('id', $request->category_id)
-                         ->update([
+        if($request->file('image')){
+            $photo = $request->file('image');
+            $photoName = time().'.'.$photo->getClientOriginalExtension();
+            $path = public_path('img/category');
+            $photo->move($path, $photoName);
+     
+        }
 
-                                 'name' => $request->name,
-                                 'company_id' => $request->company_id ? $request->company_id : Null
+        //find the category thats will be updated 
+        $category = Category::find( $request->category_id);
 
-                                 ]);
+        $category->name = $request->name;
+
+        //check if company is exits
+        if($request->company_id){
+            $category->company_id = $ $request->company_id ? $request->company_id : Null;
+        }
+        
+        //check if file exists
+        if($request->file('image')){
+            $category->image = $photoName ? $photoName : Null;
+        }
+        
+        //update category
+        $update = $category->save();
 
         if($update){
             $request->session()->flash('success', 'আপনার ক্যাটাগরি সাফল্যের সাথে সংশোধন হয়েছে...');

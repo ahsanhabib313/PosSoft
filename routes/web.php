@@ -51,7 +51,7 @@ Route::prefix('user/')->name('user.')->group(function(){
 
        //get the product according to category
       Route::post('get/product',[HomeController::class, 'getproduct'])->name('get.product');
-      Route::GET('get/company/{id}',[HomeController::class, 'getCompany'])->name('get.company');
+      Route::get('get/company/{id}',[HomeController::class, 'getCompany'])->name('get.company');
       Route::get('get/invoice/pdf',[OrderController::class, 'getInvoice'])->name('get.invoice.pdf');
 
       Route::get('logout/', [AuthController::class, 'logout'])->name('logout');
@@ -100,6 +100,7 @@ Route::prefix('admin/')->name('admin.')->group(function(){
             Route::post('/product/update', [ProductController::class, 'update'])->name('product.update');
             Route::post('/product/delete', [ProductController::class, 'destroy'])->name('product.delete');
             Route::post('/search/product/',[ProductController::class, 'search'])->name('search.product');
+            Route::get('/get/company/{id}',[ProductController::class, 'getCompany'])->name('get.company');
             
             
             /** order route */

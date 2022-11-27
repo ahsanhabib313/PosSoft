@@ -25,10 +25,10 @@ body {
   APP DESIGN
 ============================*/
 #calculator {
-  min-height: 500px;
+/*   min-height: 500px;
   max-height: 550px;
   min-width: 450px;
-  max-width: 500px;
+  max-width: 500px; */
   border-radius: 10px 10px 0 0;
   height: auto;
   background-color: #1A1A1D;
@@ -68,15 +68,15 @@ body {
   CALCULATOR BUTTONS
 ============================*/
 button {
-  border-radius: 50%;
-  width: 75%;
-  min-width: 50px;
-  height: auto;
-  outline: none;
-  color: white;
-  user-select: none;
-  border: 1px transparent solid;
-  transition: all 0.3s ease;
+    border-radius: 50%;
+    width: 40%;
+    min-width: 47px;
+    height: 50%;
+    outline: none;
+    color: white;
+    user-select: none;
+    border: 1px transparent solid;
+    transition: all 0.3s ease; 
 }
 
 /*=== BUTTON CONTAINERS===*/

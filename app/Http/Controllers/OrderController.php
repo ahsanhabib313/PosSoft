@@ -69,6 +69,7 @@ class OrderController extends Controller
                 Customer::where('id', $customer->id)
                         ->update([
 
+                                'name' =>$customerName,
                                 'debit'  => $debit
                 ]);
             }else{
@@ -153,18 +154,22 @@ class OrderController extends Controller
         $mobileNumber = $request->mobileNumber;
 
         $customer = Customer::where('mobile', $mobileNumber)->first();
+
         if($customer){
 
+            $name = $customer->name;
             $pastDebit = $customer->debit;
             $debitDate = $customer->created_at;
             $debitDate = date('d-m-Y', strtotime($debitDate));
            
             return response()->json([
+                'name' => $name,
                 'pastDebit' => $pastDebit,
                 'debitDate' => $debitDate,
             ]);
         }else{
             return response()->json([
+                'name' => '',
                 'pastDebit' => 0,
                 'debitDate' => '',
             ]);

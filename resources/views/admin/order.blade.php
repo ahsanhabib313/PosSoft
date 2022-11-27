@@ -109,7 +109,15 @@
                          <input type="hidden" class="mobileNumber_{{ $order->id }}" value="{{ $order->mobileNumber }}">
                          <td>{{ $order->totalPrice }}</td>
                          <input type="hidden" class="totalPrice_{{ $order->id }}" value="{{ $order->totalPrice }}">
-                         <td>{{ date('Y-m-d h:i:s A', strtotime( $order->created_at)) }} </td>
+                         @php
+                             $date = date('Y-m-d h:i:s A', strtotime( $order->created_at));
+                             if(stripos($date,'AM')){
+                               $date = str_replace('AM','সকাল',$date);
+                             }else{
+                              $date = str_replace('PM','বিকাল',$date);
+                             }
+                         @endphp
+                         <td class=""> {{  $date }} </td>
                          <input type="hidden" class="order_date_{{ $order->id }}" value="{{ date('Y-m-d h:i:s A', strtotime( $order->created_at)) }}">
                         
                          <td>

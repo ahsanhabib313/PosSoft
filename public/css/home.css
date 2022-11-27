@@ -109,9 +109,9 @@ nav.navbar {
  .products .product-card .card-img-top{
     
     display: block !important;
-    width: 120px !important;
+    width: 110px !important;
     text-align: center !important;
-    height: 120px !important;
+    height: 80px !important;
   
 }
 

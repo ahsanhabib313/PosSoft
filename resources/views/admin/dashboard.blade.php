@@ -64,5 +64,73 @@
         
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script>
+  //create notification and show
+     function createShowNotify(){
+        
+        $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+    
+                // store data using ajax
+                $.ajax({
+                    url: '/admin/show/notification/',
+                    type: 'GET',
+                    processData: false,
+                    contentType: false,
+                    success: function(data){
+                      
+                        if(data.status == 'success'){
+                            $('#totalAlert').text(data.totalAlert);
+                            $('.totalAlert').text(data.totalAlert);
+                            $('#notification_menu').html(data.productNotification);
+                        } 
+                    
+    
+                    },
+                    error: function(data){
+                       
+                    }
+    
+                });
+    }
+    
+    createShowNotify();
+     
+    
+    // show notificaion after a interval
+    
+        $(document).on('click','#notification_btn', function(e){
+    
+            e.preventDefault();
+            $('#totalAlert').text(0);
+       
+       $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+       // store data using ajax
+       $.ajax({
+         url: '/admin/notification/mark/read',
+         type: 'GET',
+         processData: false,
+         contentType: false,
+         success: function(data){
+           if(data.status == 'success'){
+                $('#totalAlert').text(0);
+           }
+    
+         },
+         error: function(data){
+            
+         }
+    
+       });
+    })
+        
+    </script>
 @endsection       

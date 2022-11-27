@@ -15,6 +15,8 @@
     <link href="{{ asset('fontawesome/css/all.min.css') }}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('assets/css/jquery-ui.min.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="{{asset('assets/css/employee.css')}}">
     <link rel="stylesheet" href="{{asset('css/home.css')}}">
    
@@ -199,7 +201,7 @@
             </div>
         </div>
     </div>
-        <div class="navbar navbar-expand d-flex navbar-dark justify-content-between bd-navbar blue accent-3 shadow">
+        <div class="navbar navbar-expand d-flex navbar-dark justify-content-between bd-navbar blue accent-3 shadow" style="padding: 10px;">
             <div class="relative">
                 <div class="d-flex">
                     <div>
@@ -218,59 +220,44 @@
                     <!-- Messages-->
                 
                     <!-- Notifications -->
-                    <li class="dropdown custom-dropdown notifications-menu">
-                        <a href="panel-page-dashboard2.html#" class=" nav-link" data-toggle="dropdown" aria-expanded="false">
-                            <i class="icon-notifications" id="icon_notification"></i>
-                        <span class="badge badge-danger badge-mini rounded-circle" id="totalAlert"  >{{ $totalAlert }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li class="header">আপনার  <span class="totalAlert">{{ $totalAlert }}</span> টি নোটিফিকেশন আছে</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
+                    <li style="margin-top:3px;margin-right: 10px;">
+                        <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#notification-modal" id="notification_btn">
+                            নোটিফিকেশন <span class="badge badge-danger text-white" style="font-size: 18px;" id="totalAlert">{{ $totalAlert }}</span>
+                          </button>
+                          
+                {{-- start notification Modal--}}
+                
+                    <div class="modal fade" id="notification-modal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">নোটিফিকেশন</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="engFont">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
                                 <ul class="menu" id="notification_menu">
                                     
                                 </ul>
-                            </li>
-                           
-                        </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">বন্ধ করুন</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                {{-- end Calculator Modal--}}
+                   
                     </li>
-                    <li style="margin-top:15px">
+                    <li style="margin-top:5px">
                         <a href="{{ route('admin.logout') }}">
                             
-                            <div class="pt-1 font-weight-bold text-white ">লগ আউট</div>
+                            <div class="pt-1 font-weight-bold text-white"><i class='fas fa-sign-out-alt' style='font-size: 25px;
+                                color: red;'></i></div>
                             
                         </a>
                     </li>
-                  
-                   {{--  <li class="dropdown custom-dropdown user user-menu ">
-                        <a href="panel-page-dashboard2.html#" class="nav-link" data-toggle="dropdown">
-                            <img src="{{asset('admin\assets\img\dummy\u1.png')}}" class="user-image" alt="User Image">
-                            <i class="icon-more_vert "></i>
-                        </a>
-                        <div class="dropdown-menu p-4 dropdown-menu-right">
-                            <div class="row box justify-content-between my-4">
-                                <div class="col">
-                                    <a href="#">
-                                        <i class="icon-apps purple lighten-2 avatar  r-5"></i>
-                                        <div class="pt-1">এপস</div>
-                                    </a>
-                                </div>
-                                <div class="col"><a href="#">
-                                    <i class="icon-beach_access pink lighten-1 avatar  r-5"></i>
-                                    <div class="pt-1">প্রোফাইল</div>
-                                </a></div>
-                                <div class="col">
-                                    <a href="{{ route('admin.logout') }}">
-                                        <i class="icon-perm_data_setting indigo lighten-2 avatar  r-5"></i>
-                                        <div class="pt-1 font-weight-bold ">লগ আউট</div>
-                                        
-                                    </a>
-                                    
-                                </div>
-                            </div>
-                          
-                        </div>
-                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -286,86 +273,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" async integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
-
-@stack('scripts')
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-
-
-
-
-//create notification and show
- function createShowNotify(){
-    
-    $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-            // store data using ajax
-            $.ajax({
-                url: '/admin/show/notification/',
-                type: 'GET',
-                processData: false,
-                contentType: false,
-                success: function(data){
-                  
-                    if(data.status == 'success'){
-                        $('#totalAlert').text(data.totalAlert);
-                        $('.totalAlert').text(data.totalAlert);
-                        $('#notification_menu').html(data.productNotification);
-                    } 
-                
-
-                },
-                error: function(data){
-                   
-                }
-
-            });
-}
-
-createShowNotify();
- 
-
-// show notificaion after a interval
-  setInterval(() => {
-     createShowNotify();
-    }, 300000); 
- 
-    $(document).on('click','#icon_notification', function(e){
-
-        e.preventDefault();
-        $('#totalAlert').text(0);
-   
-   $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-   // store data using ajax
-   $.ajax({
-     url: '/admin/notification/mark/read',
-     type: 'GET',
-     processData: false,
-     contentType: false,
-     success: function(data){
-       if(data.status == 'success'){
-            $('#totalAlert').text(0);
-       }
-
-     },
-     error: function(data){
-        
-     }
-
-   });
-})
-    
-</script>
-
-
-
+    $('.company').select2();
+</script>    
 <!--
 --- Footer Part - Use Jquery anywhere at page.
 --- http://writing.colin-gourlay.com/safely-using-ready-before-including-jquery/

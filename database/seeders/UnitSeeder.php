@@ -23,7 +23,7 @@ class UnitSeeder extends Seeder
            ->insert([
                 [
                     'id' => 1,
-                    'name' => 'ব্যাগ'
+                    'name' => 'বস্তা'
                 ],
                 [
                     'id' => 2,

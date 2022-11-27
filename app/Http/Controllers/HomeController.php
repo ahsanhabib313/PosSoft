@@ -16,18 +16,42 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //get all units 
-        $selling_types = SellType::all();
-        //get the categories
-        $categories = Category::all();
-        //get the companies
-        $companies = Company::all();
-        
 
-        return view('user.dashboard', compact('categories', 'selling_types','companies'));
-    }
+         //get all categories
+         $categories = Category::all();
+
+        //check if the request comes from ajax
+        if($request->ajax()){
+            $category_html  = '';
+            
+            if(isset($categories)){
+
+                foreach ($categories as $category){
+                    $category_html .= '<div class="card" style="width: 7.3rem; margin-right:1%;height: 175px;max-height: 175px; cursor:pointer" onclick="getCompany('.$category->id.')">';
+                    $category_html .= '<img class="card-img-top" src="'.asset('img/category/'.$category->image).'" alt="category image cap" style="height: 115px; max-height:115px ">';
+                    $category_html .= '<div class="card-body">';                  
+                    $category_html .= '<p class="card-text text-center" style="font-size: 12px">'.$category->name.'</p>';
+                    $category_html .= '</div>';
+                    $category_html .= '</div>';
+                }
+               
+            }
+ 
+            return response()->json([
+             'category_html' => $category_html
+             ]);
+         }else{
+                //get all units 
+                $selling_types = SellType::all();
+                return view('user.dashboard', compact('categories', 'selling_types'));
+
+         }
+             
+        }
+      
+    
 
 
 
@@ -58,25 +82,32 @@ class HomeController extends Controller
 
 
  //fetch the company according to category
+        public function getCompany($category_id){
 
-        public function getCompany($id){
-
-           $category = Category::find($id);
+           $category = Category::find($category_id);
            $companies = json_decode($category->company_id);
            
-           $option = '';
+           $company_html  = '';
            if(!is_null($companies)){
+                  
                     foreach($companies as $company_id){
+
+                        $company_html .='<div class="card" style="width: 7.3rem; margin-right:1%;height: 175px;max-height: 175px; cursor:pointer" data-category_id= "'.$category_id.'" data-company_id= "'.$company_id.'" onclick="getProduct(this)">';
+                        $company_html .= '<img class="card-img-top" src="'.asset('img/company/'.Company::find($company_id)->logo).'" alt="company image cap" style="height: 115px; max-height:115px ">';
+                        $company_html .= '<div class="card-body">';
+                        $company_html .= '<p class="card-text text-center" style="font-size: 12px">'.Company::find($company_id)->name.'</p>';
+                        $company_html .= '</div>';
+                        $company_html .= '</div>';
                         
-                        $option .='<option value="'.$company_id.'">'.Company::find($company_id)->name.'</option>';
+                       
                 }
 
            return response()->json([
-            'option' => $option
+            'company_html' => $company_html
             ]);
         }else{
             return response()->json([
-                'option' => $option
+                'company_html' => $company_html
                 ]);
         }
            

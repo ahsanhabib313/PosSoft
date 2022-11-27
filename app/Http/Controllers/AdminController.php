@@ -90,14 +90,13 @@ class AdminController extends Controller
     //index function 
     public function index(Request $request ){
 
-        $todaysDate = date('Y-m-d', time()+6*3600);
+        $todaysDate = date('Y-m-d', time());
+
         $monthlyDate = date('Y-m-d', time()-30*24*60*60);
         $yearlyDate = date('Y-m-d', time()-365*24*60*60);
         
-        
-
-        $dailyOrders =DB::table('orders')->whereBetween('created_at', [$todaysDate, $todaysDate])->count();
-        $dailySells =DB::table('orders')->whereBetween('created_at', [$todaysDate, $todaysDate])->sum('totalPrice');
+        $dailyOrders =DB::table('orders')->whereDate('created_at', $todaysDate)->count();
+        $dailySells =DB::table('orders')->whereDate('created_at',  $todaysDate)->sum('totalPrice');
 
         $monthlyOrders =DB::table('orders')->whereBetween('created_at',[$monthlyDate, $todaysDate])->count();
         $monthlySells =DB::table('orders')->whereBetween('created_at',[$monthlyDate, $todaysDate])->sum('totalPrice');
@@ -126,7 +125,7 @@ class AdminController extends Controller
   
               foreach($expiredProducts as $expiredProduct){
                   $data =[
-                      'info' => $expiredProduct->productName.' '.$expiredProduct->productWeight.' '.$expiredProduct->productWeightUnit.' has been expired...!!!'
+                      'info' => $expiredProduct->productName.' '.$expiredProduct->productWeight.' '.$expiredProduct->productWeightUnit.' মেয়াদোত্তীর্ণ হয়ে গেছে...!!!'
                   ];
       
                   Auth::guard('admin')->user()->notify(new CustomNotification($data));
@@ -140,7 +139,7 @@ class AdminController extends Controller
           if(!is_null($lowQuantiyProducts)){
               foreach($lowQuantiyProducts as $lowQuantiyProduct){
                   $data =[
-                      'info' => $lowQuantiyProduct->productName.' '.$lowQuantiyProduct->productWeight.' '.$lowQuantiyProduct->productWeightUnit.' quanity has lower than lowest quanity...!!!'
+                      'info' => $lowQuantiyProduct->productName.' '.$lowQuantiyProduct->productWeight.' '.$lowQuantiyProduct->productWeightUnit.' ন্যূনতম পরিমানের নিচে নেমে গেছে...!!!'
                   ];
       
                   Auth::guard('admin')->user()->notify(new CustomNotification($data));
