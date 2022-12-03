@@ -390,16 +390,20 @@ function getCompany(value){
 
 /************** Home page **************/
 /*total price function executon*/
+
 function totalPrice(){
 
-      var total = 0;
+  var total = 0;
       $('.order-table tbody tr').find('input.productUnitPrice').each(function(){
-        total +=   ($(this).val());
+        total += parseFloat($(this).val());
+
+       // console.log(total);
         
       })
+
       var totalProfit = 0;
       $('.order-table tbody tr').find('input.unitProfit').each(function(){
-        totalProfit +=   ($(this).val());
+        totalProfit += parseFloat($(this).val());
         
       })
       
@@ -437,8 +441,8 @@ function discountFunction(discount){
       if(totalFirstTermProfit == 'NaN'){
         totalFirstTermProfit = 0;
       }
-      var afterDiscountTotalPrice  =  (totalPrice)  -  (discount) ;
-      var afterDiscountTotalProfit  =  (totalFirstTermProfit)  -  (discount) ;
+      var afterDiscountTotalPrice  =parseFloat(totalPrice)  -parseFloat(discount) ;
+      var afterDiscountTotalProfit  =parseFloat(totalFirstTermProfit)  - parseFloat(discount) ;
 
      
       //set the total price after discount
@@ -468,17 +472,17 @@ function receivedMoneyFunction(receivedMoney){
      }
      
       let toBePaid  = $('input[name=toBePaid]').val();
-          toBePaid  =  (toBePaid);
+          toBePaid  =(toBePaid);
 
       let pastDebit = $('input[name=pastDebit]').val();
-      let totalDebit =  (toBePaid) +  (pastDebit) ;
+      let totalDebit =(toBePaid) +(pastDebit) ;
     
       $('.totalDebit').text(totalDebit);
       $('input[name=totalDebit]').val(totalDebit);  
 
       
-      let presentDebit =  (totalDebit) -  (money);
-      presentDebit =  (presentDebit); 
+      let presentDebit =(totalDebit) -(money);
+      presentDebit =(presentDebit); 
 
       $('.presentDebit').text(presentDebit);
       $('input[name=presentDebit]').val(presentDebit);      
@@ -490,10 +494,10 @@ function receivedMoneyFunction(receivedMoney){
 // change total debit 
 function changeTotalDebit(pastDebit){
 
-      let presentDebit = $('input[name=presentDebit]').val();
-      let totalDebit = presentDebit + pastDebit;
+      let presentDebit = parseFloat($('input[name=presentDebit]').val());
+      let totalDebit = parseFloat(presentDebit)  + parseFloat(pastDebit) ;
 
-      $('.totalDebit').text( (totalDebit));
+      $('.totalDebit').text(totalDebit);
       $('input[name=totalDebit]').val(totalDebit);
 
 } 
@@ -504,13 +508,13 @@ function editQuantity(id){
       var productPrice =$('.order-table tbody tr').find('input.productPrice_'+id).val();
       var profit =$('.order-table tbody tr').find('input.profit_'+id).val();
 
-      productPrice =  (productPrice);
+      productPrice =(productPrice);
       var productUnitPrice = quantity * productPrice;
-          productUnitPrice =  (productUnitPrice);
+          productUnitPrice =(productUnitPrice);
 
-      profit =  (profit);
+      profit =(profit);
       var unitProfit = quantity * profit;
-          unitProfit =  (unitProfit);
+          unitProfit =(unitProfit);
 
       $('.order-table tbody tr').find('.productUnitPrice_'+id).text(productUnitPrice);
       $('.order-table tbody tr').find('input.productUnitPrice_'+id).val(productUnitPrice);
@@ -574,18 +578,17 @@ function searchDebitFunction(){
 
 function barCodeFunction(value){
 
-      var barCode =  (value) ;
+      var barCode =(value) ;
 
       let checkBarCode = document.querySelector(`.tr_${barCode}`);
 
       if(checkBarCode){
 
          let product_id = $('.tr_'+barCode).find('.product_id').val();
-         console.log(product_id);
-
+    
          let prodQuantity = $('.tr_'+barCode).find('.quantity').val();
 
-         prodQuantity =  (prodQuantity) +  1;
+         prodQuantity = parseInt(prodQuantity) +  1;
 
          $('.tr_'+barCode).find('.quantity').val(prodQuantity);
 
